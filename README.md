@@ -5,10 +5,10 @@ microframework.
 
 ## Team
 
-- Prakhar 
+- Prakhar Rawat
 - Matt Arlauckas
 - Diosdavi Lara
-- (Add your name here)
+- Niranjana Deshpande
 
 ##Prerequisites
 
