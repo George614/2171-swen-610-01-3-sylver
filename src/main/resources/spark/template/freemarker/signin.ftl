@@ -12,11 +12,18 @@
     
     <div class="navigation">
       <a href="/">my home</a>
-        <a href="/signin">sign in</a>
     </div>
     
     <div class="body">
-      <p>Welcome to the world of online Checkers.</p>
+         <h4>Sign in to play a game:</h4>
+
+        <form action="./validate" method="POST">
+            Enter your name (names available on first-come-first-served basis)
+            <br/>
+            <input name="myName" />
+            <br/><br/>
+            <button type="submit">Submit</button>
+        </form>
     </div>
     
   </div>

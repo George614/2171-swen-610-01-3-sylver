@@ -19,6 +19,7 @@ public class HomeController implements TemplateViewRoute {
   public ModelAndView handle(Request request, Response response) {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
+    //vm.put("playerName", playerName);
     return new ModelAndView(vm , "home.ftl");
   }
 
