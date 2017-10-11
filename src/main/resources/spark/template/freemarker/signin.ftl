@@ -21,7 +21,7 @@
 
     <#--#if removeform-->
         <form action="/signin" method="GET">
-            Name: <input type="text" name="playername" />	<br/><br/>
+            Name: <input type="text" name="playername" required />	<br/><br/>
             <input type="submit" value="Enter" />
         </form>
     <#--/#if-->
