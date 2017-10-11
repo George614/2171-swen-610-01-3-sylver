@@ -50,9 +50,9 @@ public class WebServer {
   public static final String SIGNIN_URL = "/signin";
   public static final String SIGNOUT_URL = "/signout";
 
-  public static final String GAME_URL = "/game";
-
-  public static final String SIGNIN_URL = "/signin";
+//  public static final String GAME_URL = "/game";
+//
+//  public static final String SIGNIN_URL = "/signin";
 
   //
   // Attributes

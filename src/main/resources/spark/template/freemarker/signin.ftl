@@ -46,7 +46,7 @@
                         <td>${opps}</td>
                     </tr-->
 
-                        <input type="radio" name="opponentRadio" value="${opps}"/> ${opps}
+                        <input type="radio" name="opponentRadio" value="${opps}" required/> ${opps}
                     <br>
 
                 </#list>
