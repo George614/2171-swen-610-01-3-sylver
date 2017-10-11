@@ -50,6 +50,10 @@ public class WebServer {
   public static final String SIGNIN_URL = "/signin";
   public static final String SIGNOUT_URL = "/signout";
 
+  public static final String GAME_URL = "/game";
+
+  public static final String SIGNIN_URL = "/signin";
+
   //
   // Attributes
   //
@@ -123,6 +127,8 @@ public class WebServer {
 
     // Shows the Checkers game Home page.
     get(HOME_URL, new HomeController(), templateEngine);
+    get(GAME_URL, new GameController(),templateEngine);
+    get("/signin", new SignInController(),templateEngine);
 
     // Shows the Checkers game Game page.
     get(GAME_URL, new GameController(), templateEngine);
