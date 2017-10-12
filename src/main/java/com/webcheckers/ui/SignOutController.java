@@ -26,8 +26,6 @@ public class SignOutController implements TemplateViewRoute {
         names.remove(playersDisplay);
         System.out.println("DELETED LIST"+names);
 
-
-        // System.out.println("DELETED LIST"+names);
         session.removeAttribute(playersDisplay);
 
         

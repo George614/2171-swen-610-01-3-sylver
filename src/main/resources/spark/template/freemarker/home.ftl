@@ -24,14 +24,12 @@
         Name: <input type="text" name="playername" required />	<br/><br/>
         <input type="submit" value="Enter" />
     </form>
-<#--/#if>
-<#if userName??>
-    <#if correctName>
-        <div name="correctUsername"> Hello,${userName}!</div>
-    <#else>
-        <p> ENTER VALID USERNAME </p>
+    <#--/#if-->
+    <#if message??>
+
+        <div>${message}!</div>
+
     </#if>
-</#if-->
 
 
     <table class="datatable">
