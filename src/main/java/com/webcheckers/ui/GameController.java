@@ -1,22 +1,13 @@
 package com.webcheckers.ui;
 
-import spark.TemplateViewRoute;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.TemplateViewRoute;
 
-import static com.sun.org.apache.xml.internal.security.keys.keyresolver.KeyResolver.length;
-import static com.webcheckers.ui.SignInController.*;
-import static org.eclipse.jetty.util.LazyList.size;
+import java.util.HashMap;
+import java.util.Map;
 
-import static com.webcheckers.ui.SignInController.getNames;
 
 public class GameController implements TemplateViewRoute {
 
@@ -61,10 +52,8 @@ public class GameController implements TemplateViewRoute {
     public ModelAndView handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game Play!");
+        playersDisplay=com.webcheckers.ui.HomePostRoute.getNames();
 
-
-
-        playersDisplay=com.webcheckers.ui.SignInController.getNames();
 
         opponent=request.queryParams(OPPONENT_PARAM);
         //System.out.println("OPPONENT FROM GAME CONTROLLER"+opponent);

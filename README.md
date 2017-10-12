@@ -5,10 +5,10 @@ microframework.
 
 ## Team
 
-- Prakhar Rawat
-- Matt Arlauckas
-- Diosdavi Lara
-- Niranjana Deshpande
+- Jane Doe
+
+- John Doe
+
 
 ##Prerequisites
 
@@ -32,4 +32,3 @@ microframework.
 MIT License
 
 See LICENSE for details.
-# 2171-swen-610-01-3-sylver

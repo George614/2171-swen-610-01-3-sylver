@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
 import static spark.Spark.*;
+
+import spark.Route;
 import spark.TemplateEngine;
 
 
@@ -47,12 +49,6 @@ public class WebServer {
    */
   public static final String HOME_URL = "/";
   public static final String GAME_URL = "/game";
-  public static final String SIGNIN_URL = "/signin";
-  public static final String SIGNOUT_URL = "/signout";
-
-//  public static final String GAME_URL = "/game";
-//
-//  public static final String SIGNIN_URL = "/signin";
 
   //
   // Attributes
@@ -127,17 +123,10 @@ public class WebServer {
 
     // Shows the Checkers game Home page.
     get(HOME_URL, new HomeController(), templateEngine);
-    get(GAME_URL, new GameController(),templateEngine);
-    get("/signin", new SignInController(),templateEngine);
+    post(HOME_URL, new HomePostRoute(), templateEngine);
+    get(GAME_URL,new GameController(), templateEngine);
+    get("/signout",new SignOutController(),templateEngine);
 
-    // Shows the Checkers game Game page.
-    get(GAME_URL, new GameController(), templateEngine);
-
-    // Shows the Checkers game SignIn page.
-    get(SIGNIN_URL, new SignInController(), templateEngine);
-
-    // Shows the Checkers game SignOut page.
-    get(SIGNOUT_URL, new SignOutController(), templateEngine);
   }
 
 }
