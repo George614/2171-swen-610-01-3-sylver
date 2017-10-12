@@ -23,20 +23,18 @@ public class GameController implements TemplateViewRoute {
 
     static final String PLAYER_CURRENT = "currentPlayer";
 
-    static final String BOARD = "board";
-    static final String ROW= "row";
+
 
     static final String CELL_ID_X = "cellIdx";
 
-    static final String SPACE = "space";
-
+    // Defined for future use
     private int space=0;
-
+    static final String SPACE = "space";
+    static final String BOARD = "board";
+    static final String ROW= "row";
     private int cellIdx=0;
-
     private String player;
     private String opponent;
-
     String playersDisplay;
 
     //static int[][] board = new int[8][8];
@@ -64,9 +62,7 @@ public class GameController implements TemplateViewRoute {
         vm.put(OPPONENT_COLOR,String.format("WHITE"));
 
         vm.put(IS_MY_TURN,true);
-
         vm.put(CELL_ID_X,cellIdx );
-
         vm.put(PLAYER_CURRENT,String.valueOf(playersDisplay));
 
         return new ModelAndView(vm , "game.ftl");
