@@ -35,8 +35,8 @@ The Web-Checkers application uses a Java based server. We have used the Spark we
 
 ### Summary
 
-1. The landing page is the home page (home.ftl) which welcomes the user to the Web-Checkers game. The user can then sign in using the link in the navigation bar.
-2. Once the user clicks on the sign-in link, they are redirected to the sign-in page which consists of an input that can be submitted. This username must be unique and the user can only play once they are logged in. Once the user is logged in, a list of opponents that are online is displayed. The user can select an opponent and play against them once the “Let’s Play!” button is clicked.
+1. The landing page is the home page (home.ftl) which welcomes the user to the Web-Checkers game. The user can then sign in.
+2. The page consists of an input that can be submitted. This username must be unique and the user can only play once they are logged in. Once the user is logged in, a list of opponents that are online is displayed. The user can select an opponent and play against them once the “Let’s Play!” button is clicked.
 3. The user is then redirected to the game page which displays a checkers board, the players’ pieces and links to submit a turn, reset a turn and undo. 
 4. The user can also sign out using the link from the navigation pane if they wish to do so.
 
@@ -44,11 +44,12 @@ The Web-Checkers application uses a Java based server. We have used the Spark we
 
 This tier contains our code for the sign-in, home display, sign out and web server files. These are the files that the user interacts with. Following are the files with the description:
 
-**Sign In Controller:** This file contains the Sign-in authentication logic.
-**Sign Out Controller:** This file contains the sign out redirection.
-**Home Controller:** This file is responsible for rendering home.ftl .
+**Home Controller:** This file displays the opponent list and renders home.ftl
+**HomePostRoute :** This file contains the authentication logic, session setup and renders home.ftl
+**Sign Out Controller:** This file handles de-authentication and destroys session.
 **Web Server:** This file contains the routing information for the Web-Checkers application.
 **Game Controller:** This file contains the game controller to enable game play.
+**JsonUtils:** A Utility class for parsing and formatting JSON data.
 
 ### Model Tier 
 
