@@ -14,7 +14,7 @@ import spark.*;
  */
 public class HomePostRoute implements TemplateViewRoute {
     static String playerName=null;
-    static String invalidMessage=null;
+    static String invalidArgMessage =null;
 
     public ModelAndView handle(Request request, Response response) {
         final String name = request.queryParams("playername");
@@ -26,10 +26,11 @@ public class HomePostRoute implements TemplateViewRoute {
 
         storeName(name,session);
 
+        //add to view model
         vm.put("title", "Welcome");
         vm.put("name",name);
 
-        vm.put("message",invalidMessage);
+        vm.put("message", invalidArgMessage);
 
 
        // vm.put("names",session.attribute("names"));
@@ -45,10 +46,10 @@ public class HomePostRoute implements TemplateViewRoute {
         }
         if(!names.contains(name)){
             names.add(name);
-            invalidMessage=null;
+            invalidArgMessage =null;
         }
         else{
-            invalidMessage="username already taken";
+            invalidArgMessage ="username already taken";
         }
         System.out.println(name+"ADDED");
 

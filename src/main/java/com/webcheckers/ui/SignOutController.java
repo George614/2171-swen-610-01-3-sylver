@@ -19,16 +19,13 @@ public class SignOutController implements TemplateViewRoute {
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Welcome!");
         //vm.put("playerName", playerName);
-        //request.session(false);
         final Session session=request.session();
         List<String> names = session.attribute("names");
         playersDisplay=com.webcheckers.ui.HomePostRoute.getNames();
         names.remove(playersDisplay);
         System.out.println("DELETED LIST"+names);
-
         session.removeAttribute(playersDisplay);
 
-        
         return new ModelAndView(vm , "home.ftl");
     }
 
