@@ -45,6 +45,7 @@ public class HomePostRoute implements TemplateViewRoute {
         }
         if(!names.contains(name)){
             names.add(name);
+            invalidMessage=null;
         }
         else{
             invalidMessage="username already taken";
