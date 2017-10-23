@@ -24,14 +24,14 @@
 <div class="page">
     <h1>Web Checkers</h1>
 
-    <div class="navigation">
-    <#if currentPlayer??>
+      <div class="navigation">
+      <#if isLoggedIn>
         <a href="/">my home</a> |
-        <a href="/signout">sign out [${playerName}]</a>
-    <#else>
-        <a href="/signin">sign in</a>
-    </#if>
-    </div>
+        <a href="/sign-out">sign out [${playerName}]</a>
+      <#else>
+        <a href="/sign-in">sign in</a>
+      </#if>
+      </div>
 
     <div class="body">
         <form id="gameForm" action="/submitTurn" method="POST">

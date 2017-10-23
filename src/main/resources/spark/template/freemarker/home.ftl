@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-    <meta http-equiv="refresh" content="7">
     <title>${title} | Web Checkers</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
@@ -11,56 +10,47 @@
     <h1>Web Checkers</h1>
 
     <div class="navigation">
-        <a href="/home">my home</a>
-
+    <#if isLoggedIn>
+      <a href="/">my home</a> |
+      <a href="/sign-out">sign out [${playerName}]</a>
+    <#else>
+      <a href="/sign-in">sign in</a>
+    </#if>
     </div>
 
     <div class="body">
         <p>Welcome to the world of online Checkers.</p>
-    </div>
 
-<#--#if removeform-->
-    <form action="/" method="POST">
-        Name: <input type="text" name="playername" required />	<br/><br/>
-        <input type="submit" value="Enter" />
-    </form>
-    <#--/#if-->
     <#if message??>
-
-        <div>${message}!</div>
-
+      <div>${message}</div>
     </#if>
 
+        <p><b>Players Online</b></p>
 
-    <table class="datatable">
-        <br>
-        <p><b>Players online</b></p>
-
-    <#if names??>
-        <form action="/game" method="GET">
-            <#list names as oN>
-
-                <#if oN != playerName>
-                    <input type="radio" name="opponentRadio" value="${oN}" required/> ${oN}
+        <table>
+          <form action="/game" method="GET">
+            <#list playerList as player>
+                <#if player != playerName>
+                  <tr>
+                    <input type="radio" name="opponentRadio" value="${player}" required/> ${player}
                     <br>
+                  </tr>
                 </#if>
-
+            <#else>
+                No players online yet.
+                <br>
             </#list>
+
             <br>
-            <input type="submit" value="Let's play!" />
-        </form>
 
-    </#if>
-
-    </table>
-
-
-
-
-
-
-
-
-
+            <#if isLoggedIn && playerList?size gt 1>
+              <input type="submit" value="Let's play!" />
+            <#else>
+              <input type="submit" value="Let's play!" disabled />
+            </#if>
+          </form>
+        </table>
+    </div>
+</div>
 </body>
 </html>
