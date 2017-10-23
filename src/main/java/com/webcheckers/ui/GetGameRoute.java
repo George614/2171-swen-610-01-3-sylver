@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import java.util.Objects;
 import spark.ModelAndView;
@@ -56,11 +57,14 @@ public class GetGameRoute implements TemplateViewRoute {
 
         // retrieve the HTTP session
         final Session httpSession = request.session();
+        final String currentUser = ((Player)httpSession.attribute(PlayerLobby.PLAYER_ID)).getUsername();
+        // retrieve the game object
+        final Game game = gameCenter.get(httpSession, new Player(currentUser), new Player(opponent));
 
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
         vm.put(TITLE_ATTR, TITLE);
-        vm.put(OPPONENT_NAME_ATTR, opponent);
+        vm.put(OPPONENT_NAME_ATTR, game.getPlayerWhiteUsername());
         vm.put(PLAYER_COLOR_ATTR, "RED");
         vm.put(OPPONENT_COLOR_ATTR, "WHITE");
         vm.put(IS_MY_TURN_ATTR, true);
@@ -68,7 +72,7 @@ public class GetGameRoute implements TemplateViewRoute {
         // checks if the user is signed-in
         if (httpSession.attribute(PlayerLobby.PLAYER_ID) != null) {
             vm.put(IS_LOGGED_IN_ATTR, true);
-            vm.put(PLAYER_NAME_ATTR, ((Player)httpSession.attribute(PlayerLobby.PLAYER_ID)).getUsername());
+            vm.put(PLAYER_NAME_ATTR, game.getPlayerRedUsername());
         }
         return new ModelAndView(vm , VIEW_NAME);
     }

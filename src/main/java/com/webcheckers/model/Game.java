@@ -42,4 +42,31 @@ public class Game {
     this.playerWhite = playerWhite;
   }
 
+  /**
+   * Get the red player's username.
+   *
+   * @return
+   *   The red player's username.
+   */
+  public String getPlayerRedUsername() {
+    return playerRed.getUsername();
+  }
+
+  /**
+   * Get the white player's username.
+   *
+   * @return
+   *   The white player's username.
+   */
+  public String getPlayerWhiteUsername() {
+    return playerWhite.getUsername();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public synchronized String toString() {
+    return "{Game: " + playerRed + " vs " + playerWhite + "}";
+  }
 }
