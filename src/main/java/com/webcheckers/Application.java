@@ -1,5 +1,7 @@
 package com.webcheckers;
 
+import com.webcheckers.appl.GameCenter;
+import com.webcheckers.appl.PlayerLobby;
 import java.util.logging.Logger;
 
 import spark.TemplateEngine;
@@ -33,13 +35,18 @@ public final class Application {
    */
   public static void main(String[] args) {
 
+    // create the one and only game center
+    final GameCenter gameCenter = new GameCenter();
+    // create the player lobby to handle online players
+    final PlayerLobby playerLobby = new PlayerLobby();
+
     // The application uses FreeMarker templates to generate the HTML
     // responses sent back to the client. This will be the engine processing
     // the templates and associated data.
     final TemplateEngine templateEngine = new FreeMarkerEngine();
 
-    // inject the game center and freemarker engine into web server
-    final WebServer webServer = new WebServer(templateEngine);
+    // inject the player lobby, the game center and the freemarker engine into web server
+    final WebServer webServer = new WebServer(playerLobby, gameCenter, templateEngine);
 
     // inject web server into application
     final Application app = new Application(webServer);
@@ -68,7 +75,6 @@ public final class Application {
 
   private void initialize() {
     LOG.fine("WebCheckers is initializing.");
-
     // configure Spark and startup the Jetty web server
     webServer.initialize();
 

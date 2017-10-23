@@ -2,7 +2,8 @@ package com.webcheckers.ui;
 
 import static spark.Spark.*;
 
-import spark.Route;
+import com.webcheckers.appl.GameCenter;
+import com.webcheckers.appl.PlayerLobby;
 import spark.TemplateEngine;
 
 
@@ -45,9 +46,11 @@ public class WebServer {
   //
 
   /**
-   * The URL pattern to request the Home page.
+   * The URL patterns to request each of the pages.
    */
   public static final String HOME_URL = "/";
+  public static final String SIGN_IN_URL = "/sign-in";
+  public static final String SIGN_OUT_URL = "/sign-out";
   public static final String GAME_URL = "/game";
 
   //
@@ -55,6 +58,8 @@ public class WebServer {
   //
 
   private final TemplateEngine templateEngine;
+  private final GameCenter gameCenter;
+  private final PlayerLobby playerLobby;
 
   //
   // Constructor
@@ -66,8 +71,9 @@ public class WebServer {
    * @param templateEngine
    *    The default {@link TemplateEngine} to render views.
    */
-  public WebServer(
-      final TemplateEngine templateEngine) {
+  public WebServer(final PlayerLobby playerLobby, final GameCenter gameCenter, final TemplateEngine templateEngine) {
+    this.gameCenter = gameCenter;
+    this.playerLobby = playerLobby;
     this.templateEngine = templateEngine;
   }
 
@@ -122,10 +128,11 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new HomeController(), templateEngine);
-    post(HOME_URL, new HomePostRoute(), templateEngine);
-    get(GAME_URL,new GameController(), templateEngine);
-    get("/signout",new SignOutController(),templateEngine);
+    get(HOME_URL, new GetHomeRoute(playerLobby), templateEngine);
+    get(GAME_URL, new GetGameRoute(gameCenter), templateEngine);
+    get(SIGN_IN_URL, new GetSignInRoute(), templateEngine);
+    post(SIGN_IN_URL, new PostSignInRoute(playerLobby), templateEngine);
+    get(SIGN_OUT_URL, new GetSignOutRoute(playerLobby),templateEngine);
 
   }
 
