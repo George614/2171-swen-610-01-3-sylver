@@ -1,10 +1,10 @@
 package com.webcheckers.ui;
 
-import static spark.Spark.*;
-
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import spark.TemplateEngine;
+
+import static spark.Spark.*;
 
 
 /**
@@ -40,6 +40,7 @@ import spark.TemplateEngine;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public class WebServer {
+
 
   //
   // Constants
@@ -135,5 +136,4 @@ public class WebServer {
     get(SIGN_OUT_URL, new GetSignOutRoute(playerLobby),templateEngine);
 
   }
-
 }
