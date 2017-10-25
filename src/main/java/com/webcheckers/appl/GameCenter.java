@@ -2,8 +2,9 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
-import java.util.Objects;
 import spark.Session;
+
+import java.util.Objects;
 
 /**
  * The object to coordinate the state of the Web Application.
@@ -35,6 +36,7 @@ public class GameCenter {
    * @return
    *   A existing or new {@link Game}
    */
+
   public Game get(final Session session, final Player playerRed, final Player playerWhite) {
     // validation
     Objects.requireNonNull(session, "session must not be null");
@@ -58,7 +60,7 @@ public class GameCenter {
    * @param session
    *   The HTTP session
    */
-  public void end(Session session) {
+  public void end (Session session) {
     // validation
     Objects.requireNonNull(session, "session must not be null");
     // remove the game from the user's session
