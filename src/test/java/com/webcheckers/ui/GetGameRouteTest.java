@@ -33,6 +33,8 @@ public class GetGameRouteTest {
     private static final String PLAYER_WHITE_NAME = "Sally";
     private static final Player PLAYER_RED = new Player(PLAYER_RED_NAME);
     private static final Player PLAYER_WHITE = new Player(PLAYER_WHITE_NAME);
+    private static final String RED_COLOR = "RED";
+    private static final String WHITE_COLOR = "WHITE";
 
     /**
      *  Component-under-test CuT
@@ -57,6 +59,8 @@ public class GetGameRouteTest {
 
     @Test
     public void handle() throws Exception {
+        // Arrange the test scenario: There is an existing web session with a logged in user.
+        when(session.attribute(PlayerLobby.PLAYER_ID)).thenReturn(new Player(PLAYER_RED_NAME));
 
         final ModelAndView result = CuT.handle(request, response);
         final Object model = result.getModel();
@@ -67,8 +71,8 @@ public class GetGameRouteTest {
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals(GetGameRoute.TITLE, vm.get(GetGameRoute.TITLE_ATTR));
         assertEquals(GetGameRoute.VIEW_NAME, result.getViewName());
-        assertEquals(PLAYER_WHITE_NAME, vm.get(GetGameRoute.OPPONENT_COLOR_ATTR));
-        assertEquals(PLAYER_RED_NAME, vm.get(GetGameRoute.PLAYER_COLOR_ATTR));
+        assertEquals(WHITE_COLOR, vm.get(GetGameRoute.OPPONENT_COLOR_ATTR));
+        assertEquals(RED_COLOR, vm.get(GetGameRoute.PLAYER_COLOR_ATTR));
 
         session.attribute(PLAYER_RED_NAME, PlayerLobby.PLAYER_ID);
         when(session.attribute(PlayerLobby.PLAYER_ID) != null).thenReturn(true);
