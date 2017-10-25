@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
@@ -85,4 +86,10 @@ public class PlayerLobbyTest {
 
 
 
+=======
+import static org.junit.Assert.*;
+
+public class PlayerLobbyTest {
+
+>>>>>>> 9c89a3c... Unit tests
 }

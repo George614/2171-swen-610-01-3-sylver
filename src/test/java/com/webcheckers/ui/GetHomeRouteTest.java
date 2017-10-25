@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
@@ -50,4 +51,10 @@ public class GetHomeRouteTest {
         when(session.attribute(PlayerLobby.PLAYER_ID) != null).thenReturn(true);
     }
 
+=======
+import static org.junit.Assert.*;
+
+public class GetHomeRouteTest {
+
+>>>>>>> 9c89a3c... Unit tests
 }
