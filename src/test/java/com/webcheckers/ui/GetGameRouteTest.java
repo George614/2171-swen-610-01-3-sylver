@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 
@@ -36,29 +37,41 @@ public class GetGameRouteTest {
     /**
      *  Component-under-test CuT
      */
-    private GetGameRoute CuT = new GetGameRoute(new GameCenter());
+    private final GetGameRoute CuT = new GetGameRoute(new GameCenter());
 
     // Mock objects
     private Request request;
     private Session session;
-
+    private Response response;
 
     /**
      *  Set up mock objects for each test
      */
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         request = mock(Request.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
-    }
-
-    @After
-    public void tearDown() throws Exception {
+        response=mock(Response.class);
     }
 
     @Test
-    public void handleTest() throws Exception {
+    public void handle() throws Exception {
+
+        final ModelAndView result = CuT.handle(request, response);
+        final Object model = result.getModel();
+
+        assertNotNull(model);
+        assertTrue(model instanceof Map);
+
+        final Map<String, Object> vm = (Map<String, Object>) model;
+        assertEquals(GetGameRoute.TITLE, vm.get(GetGameRoute.TITLE_ATTR));
+        assertEquals(GetGameRoute.VIEW_NAME, result.getViewName());
+        assertEquals(PLAYER_WHITE_NAME, vm.get(GetGameRoute.OPPONENT_COLOR_ATTR));
+        assertEquals(PLAYER_RED_NAME, vm.get(GetGameRoute.PLAYER_COLOR_ATTR));
+
+        session.attribute(PLAYER_RED_NAME, PlayerLobby.PLAYER_ID);
+        when(session.attribute(PlayerLobby.PLAYER_ID) != null).thenReturn(true);
 
     }
 }
