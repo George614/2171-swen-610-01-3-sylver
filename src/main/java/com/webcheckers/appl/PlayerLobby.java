@@ -61,7 +61,7 @@ public class PlayerLobby {
     //
 
     onlinePlayers.remove(username);
-    session.removeAttribute(PLAYER_ID);
+    session.removeAttribute(username);
     System.out.println("Player " + username + " has been removed from the lobby.");
   }
 

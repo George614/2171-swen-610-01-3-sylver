@@ -35,6 +35,7 @@ public final class Application {
    */
   public static void main(String[] args) {
 
+
     // create the one and only game center
     final GameCenter gameCenter = new GameCenter();
     // create the player lobby to handle online players

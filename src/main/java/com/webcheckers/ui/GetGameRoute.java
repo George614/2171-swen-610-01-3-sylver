@@ -59,7 +59,9 @@ public class GetGameRoute implements TemplateViewRoute {
         final Session httpSession = request.session();
         final String currentUser = ((Player)httpSession.attribute(PlayerLobby.PLAYER_ID)).getUsername();
         // retrieve the game object
-        final Game game = gameCenter.get(httpSession, new Player(currentUser), new Player(opponent));
+        Player newPlayer = new Player(currentUser);
+        Player opponentPlayer = new Player(opponent);
+        final Game game = gameCenter.get(httpSession,newPlayer , opponentPlayer );
 
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
