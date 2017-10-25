@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 package com.webcheckers.appl;
-
-import com.webcheckers.model.Player;
 import org.junit.Before;
 import org.junit.Test;
 import spark.Request;
@@ -10,7 +7,8 @@ import spark.Session;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,9 +19,9 @@ public class PlayerLobbyTest {
     private Request request;
     private Session session;
 
-    private static final String NAME="Peggy";
-    private List<String> usersList= new ArrayList<String>() ;
-    final PlayerLobby playerLobby=new PlayerLobby();
+    private static final String NAME = "Peggy";
+    private List<String> usersList = new ArrayList<String>();
+    final PlayerLobby playerLobby = new PlayerLobby();
 
     @Before
     public void setUp() throws Exception {
@@ -36,30 +34,26 @@ public class PlayerLobbyTest {
     @Test
     public void signIn() throws Exception {
 
-        
 
-        playerLobby.signIn("Peggy",session);
+        playerLobby.signIn("Peggy", session);
 
 
         boolean player11;
-        if(playerLobby.isUsernameInUse("Peggy")){
-            assertFalse("Not unique",false);
+        if (playerLobby.isUsernameInUse("Peggy")) {
+            assertFalse("Not unique", false);
 
-        }
-        else{
-            assertTrue("Name unique",true);
-
-        }
-
-        if(playerLobby.isUsernameInUse("Fisher")){
-            assertFalse("Not unique",false);
-
-        }
-        else{
-            assertTrue("Name unique, signed in",true);
+        } else {
+            assertTrue("Name unique", true);
 
         }
 
+        if (playerLobby.isUsernameInUse("Fisher")) {
+            assertFalse("Not unique", false);
+
+        } else {
+            assertTrue("Name unique, signed in", true);
+
+        }
 
 
     }
@@ -70,26 +64,17 @@ public class PlayerLobbyTest {
 
         //assume current signed in user is Peggy
 
-        playerLobby.signOut("Peggy",session);
+        playerLobby.signOut("Peggy", session);
 
-        if(playerLobby.isUsernameInUse("Peggy")){
-            assertFalse("Not signed out",false);
+        if (playerLobby.isUsernameInUse("Peggy")) {
+            assertFalse("Not signed out", false);
 
-        }
-        else{
-            assertTrue("Player has been signed out",true);
+        } else {
+            assertTrue("Player has been signed out", true);
 
         }
     }
-
-
-
-
-
-=======
-import static org.junit.Assert.*;
-
-public class PlayerLobbyTest {
-
->>>>>>> 9c89a3c... Unit tests
 }
+
+
+

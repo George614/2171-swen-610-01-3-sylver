@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 package com.webcheckers.ui;
-
-import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.appl.PlayerLobbyTest;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import spark.ModelAndView;
@@ -26,12 +21,13 @@ public class GetHomeRouteTest {
     private Request request;
     private Session session;
     private Response response;
+
     @Before
     public void setUp() throws Exception {
         request = mock(Request.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
-        response=mock(Response.class);
+        response = mock(Response.class);
     }
 
     @Test
@@ -46,15 +42,9 @@ public class GetHomeRouteTest {
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals(GetHomeRoute.TITLE, vm.get(GetHomeRoute.TITLE_ATTR));
         assertEquals(GetHomeRoute.VIEW_NAME, result.getViewName());
-        session.attribute("Fisher",PlayerLobby.PLAYER_ID);
+        session.attribute("Fisher", PlayerLobby.PLAYER_ID);
         //player is logged in
         when(session.attribute(PlayerLobby.PLAYER_ID) != null).thenReturn(true);
     }
-
-=======
-import static org.junit.Assert.*;
-
-public class GetHomeRouteTest {
-
->>>>>>> 9c89a3c... Unit tests
 }
+
