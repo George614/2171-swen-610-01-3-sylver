@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Board;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -57,7 +58,10 @@ public class GetGameRoute implements TemplateViewRoute {
         // retrieve the game object
         Player newPlayer = new Player(currentUser);
         Player opponentPlayer = new Player(opponent);
-        final Game game = gameCenter.get(httpSession,newPlayer , opponentPlayer );
+        final Game game = gameCenter.get(httpSession, newPlayer , opponentPlayer );
+
+        // Get board
+        //final Board board = Board;
 
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
