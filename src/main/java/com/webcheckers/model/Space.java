@@ -1,11 +1,12 @@
 package com.webcheckers.model;
 
+import java.util.Objects;
+
 public class Space {
 
     //
     // Constants
     //
-
 
     //
     // Attributes
@@ -38,11 +39,25 @@ public class Space {
 
     @Override
     public boolean equals(Object obj) {
-        return true;    // placeholder
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Space space = (Space) obj;
+        return cellIdx == space.cellIdx &&
+                isValid == space.isValid &&
+                Objects.equals(piece, space.piece);
     }
 
     @Override
     public int hashCode() {
-        return 0;   // placeholder
+        return Objects.hash(cellIdx, isValid, piece);
+    }
+
+    @Override
+    public String toString() {
+        return "Space{" +
+                "cellIdx=" + cellIdx +
+                ", isValid=" + isValid +
+                ", piece=" + piece +
+                '}';
     }
 }

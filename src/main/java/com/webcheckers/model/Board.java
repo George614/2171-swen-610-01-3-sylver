@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,6 +24,14 @@ public class Board implements Iterable<Row> {
     //
     //  Constructors
     //
+
+    public Board() {
+        rows = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            rows.add(new Row(i));
+        }
+    }
+
 
     //
     //  Methods

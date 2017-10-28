@@ -1,7 +1,9 @@
 package com.webcheckers.model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *  Class to represent Row (made up of Spaces)
@@ -26,9 +28,19 @@ public class Row implements Iterable<Space> {
     //  Constructors
     //
 
+    public Row(int index) {
+        this.index = index;
+        spaces = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            spaces.add(new Space(i,true));  // for testing
+        }
+    }
+
     //
     //  Methods
     //
+
+    public List<Space> getSpaces() { return spaces; }
 
     @Override
     public Iterator<Space> iterator() {
@@ -37,11 +49,23 @@ public class Row implements Iterable<Space> {
 
     @Override
     public boolean equals(Object obj) {
-        return true;    // placeholder
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Row spaces1 = (Row) obj;
+        return index == spaces1.index &&
+                Objects.equals(spaces, spaces1.spaces);
     }
 
     @Override
     public int hashCode() {
-        return 1;   // placeholder
+        return Objects.hash(index, spaces);
+    }
+
+    @Override
+    public String toString() {
+        return "Row{" +
+                "index=" + index +
+                ", spaces=" + spaces +
+                '}';
     }
 }
