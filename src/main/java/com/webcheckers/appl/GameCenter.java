@@ -3,7 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.Session;
-
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,7 +16,9 @@ public class GameCenter {
   /**
    * The user session attribute name that points to a game object.
    */
+  private Game game;
   public final static String GAME_ID = "game";
+  private List<Game> ongoingGames;
 
   //
   // Public methods
@@ -42,7 +44,7 @@ public class GameCenter {
     Objects.requireNonNull(session, "playerRed must not be null");
     Objects.requireNonNull(session, "playerWhite must not be null");
     //
-    Game game = session.attribute(GAME_ID);
+    game = session.attribute(GAME_ID);
     if (game == null) {
       // create new game
       game = new Game(playerRed, playerWhite);
@@ -64,5 +66,20 @@ public class GameCenter {
     Objects.requireNonNull(session, "session must not be null");
     // remove the game from the user's session
     session.removeAttribute(GAME_ID);
+  }
+
+
+  public boolean isUserPlaying(String username){
+
+
+
+    if(PlayerLobby.onlinePlayers.get(username)==null){
+      //do nothing as user is not playing
+      return false;
+    }
+    else{
+      return true;
+    }
+
   }
 }

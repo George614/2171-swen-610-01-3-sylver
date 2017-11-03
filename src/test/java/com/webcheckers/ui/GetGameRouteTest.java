@@ -32,8 +32,8 @@ public class GetGameRouteTest {
 
     private static final String PLAYER_RED_NAME = "Bob";
     private static final String PLAYER_WHITE_NAME = "Sally";
-    private static final Player PLAYER_RED = new Player(PLAYER_RED_NAME);
-    private static final Player PLAYER_WHITE = new Player(PLAYER_WHITE_NAME);
+    private static final Player PLAYER_RED = new Player(PLAYER_RED_NAME, "red");
+    private static final Player PLAYER_WHITE = new Player(PLAYER_WHITE_NAME, "white");
     private static final String RED_COLOR = "RED";
     private static final String WHITE_COLOR = "WHITE";
     private static final String OPPONENT_PARAM = "opponentRadio";
@@ -67,7 +67,7 @@ public class GetGameRouteTest {
     @Test
     public void handle() throws Exception {
         // Arrange the test scenario: There is an existing web session and a PlayerLobby with two logged in users.
-        when(session.attribute(PlayerLobby.PLAYER_ID)).thenReturn(new Player(PLAYER_RED_NAME));
+        when(session.attribute(PlayerLobby.PLAYER_ID)).thenReturn(new Player(PLAYER_RED_NAME, "red"));
         when(request.queryParams(OPPONENT_PARAM)).thenReturn(PLAYER_WHITE_NAME);
 
         final ModelAndView result = CuT.handle(request, response);

@@ -15,7 +15,7 @@ public class PlayerLobby {
    */
   public final static String PLAYER_ID = "player";
 
-  private Map<String, Player> onlinePlayers;
+  public static Map<String, Player> onlinePlayers;
 
   public PlayerLobby() {
     onlinePlayers = new HashMap<>();
@@ -37,7 +37,7 @@ public class PlayerLobby {
     //
 
     if (!isUsernameInUse(username)) {
-      Player currentPlayer = new Player(username);
+      Player currentPlayer = new Player(username, colorAttribute);
       onlinePlayers.put(username, currentPlayer);
       session.attribute(PLAYER_ID, currentPlayer);
       System.out.println("Player " + username + " has been added into the lobby.");
