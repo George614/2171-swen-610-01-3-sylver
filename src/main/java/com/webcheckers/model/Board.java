@@ -9,7 +9,7 @@ import java.util.List;
  *  Author: <a href="mailto:mfabbu@rit.edu">Matt Arlauckas</a>
  *  Date: 2017-10-25
  */
-public class Board implements Iterable<Row> {
+public class Board {
 
     //
     //  Constants
@@ -18,7 +18,6 @@ public class Board implements Iterable<Row> {
     //
     //  Attributes
     //
-    private int index = 0;
     private List<Row> rows;
 
     //
@@ -26,20 +25,23 @@ public class Board implements Iterable<Row> {
     //
 
     public Board() {
-        rows = new ArrayList<>();
+        this.rows = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             rows.add(new Row(i));
         }
     }
 
-
     //
     //  Methods
     //
 
-    @Override
-    public Iterator<Row> iterator() {
-        return rows.iterator();
+    /**
+     * Get the list of Rows inside the Board.
+     *
+     * @return
+     *   The list of rows.
+     */
+    public List<Row> getRows() {
+        return rows;
     }
-
 }

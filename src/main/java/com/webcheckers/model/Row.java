@@ -10,7 +10,7 @@ import java.util.Objects;
  *  Author: <a href="mailto:mfabbu@rit.edu">Matt Arlauckas</a>
  *  Date: 2017-10-25
  */
-public class Row implements Iterable<Space> {
+public class Row {
 
     //
     //  Constants
@@ -21,7 +21,7 @@ public class Row implements Iterable<Space> {
     //  Attributes
     //
 
-    private int index = 0;
+    private final int index;
     private List<Space> spaces;
 
     //
@@ -30,9 +30,18 @@ public class Row implements Iterable<Space> {
 
     public Row(int index) {
         this.index = index;
-        spaces = new ArrayList<>();
+        this.spaces = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            spaces.add(new Space(i,true));  // for testing
+            // determines if the space is black or white
+            boolean isBlackSpace = ((this.index + i) % 2 != 0);
+            Space newSpace = new Space(i, isBlackSpace);
+            //determines wherever to add a red/white piece to the space
+            if (isBlackSpace && (index >= 0 && index <= 2)) {
+                newSpace.setPiece(new Piece(Type.SINGLE, Color.RED));
+            } else if (isBlackSpace && (index >= 5 && index <= 7)) {
+                newSpace.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+            }
+            spaces.add(newSpace);
         }
     }
 
@@ -40,20 +49,32 @@ public class Row implements Iterable<Space> {
     //  Methods
     //
 
-    public List<Space> getSpaces() { return spaces; }
+    /**
+     * Get the row's index.
+     *
+     * @return
+     *   The row's index.
+     */
+    public int getIndex() {
+        return index;
+    }
 
-    @Override
-    public Iterator<Space> iterator() {
-        return spaces.iterator();
+    /**
+     * Get the list of Spaces inside the Row.
+     *
+     * @return
+     *   The list of spaces.
+     */
+    public List<Space> getSpaces() {
+        return spaces;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Row spaces1 = (Row) obj;
-        return index == spaces1.index &&
-                Objects.equals(spaces, spaces1.spaces);
+        if (obj == this) return true;
+        if (!(obj instanceof Row)) return false;
+        final Row that = (Row) obj;
+        return this.index == that.index && Objects.equals(this.spaces, that.spaces);
     }
 
     @Override

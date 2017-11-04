@@ -12,8 +12,9 @@ public class Space {
     // Attributes
     //
 
-    private int cellIdx;
+    private final int cellIdx;
     private boolean isValid;
+    private final boolean isBlackSquare;
     private Piece piece = null;
 
     //
@@ -23,19 +24,53 @@ public class Space {
     public Space(int cellIdx, boolean isValid) {
         this.cellIdx = cellIdx;
         this.isValid = isValid;
+        this.isBlackSquare = isValid;
     }
 
     //
     //  Methods
     //
 
+    /**
+     * Get the cell's id.
+     *
+     * @return
+     *   The cell's id.
+     */
     public int getCellIdx() {
         return cellIdx;
     }
 
-    public void setCellIdx(int cellIdx) {
-        this.cellIdx = cellIdx;
+    /**
+     * Get the Piece inside the Space object.
+     *
+     * @return
+     *   The Piece inside the object.
+     */
+    public Piece getPiece() { return this.piece; }
+
+    /**
+     * Set the Piece inside the Space object.
+     *
+     * @param piece
+     *          The new Piece object.
+     */
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+        if (this.piece != null) {
+            this.isValid = false;
+        } else if (this.isBlackSquare && this.piece == null) {
+            this.isValid = true;
+        }
     }
+
+    /**
+     * Tells whenever the space is valid.
+     *
+     * @return
+     *   True if the space is valid, false otherwise.
+     */
+    public boolean isValid() { return this.isValid; }
 
     @Override
     public boolean equals(Object obj) {

@@ -36,7 +36,6 @@ public class GameCenter {
    * @return
    *   A existing or new {@link Game}
    */
-
   public Game get(final Session session, final Player playerRed, final Player playerWhite) {
     // validation
     Objects.requireNonNull(session, "session must not be null");

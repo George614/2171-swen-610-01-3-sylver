@@ -19,6 +19,8 @@ public class Game {
 
   private final Player playerRed;
   private final Player playerWhite;
+  public Board board;
+  public Color currentTurn;
 
   //
   // Constructors
@@ -38,6 +40,8 @@ public class Game {
     Objects.requireNonNull(playerRed, "red player must not be null");
     Objects.requireNonNull(playerRed, "white player must not be null");
 
+    this.board = new Board();
+    this.currentTurn = Color.RED;
     this.playerRed = playerRed;
     this.playerWhite = playerWhite;
   }
