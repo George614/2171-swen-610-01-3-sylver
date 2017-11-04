@@ -78,6 +78,35 @@ public class PlayerLobby {
   }
 
   /**
+   * Get the {@linkplain Player player} object for the current user
+   * (identified by a browser session).
+   *
+   * @param session
+   *   The HTTP session
+   *
+   * @return
+   *   A existing {@link Player}, or null
+   */
+  public Player getPlayer(Session session) {
+    // validation
+    Objects.requireNonNull(session, "session must not be null");
+    return session.attribute(PLAYER_ID);
+  }
+
+  /**
+   * Get the {@linkplain Player player} object for the username provided.
+   *
+   * @param username
+   *   The username of the {@link Player}
+   *
+   * @return
+   *   A existing {@link Player} from the lobby, or null
+   */
+  public Player getPlayer(String username) {
+    return onlinePlayers.get(username);
+  }
+
+  /**
    * Queries the list of Players who are signed-in to the Lobby.
    *
    * @return list of string with the user names of the online Players

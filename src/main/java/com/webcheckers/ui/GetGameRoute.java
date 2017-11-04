@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Board;
+import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -15,67 +16,64 @@ public class GetGameRoute implements TemplateViewRoute {
 
     // View-Model attribute names
     static final String TITLE_ATTR = "title";
+    static final String CURRENT_PLAYER_ATTR = "currentPlayer";
     static final String PLAYER_NAME_ATTR = "playerName";
-    static final String OPPONENT_NAME_ATTR = "opponentName";
-    static final String IS_MY_TURN_ATTR = "isMyTurn";
     static final String PLAYER_COLOR_ATTR = "playerColor";
+    static final String OPPONENT_NAME_ATTR = "opponentName";
     static final String OPPONENT_COLOR_ATTR = "opponentColor";
-    static final String IS_LOGGED_IN_ATTR = "isLoggedIn";
-    static final String CELL_ID_X_ATTR = "cellIdx";
+    static final String IS_MY_TURN_ATTR = "isMyTurn";
+    static final String MESSAGE_ATTR = "message";
+    static final String BOARD_ATTR = "board";
+
     // Constants
     static final String TITLE = "Game Play!";
     static final String OPPONENT_PARAM = "opponentRadio";
     static final String VIEW_NAME = "game.ftl";
-    static final String BOARD = "board";
-    static final String ROW= "row";
-    static final String SPACE = "space";
-    private int space = 0;
-    private int cellIdx = 0;
 
     private final GameCenter gameCenter;
+    private final PlayerLobby playerLobby;
 
     /**
      * The constructor for the {@code GET /game} route handler.
      *
      * @param gameCenter
      *    The {@link GameCenter} for the application.
+     * @param playerLobby
+     *    The {@link PlayerLobby} for the application.
      */
-    GetGameRoute(final GameCenter gameCenter) {
+    GetGameRoute(final GameCenter gameCenter, final PlayerLobby playerLobby) {
         // validation
         Objects.requireNonNull(gameCenter, "gameCenter must not be null");
+        Objects.requireNonNull(playerLobby, "playerLobby must not be null");
         //
         this.gameCenter = gameCenter;
+        this.playerLobby = playerLobby;
     }
 
 
     @Override
     public ModelAndView handle(Request request, Response response) {
+        // retrieve the HTTP session and query params
+        final Session httpSession = request.session();
         final String opponent = request.queryParams(OPPONENT_PARAM);
 
-        // retrieve the HTTP session
-        final Session httpSession = request.session();
-        final String currentUser = ((Player)httpSession.attribute(PlayerLobby.PLAYER_ID)).getUsername();
+        // retrieve the two player objects
+        final Player currentPlayer = playerLobby.getPlayer(httpSession);
+        final Player opponentPlayer = playerLobby.getPlayer(opponent);
         // retrieve the game object
-        Player newPlayer = new Player(currentUser);
-        Player opponentPlayer = new Player(opponent);
-        final Game game = gameCenter.get(httpSession, newPlayer , opponentPlayer );
-
-        // Get board
-        //final Board board = Board;
+        final Game game = gameCenter.get(httpSession, currentPlayer, opponentPlayer);
 
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
         vm.put(TITLE_ATTR, TITLE);
-        vm.put(OPPONENT_NAME_ATTR, game.getPlayerWhiteUsername());
-        vm.put(PLAYER_COLOR_ATTR, "RED");
-        vm.put(OPPONENT_COLOR_ATTR, "WHITE");
+        vm.put(CURRENT_PLAYER_ATTR, currentPlayer);
+        vm.put(PLAYER_NAME_ATTR, currentPlayer.getUsername());
+        vm.put(PLAYER_COLOR_ATTR, Color.RED.name());
+        vm.put(OPPONENT_NAME_ATTR, opponentPlayer.getUsername());
+        vm.put(OPPONENT_COLOR_ATTR, Color.WHITE.name());
         vm.put(IS_MY_TURN_ATTR, true);
-        vm.put(CELL_ID_X_ATTR, cellIdx);
-        // checks if the user is signed-in
-        if (httpSession.attribute(PlayerLobby.PLAYER_ID) != null) {
-            vm.put(IS_LOGGED_IN_ATTR, true);
-            vm.put(PLAYER_NAME_ATTR, game.getPlayerRedUsername());
-        }
-        return new ModelAndView(vm , VIEW_NAME);
+        vm.put(MESSAGE_ATTR, null);
+        vm.put(BOARD_ATTR, game.board);
+        return new ModelAndView(vm, VIEW_NAME);
     }
 }

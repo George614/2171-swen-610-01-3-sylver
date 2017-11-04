@@ -30,13 +30,33 @@ public class Piece {
     //  Methods
     //
 
+    /**
+     * Get the Piece's type.
+     *
+     * @return
+     *   The Piece's type.
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * Get the Piece's color.
+     *
+     * @return
+     *   The Piece's color.
+     */
     public Color getColor() {
         return color;
     }
+
+    /**
+     * Set the Type for the Piece object.
+     *
+     * @param type
+     *          The new Type enum.
+     */
+    public void setType(Type type) { this.type = type; }
 
     @Override
     public boolean equals(Object obj) {

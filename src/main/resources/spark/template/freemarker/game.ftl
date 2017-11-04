@@ -25,7 +25,7 @@
     <h1>Web Checkers</h1>
 
       <div class="navigation">
-      <#if isLoggedIn>
+      <#if currentPlayer??>
         <a href="/">my home</a> |
         <a href="/sign-out">sign out [${playerName}]</a>
       <#else>
@@ -104,16 +104,16 @@
                 <div class="game-board">
                     <table id="game-board">
                         <tbody>
-                        <#list board.iterator() as row>
+                        <#list board.rows as row>
                             <tr data-row="${row.index}">
-                            <#list row.iterator() as space>
+                            <#list row.spaces as space>
                                 <td data-cell="${space.cellIdx}"
                                     <#if space.isValid() >class="Space"</#if>>
                                 <#if space.piece??>
                                     <div class="Piece"
                                         id="piece-${row.index}-${space.cellIdx}"
-                                        data-type="${space.piece.type}"
-                                        data-color="${space.piece.color}">
+                                        data-type="${space.getPiece().type}"
+                                        data-color="${space.getPiece().color}">
                                     </div>
                                 </#if>
                                 </td>
