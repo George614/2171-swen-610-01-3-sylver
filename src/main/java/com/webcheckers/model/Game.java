@@ -18,7 +18,7 @@ public class Game {
   // Attributes
   //
 
-  private final Player playerOne = null;
+  private final Player playerOne;
   private final Player playerTwo;
   public Board board;
   public Color currentTurn;
