@@ -38,7 +38,7 @@ public class GetSignInRouteTest {
 
     @Test
     public void handle() throws Exception {
-        CuT=new GetSignInRoute();
+        CuT=new GetSignInRoute(playerLobby);
 
        final Response response=mock(Response.class);
 
