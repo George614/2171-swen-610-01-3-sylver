@@ -1,12 +1,9 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import spark.Session;
+
+import java.util.*;
 
 public class PlayerLobby {
 
@@ -61,7 +58,7 @@ public class PlayerLobby {
     //
 
     onlinePlayers.remove(username);
-    session.removeAttribute(username);
+    session.removeAttribute(PLAYER_ID);
     System.out.println("Player " + username + " has been removed from the lobby.");
   }
 

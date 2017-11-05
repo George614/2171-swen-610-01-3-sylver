@@ -2,11 +2,12 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
-import java.util.ArrayList;
-import java.util.function.Predicate;
 import spark.Session;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * The object to coordinate the state of the Web Application.

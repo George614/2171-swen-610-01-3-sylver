@@ -1,14 +1,8 @@
 package com.webcheckers.ui;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
-import java.util.ArrayList;
-import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +10,13 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Session;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * The unit test suite for the {@link GetSignOutRoute} component.
@@ -37,6 +38,7 @@ public class GetSignOutRouteTest {
   private Request request;
   private Session session;
   private PlayerLobby playerLobby;
+  private GameCenter gameCenter;
 
   /**
    * Setup new mock objects for each test.
@@ -46,6 +48,7 @@ public class GetSignOutRouteTest {
     request = mock(Request.class);
     session = mock(Session.class);
     playerLobby = mock(PlayerLobby.class);
+    gameCenter = mock(GameCenter.class);
     when(request.session()).thenReturn(session);
     when(playerLobby.getUsersList()).thenReturn(new ArrayList<String>());
   }
@@ -59,7 +62,7 @@ public class GetSignOutRouteTest {
    */
   @Test
   public void handle() throws Exception {
-    CuT = new GetSignOutRoute(playerLobby);
+    CuT = new GetSignOutRoute(playerLobby, gameCenter);
 
     // Arrange the test scenario: There is an existing session with a logged in user.
     when(session.attribute(PlayerLobby.PLAYER_ID)).thenReturn(new Player(USERNAME, "red"));
