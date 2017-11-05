@@ -3,6 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import java.util.ArrayList;
+import java.util.function.Predicate;
 import spark.Session;
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +58,20 @@ public class GameCenter {
       System.out.println("New game created: " + game);
     }
     return game;
+  }
+
+  /**
+   * Get the {@linkplain Game game} that is currently ongoing with that username.
+   *
+   * @param username
+   *   The Player's username.
+   *
+   * @return
+   *   A existing {@link Game}
+   */
+  public Game get(final String username) {
+    Predicate<Game> predicate = x -> x.getPlayerRedUsername() == username || x.getPlayerWhiteUsername() == username;
+    return ongoingGames.stream().filter(predicate).findFirst().get();
   }
 
   /**

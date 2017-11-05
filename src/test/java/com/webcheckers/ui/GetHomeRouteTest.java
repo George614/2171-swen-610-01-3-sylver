@@ -1,4 +1,5 @@
 package com.webcheckers.ui;
+import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.when;
 
 public class GetHomeRouteTest {
 
-    private final GetHomeRoute CuT = new GetHomeRoute(new PlayerLobby());
+    private final GetHomeRoute CuT = new GetHomeRoute(new PlayerLobby(), new GameCenter());
 
     // mock objects
     private Request request;
