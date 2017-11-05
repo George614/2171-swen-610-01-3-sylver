@@ -3,9 +3,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
     <title>${title} | Web Checkers</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <meta http-equiv="refresh" content="7">
 </head>
 <body>
-<div class="page">
+<div class="page" refresh="7s">
 
     <h1>Web Checkers</h1>
 

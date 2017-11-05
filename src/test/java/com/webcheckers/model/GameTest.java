@@ -15,8 +15,8 @@ public class GameTest {
 
     private static final String PLAYER_RED_NAME = "Bob";
     private static final String PLAYER_WHITE_NAME = "Sally";
-    private static final Player PLAYER_RED = new Player(PLAYER_RED_NAME);
-    private static final Player PLAYER_WHITE = new Player(PLAYER_WHITE_NAME);
+    private static final Player PLAYER_RED = new Player(PLAYER_RED_NAME, "red");
+    private static final Player PLAYER_WHITE = new Player(PLAYER_WHITE_NAME, "white");
 
     @Before
     public void setUp() throws Exception {

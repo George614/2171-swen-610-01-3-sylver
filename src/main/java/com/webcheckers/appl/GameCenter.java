@@ -4,7 +4,10 @@ import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.Session;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * The object to coordinate the state of the Web Application.
@@ -17,6 +20,11 @@ public class GameCenter {
    * The user session attribute name that points to a game object.
    */
   public final static String GAME_ID = "game";
+  private List<Game> ongoingGames;
+
+  public GameCenter() {
+    ongoingGames = new ArrayList<>();
+  }
 
   //
   // Public methods
@@ -47,22 +55,56 @@ public class GameCenter {
       // create new game
       game = new Game(playerRed, playerWhite);
       session.attribute(GAME_ID, game);
+      ongoingGames.add(game);
       System.out.println("New game created: " + game);
     }
     return game;
   }
 
   /**
+   * Get the {@linkplain Game game} that is currently ongoing with that username.
+   *
+   * @param username
+   *   The Player's username.
+   *
+   * @return
+   *   A existing {@link Game}
+   */
+  public Game get(final String username) {
+    Predicate<Game> predicate = x -> x.getPlayerRedUsername() == username || x.getPlayerWhiteUsername() == username;
+    return ongoingGames.stream().filter(predicate).findFirst().get();
+  }
+
+  /**
    * End the user's current {@linkplain Game game}
-   * and remove it from the session.
+   * and remove it from the session and the ongoingGames list
    *
    * @param session
    *   The HTTP session
    */
-  public void end (Session session) {
+  public void end(Session session) {
     // validation
     Objects.requireNonNull(session, "session must not be null");
-    // remove the game from the user's session
+    Game game = session.attribute(GAME_ID);
+    // remove the game from the user's session and the ongoingGames list
     session.removeAttribute(GAME_ID);
+    ongoingGames.remove(game);
+  }
+
+  /**
+   * Queries whether the Player associated with the username is already playing checkers with someone else
+   *
+   * @param username
+   *          The Player's username.
+   *
+   * @return true if the player is already on a Game with someone else, false otherwise
+   */
+  public boolean isUserPlaying(String username){
+    for (Game item : ongoingGames) {
+      // loop through every game of the list, and see if the players match
+      if (item.getPlayerRedUsername() == username) { return true; }
+      if (item.getPlayerWhiteUsername() == username) { return true; }
+    }
+    return false;
   }
 }

@@ -1,12 +1,9 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import spark.Session;
+
+import java.util.*;
 
 public class PlayerLobby {
 
@@ -15,7 +12,7 @@ public class PlayerLobby {
    */
   public final static String PLAYER_ID = "player";
 
-  private Map<String, Player> onlinePlayers;
+  public static Map<String, Player> onlinePlayers;
 
   public PlayerLobby() {
     onlinePlayers = new HashMap<>();
@@ -37,7 +34,7 @@ public class PlayerLobby {
     //
 
     if (!isUsernameInUse(username)) {
-      Player currentPlayer = new Player(username);
+      Player currentPlayer = new Player(username, "unassigned");
       onlinePlayers.put(username, currentPlayer);
       session.attribute(PLAYER_ID, currentPlayer);
       System.out.println("Player " + username + " has been added into the lobby.");
@@ -61,7 +58,7 @@ public class PlayerLobby {
     //
 
     onlinePlayers.remove(username);
-    session.removeAttribute(username);
+    session.removeAttribute(PLAYER_ID);
     System.out.println("Player " + username + " has been removed from the lobby.");
   }
 

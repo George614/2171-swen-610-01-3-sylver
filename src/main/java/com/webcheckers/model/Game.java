@@ -1,6 +1,7 @@
 package com.webcheckers.model;
 
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * A single checkers game.
@@ -17,8 +18,8 @@ public class Game {
   // Attributes
   //
 
-  private final Player playerRed;
-  private final Player playerWhite;
+  private final Player playerOne;
+  private final Player playerTwo;
   public Board board;
   public Color currentTurn;
 
@@ -29,41 +30,51 @@ public class Game {
   /**
    * Create a checkers game with two known players.
    *
-   * @param playerRed
+   * @param playerOne
    *          The player with the red pieces.
-   * @param playerWhite
+   * @param playerTwo
    *          The player with the white pieces.
    *
    */
-  public Game(Player playerRed, Player playerWhite) {
+  public Game(Player playerOne, Player playerTwo) {
     // validation
-    Objects.requireNonNull(playerRed, "red player must not be null");
-    Objects.requireNonNull(playerRed, "white player must not be null");
+    Objects.requireNonNull(playerOne, "red player must not be null");
+    Objects.requireNonNull(playerTwo, "white player must not be null");
 
     this.board = new Board();
     this.currentTurn = Color.RED;
-    this.playerRed = playerRed;
-    this.playerWhite = playerWhite;
+    double playerOrder = java.lang.Math.random();
+    this.playerOne = playerOne;
+    this.playerTwo = playerTwo;
+
+    if (playerOrder % 2 == 0) {
+      //color is red
+      playerOne.setPlayerColor("red");
+    }
+    else {
+      //color is white
+      playerTwo.setPlayerColor("white");
+    }
   }
 
   /**
-   * Get the red player's username.
+   * Get the first player's username.
    *
    * @return
-   *   The red player's username.
+   *   The first player's username.
    */
   public String getPlayerRedUsername() {
-    return playerRed.getUsername();
+    return playerOne.getUsername();
   }
 
   /**
-   * Get the white player's username.
+   * Get the second player's username.
    *
    * @return
-   *   The white player's username.
+   *   The second player's username.
    */
   public String getPlayerWhiteUsername() {
-    return playerWhite.getUsername();
+    return playerTwo.getUsername();
   }
 
   /**
@@ -71,6 +82,6 @@ public class Game {
    */
   @Override
   public synchronized String toString() {
-    return "{Game: " + playerRed + " vs " + playerWhite + "}";
+    return "{Game: " + playerOne + " vs " + playerTwo + "}";
   }
 }

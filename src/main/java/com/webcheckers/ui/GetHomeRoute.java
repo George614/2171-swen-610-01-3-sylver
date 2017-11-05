@@ -5,9 +5,10 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import java.util.Objects;
 import spark.*;
-
+import com.webcheckers.model.Game;
 import java.util.HashMap;
 import java.util.Map;
+import static spark.Spark.halt;
 
 public class GetHomeRoute implements TemplateViewRoute {
 
@@ -22,18 +23,22 @@ public class GetHomeRoute implements TemplateViewRoute {
   static final String VIEW_NAME = "home.ftl";
 
   private final PlayerLobby playerLobby;
+  private final GameCenter gameCenter;
 
   /**
    * The constructor for the {@code GET /home} route handler.
    *
    * @param playerLobby
    *    The {@link PlayerLobby} for the application.
+   * @param gameCenter
    */
-  GetHomeRoute(final PlayerLobby playerLobby) {
+  GetHomeRoute(final PlayerLobby playerLobby, GameCenter gameCenter) {
     // validation
     Objects.requireNonNull(playerLobby, "playerLobby must not be null");
+    Objects.requireNonNull(gameCenter, "gameCenter must not be null");
     //
     this.playerLobby = playerLobby;
+    this.gameCenter = gameCenter;
   }
 
   /**
@@ -46,16 +51,29 @@ public class GetHomeRoute implements TemplateViewRoute {
 
     // start building the View-Model
     final Map<String, Object> vm = new HashMap<>();
-    vm.put(TITLE_ATTR, TITLE);
-    vm.put(PLAYER_LIST_ATTR, playerLobby.getUsersList());
     // checks if the user is signed-in
-    if (session.attribute(PlayerLobby.PLAYER_ID) != null) {
+    final Player currentPlayer = playerLobby.getPlayer(session);
+    if (currentPlayer != null) {
+      // check if the player is currently on a game with someone else
+      boolean isCurrentlyPlaying = gameCenter.isUserPlaying(currentPlayer.getUsername());
+      if (isCurrentlyPlaying) {
+        // there is a game already being played
+        // so redirect the user to the Game view
+        Game game = gameCenter.get(currentPlayer.getUsername());
+        session.attribute(GameCenter.GAME_ID, game);
+        String opponentUsername = currentPlayer.getUsername() == game.getPlayerRedUsername() ? game.getPlayerWhiteUsername() : game.getPlayerRedUsername();
+        response.redirect(WebServer.GAME_URL + "?" + GetGameRoute.OPPONENT_PARAM + "=" + opponentUsername);
+        halt();
+        return null;
+      }
       vm.put(IS_LOGGED_IN_ATTR, true);
-      vm.put(PLAYER_NAME_ATTR, ((Player)session.attribute(PlayerLobby.PLAYER_ID)).getUsername());
+      vm.put(PLAYER_NAME_ATTR, currentPlayer.getUsername());
     } else {
       vm.put(IS_LOGGED_IN_ATTR, false);
       vm.put(PLAYER_NAME_ATTR, "");
     }
+    vm.put(TITLE_ATTR, TITLE);
+    vm.put(PLAYER_LIST_ATTR, playerLobby.getUsersList());
 
     return new ModelAndView(vm, VIEW_NAME);
   }

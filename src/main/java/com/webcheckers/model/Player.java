@@ -15,7 +15,8 @@ public class Player {
   // Attributes
   //
 
-  private final String username;
+  private String username="null";
+  private String colorAttribute;
 
   //
   // Constructors
@@ -26,9 +27,15 @@ public class Player {
    *
    * @param username
    *          The username of the player.
+   * @param colorAttribute
    */
-  public Player(String username) {
+  public Player(String username, String colorAttribute) {
     this.username = username;
+    this.colorAttribute = "white";
+  }
+
+  public void setPlayerColor(String color){
+    this.colorAttribute=color;
   }
 
   /**

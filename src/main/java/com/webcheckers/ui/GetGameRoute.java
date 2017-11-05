@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GetGameRoute implements TemplateViewRoute {
-
     // View-Model attribute names
     static final String TITLE_ATTR = "title";
     static final String CURRENT_PLAYER_ATTR = "currentPlayer";
@@ -49,7 +48,6 @@ public class GetGameRoute implements TemplateViewRoute {
         this.gameCenter = gameCenter;
         this.playerLobby = playerLobby;
     }
-
 
     @Override
     public ModelAndView handle(Request request, Response response) {
