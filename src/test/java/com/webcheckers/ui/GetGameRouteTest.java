@@ -6,9 +6,7 @@ import com.webcheckers.model.Board;
 import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
-
 import java.util.Map;
-
 import javax.swing.text.DefaultEditorKit.CutAction;
 import org.junit.After;
 import org.junit.Before;
@@ -69,7 +67,6 @@ public class GetGameRouteTest {
         // Arrange the test scenario: There is an existing web session and a PlayerLobby with two logged in users.
         when(session.attribute(PlayerLobby.PLAYER_ID)).thenReturn(new Player(PLAYER_RED_NAME, "red"));
         when(request.queryParams(OPPONENT_PARAM)).thenReturn(PLAYER_WHITE_NAME);
-
         final ModelAndView result = CuT.handle(request, response);
         final Object model = result.getModel();
 
