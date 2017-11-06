@@ -15,17 +15,23 @@ public class Position {
     //
     //  Attributes
     //
-    private int row;
-    private int cell;
+    private final int row;
+    private final int cell;
 
     //
     //  Constructors
     //
 
+    public Position(int row, int cell) {
+        this.row = row;
+        this.cell = cell;
+    }
 
     //
     //  Methods
     //
 
+    public int getRow() { return row; }
+    public int getCell() { return cell; }
 
 }
