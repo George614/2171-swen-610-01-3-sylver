@@ -1,5 +1,8 @@
 package com.webcheckers.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
 
@@ -17,11 +20,9 @@ public class Game {
   //
   // Attributes
   //
-
-  private final Player playerOne;
-  private final Player playerTwo;
   public Board board;
   public Color currentTurn;
+  private static Map<Color, Player> players;
 
   //
   // Constructors
@@ -43,17 +44,15 @@ public class Game {
 
     this.board = new Board();
     this.currentTurn = Color.RED;
+    this.players = new HashMap<>();
     double playerOrder = java.lang.Math.random();
-    this.playerOne = playerOne;
-    this.playerTwo = playerTwo;
 
     if (playerOrder % 2 == 0) {
-      //color is red
-      playerOne.setPlayerColor("red");
-    }
-    else {
-      //color is white
-      playerTwo.setPlayerColor("white");
+      this.players.put(Color.RED, playerOne);
+      this.players.put(Color.WHITE, playerTwo);
+    } else {
+      this.players.put(Color.WHITE, playerOne);
+      this.players.put(Color.RED, playerTwo);
     }
   }
 
@@ -64,7 +63,7 @@ public class Game {
    *   The first player's username.
    */
   public String getPlayerRedUsername() {
-    return playerOne.getUsername();
+    return players.get(Color.RED).getUsername();
   }
 
   /**
@@ -74,7 +73,22 @@ public class Game {
    *   The second player's username.
    */
   public String getPlayerWhiteUsername() {
-    return playerTwo.getUsername();
+    return players.get(Color.WHITE).getUsername();
+  }
+
+  /**
+   * Get the Color associated with the player's username.
+   *
+   * @return
+   *   The player's username.
+   */
+  public Color getPlayerColor(String username) {
+    for (Entry<Color, Player> entry : players.entrySet()) {
+      if (entry.getValue().getUsername() == username) {
+        return entry.getKey();
+      }
+    }
+    throw new IllegalArgumentException("Invalid username, that Player is not part of the game.");
   }
 
   /**
@@ -82,6 +96,8 @@ public class Game {
    */
   @Override
   public synchronized String toString() {
+    Player playerOne = players.get(Color.RED);
+    Player playerTwo = players.get(Color.WHITE);
     return "{Game: " + playerOne + " vs " + playerTwo + "}";
   }
 }

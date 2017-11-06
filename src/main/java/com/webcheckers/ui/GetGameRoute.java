@@ -4,12 +4,9 @@ import static spark.Spark.halt;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Board;
-import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -75,16 +72,18 @@ public class GetGameRoute implements TemplateViewRoute {
 
         // retrieve the game object
         final Game game = gameCenter.get(httpSession, currentPlayer, opponentPlayer);
+        // check if the current player's turn
+        boolean isMyTurn = game.getPlayerColor(currentPlayer.getUsername()) == game.currentTurn;
 
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
         vm.put(TITLE_ATTR, TITLE);
         vm.put(CURRENT_PLAYER_ATTR, currentPlayer);
         vm.put(PLAYER_NAME_ATTR, currentPlayer.getUsername());
-        vm.put(PLAYER_COLOR_ATTR, Color.RED.name());
+        vm.put(PLAYER_COLOR_ATTR, game.getPlayerColor(currentPlayer.getUsername()).name());
         vm.put(OPPONENT_NAME_ATTR, opponentPlayer.getUsername());
-        vm.put(OPPONENT_COLOR_ATTR, Color.WHITE.name());
-        vm.put(IS_MY_TURN_ATTR, true);
+        vm.put(OPPONENT_COLOR_ATTR, game.getPlayerColor(opponentPlayer.getUsername()).name());
+        vm.put(IS_MY_TURN_ATTR, isMyTurn);
         vm.put(MESSAGE_ATTR, null);
         vm.put(BOARD_ATTR, game.board);
         return new ModelAndView(vm, VIEW_NAME);

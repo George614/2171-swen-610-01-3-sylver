@@ -65,7 +65,7 @@ public class GetSignOutRouteTest {
     CuT = new GetSignOutRoute(playerLobby, gameCenter);
 
     // Arrange the test scenario: There is an existing session with a logged in user.
-    when(session.attribute(PlayerLobby.PLAYER_ID)).thenReturn(new Player(USERNAME, "red"));
+    when(session.attribute(PlayerLobby.PLAYER_ID)).thenReturn(new Player(USERNAME));
     final Response response = mock(Response.class);
 
     // Invoke the test

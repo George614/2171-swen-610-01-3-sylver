@@ -6,7 +6,7 @@
     <meta http-equiv="refresh" content="7">
 </head>
 <body>
-<div class="page" refresh="7s">
+<div class="page">
 
     <h1>Web Checkers</h1>
 

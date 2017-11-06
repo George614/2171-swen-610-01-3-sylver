@@ -34,7 +34,7 @@ public class PlayerLobby {
     //
 
     if (!isUsernameInUse(username)) {
-      Player currentPlayer = new Player(username, "unassigned");
+      Player currentPlayer = new Player(username);
       onlinePlayers.put(username, currentPlayer);
       session.attribute(PLAYER_ID, currentPlayer);
       System.out.println("Player " + username + " has been added into the lobby.");

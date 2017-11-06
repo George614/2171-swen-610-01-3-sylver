@@ -24,7 +24,7 @@ public class PlayerTest {
    */
   @Test
   public void getUsername() throws Exception {
-    final Player CuT = new Player(USERNAME, "unassigned");
+    final Player CuT = new Player(USERNAME);
     assertEquals(USERNAME, CuT.getUsername());
   }
 
@@ -33,7 +33,7 @@ public class PlayerTest {
    */
   @Test
   public void testToString() throws Exception {
-    final Player CuT = new Player(USERNAME, "unassigned");
+    final Player CuT = new Player(USERNAME);
     assertEquals(TO_STRING_OUTPUT, CuT.toString());
   }
 
@@ -42,8 +42,8 @@ public class PlayerTest {
    */
   @Test
   public void testEquals() throws Exception {
-    Player CuTx = new Player(USERNAME, "unassigned");
-    Player CuTY = new Player(USERNAME, "unassigned");
+    Player CuTx = new Player(USERNAME);
+    Player CuTY = new Player(USERNAME);
     assertTrue(CuTx.equals(CuTY) && CuTY.equals(CuTx));
   }
 
@@ -52,8 +52,8 @@ public class PlayerTest {
    */
   @Test
   public void testHashCode() throws Exception {
-    Player CuTx = new Player(USERNAME, "unassigned");
-    Player CuTY = new Player(USERNAME, "unassigned");
+    Player CuTx = new Player(USERNAME);
+    Player CuTY = new Player(USERNAME);
     assertTrue(CuTx.hashCode() == CuTY.hashCode());
   }
 
