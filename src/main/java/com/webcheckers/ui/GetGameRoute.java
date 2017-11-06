@@ -1,5 +1,7 @@
 package com.webcheckers.ui;
 
+import static spark.Spark.halt;
+
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Board;
@@ -58,6 +60,19 @@ public class GetGameRoute implements TemplateViewRoute {
         // retrieve the two player objects
         final Player currentPlayer = playerLobby.getPlayer(httpSession);
         final Player opponentPlayer = playerLobby.getPlayer(opponent);
+
+        //check if the opponent is already playing a Game with someone else
+        if (gameCenter.isUserPlaying(opponent)) {
+            Game ongoingGame = gameCenter.get(opponent);
+            boolean isCurrentPlayerNotOnThatGame = (ongoingGame.getPlayerRedUsername() != currentPlayer.getUsername()) && (ongoingGame.getPlayerWhiteUsername() != currentPlayer.getUsername());
+            if (isCurrentPlayerNotOnThatGame) {
+                // redirect to the home page, that player is already with someone else
+                response.redirect(WebServer.HOME_URL);
+                halt();
+                return null;
+            }
+        }
+
         // retrieve the game object
         final Game game = gameCenter.get(httpSession, currentPlayer, opponentPlayer);
 
