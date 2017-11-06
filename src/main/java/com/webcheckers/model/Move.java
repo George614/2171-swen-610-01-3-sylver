@@ -15,17 +15,21 @@ public class Move {
     //
     //  Attributes
     //
-    private Position start;
-    private Position end;
+    private final Position start;
+    private final Position end;
 
     //
     //  Constructors
     //
-
+    public Move(Position start, Position end) {
+        this.start = start;
+        this.end = end;
+    }
 
     //
     //  Methods
     //
 
-
+    public Position getStart() { return start; }
+    public Position getEnd() { return end; }
 }
