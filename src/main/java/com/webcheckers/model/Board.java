@@ -1,7 +1,6 @@
 package com.webcheckers.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -14,6 +13,8 @@ public class Board {
     //
     //  Constants
     //
+    static final String VALID_MOVE_MESSAGE = "Movement valid!";
+    static final String INVALID_MOVE_MESSAGE = "Sorry, that play is invalid.";
 
     //
     //  Attributes
@@ -144,11 +145,10 @@ public class Board {
      */
     public Message validateMove(Move move) {
         if (isMoveValid(move)) {
-            // TODO: Implement this
+            return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
         } else {
-            // TODO: Implement this
+            return new Message(INVALID_MOVE_MESSAGE, MessageType.ERROR);
         }
-        return new Message();
     }
 
     /**
