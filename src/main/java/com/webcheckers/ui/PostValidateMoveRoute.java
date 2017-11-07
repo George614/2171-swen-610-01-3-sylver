@@ -33,6 +33,7 @@ public class PostValidateMoveRoute implements Route {
     // retrieve the game from the session
     final Game currentGame = gameCenter.get(httpSession);
     final Move move = JsonUtils.fromJson(request.body(), Move.class);
+    currentGame.lastValidatedMove = move;
     Message message = currentGame.board.validateMove(move);
     return message;
   }
