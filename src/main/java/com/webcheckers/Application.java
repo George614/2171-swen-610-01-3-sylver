@@ -2,12 +2,11 @@ package com.webcheckers;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import java.util.logging.Logger;
-
+import com.webcheckers.ui.WebServer;
 import spark.TemplateEngine;
 import spark.template.freemarker.FreeMarkerEngine;
 
-import com.webcheckers.ui.WebServer;
+import java.util.logging.Logger;
 
 
 /**
@@ -15,7 +14,7 @@ import com.webcheckers.ui.WebServer;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
-public final class Application {
+public final class  Application {
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
 
   //
