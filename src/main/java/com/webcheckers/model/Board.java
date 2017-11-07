@@ -45,53 +45,46 @@ public class Board {
      * @return true if the Move is valid, otherwise, false
      */
     private boolean isMoveValid(Move move) {
-        // TODO: Implement this
-        Position start=move.getStart();
-        Position end=move.getEnd();
+        Position start = move.getStart();
+        Position end = move.getEnd();
 
         //start = in row, there's a cell that has this piece
-        int diagonalStartSpace=start.getRow()+start.getCell();
-        int diagonalEndSpace=end.getRow()+end.getCell();
-        int startSpace=diagonalStartSpace%2;
-        switch(startSpace){
+        int diagonalStartSpace = start.getRow() + start.getCell();
+        int diagonalEndSpace = end.getRow() + end.getCell();
+        int startSpace = diagonalStartSpace % 2;
+        switch (startSpace) {
             case 0:
                 //this is a red piece
-                if(end.getRow()+end.getCell()%2==0){
+                if (end.getRow() + end.getCell() % 2 == 0) {
                     //if a white piece is in the way, capturing move, return true
-                    Row checkPiece=rows.get(end.getRow());
-                    List<Space> rowSpaces=checkPiece.getSpaces();
-                    Piece currentOccupant=rowSpaces.get(end.getCell()).getPiece();
-                    if(currentOccupant.getColor()==Color.WHITE) {
+                    Row checkPiece = rows.get(end.getRow());
+                    List<Space> rowSpaces = checkPiece.getSpaces();
+                    Piece currentOccupant = rowSpaces.get(end.getCell()).getPiece();
+                    if (currentOccupant.getColor() == Color.WHITE) {
                         return true;
-
                     }
                 }
-                else{
+                else {
                     return false;
                 }
-
             case 1:
                 //this is a white piece
-                if(end.getRow()+end.getCell()%2==1){
+                if (end.getRow() + end.getCell() % 2 == 1) {
                     //if a white piece is in the way, capturing move, return true
-                    Row checkPiece=rows.get(end.getRow());
-                    List<Space> rowSpaces=checkPiece.getSpaces();
-                    Piece currentOccupant=rowSpaces.get(end.getCell()).getPiece();
-                    if(currentOccupant.getColor()==Color.RED) {
+                    Row checkPiece = rows.get(end.getRow());
+                    List<Space> rowSpaces = checkPiece.getSpaces();
+                    Piece currentOccupant = rowSpaces.get(end.getCell()).getPiece();
+                    if (currentOccupant.getColor() == Color.RED) {
                         return true;
-
                     }
                 }
-                else{
+                else {
                     return false;
                 }
-
             default:
                 //invalid
                 return false;
-
         }
-
     }
 
     /**
