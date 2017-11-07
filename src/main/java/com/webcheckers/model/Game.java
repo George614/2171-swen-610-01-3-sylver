@@ -45,12 +45,15 @@ public class Game {
     this.board = new Board();
     this.currentTurn = Color.RED;
     this.players = new HashMap<>();
-    double playerOrder = java.lang.Math.random();
-
+    double playerOrder = java.lang.Math.random()*10;
+    int playerOrderInt=(int)playerOrder;
+    //System.out.println("Player Order"+playerOrder+" Integer is "+playerOrderInt);
     if (playerOrder % 2 == 0) {
+      //System.out.println("Player One is "+playerOne.getUsername()+"Color should be RED");
       this.players.put(Color.RED, playerOne);
       this.players.put(Color.WHITE, playerTwo);
     } else {
+      //System.out.println("Player Two is "+playerTwo.getUsername()+"Color should be RED");
       this.players.put(Color.WHITE, playerOne);
       this.players.put(Color.RED, playerTwo);
     }
