@@ -22,6 +22,7 @@ public class Game {
   //
   public Board board;
   public Color currentTurn;
+  public Move lastValidatedMove;
   private static Map<Color, Player> players;
 
   //

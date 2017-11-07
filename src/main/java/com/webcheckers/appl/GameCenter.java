@@ -62,6 +62,24 @@ public class GameCenter {
   }
 
   /**
+   * Get the {@linkplain Game game} for the current user
+   * (identified by a browser session).
+   *
+   * @param session
+   *   The HTTP session
+   *
+   * @return
+   *   A existing or new {@link Game}
+   */
+  public Game get(final Session session) {
+    // validation
+    Objects.requireNonNull(session, "session must not be null");
+    //
+    Game game = session.attribute(GAME_ID);
+    return game;
+  }
+
+  /**
    * Get the {@linkplain Game game} that is currently ongoing with that username.
    *
    * @param username
