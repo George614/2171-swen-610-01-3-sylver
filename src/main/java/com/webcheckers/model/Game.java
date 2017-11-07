@@ -92,6 +92,16 @@ public class Game {
   }
 
   /**
+   * Gets the Player that corresponds to the current turn.
+   *
+   * @return
+   *   The player's object associated with the current turn.
+   */
+  public Player getPlayerCurrentTurn() {
+    return players.get(this.currentTurn);
+  }
+
+  /**
    * {@inheritDoc}
    */
   @Override

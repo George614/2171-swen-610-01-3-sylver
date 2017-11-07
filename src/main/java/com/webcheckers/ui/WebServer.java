@@ -139,7 +139,7 @@ public class WebServer {
     post(SIGN_IN_URL, new PostSignInRoute(playerLobby), templateEngine);
     get(SIGN_OUT_URL, new GetSignOutRoute(playerLobby, gameCenter), templateEngine);
     post(SUBMIT_TURN_URL, new PostSubmitTurnRoute(gameCenter, playerLobby), templateEngine);
-    post(CHECK_TURN_URL, new PostCheckTurnRoute(),  JsonUtils.json());
+    post(CHECK_TURN_URL, new PostCheckTurnRoute(gameCenter, playerLobby),  JsonUtils.json());
     post(VALIDATE_MOVE_URL, new PostValidateMoveRoute(gameCenter, playerLobby),  JsonUtils.json());
     post(BACKUP_MOVE_URL, new PostBackupMoveRoute(),  JsonUtils.json());
   }
