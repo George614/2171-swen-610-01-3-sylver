@@ -25,6 +25,7 @@ public class Board {
 
     private boolean capturedTrue=false;
 
+    //this has to be 1, DO NOT CHANGE UNLESS FULL CODE IS WORKING WITHOUT ERRORS
     private int turn=1;
     //
     //  Constructors
@@ -106,9 +107,15 @@ public class Board {
                         return true;
                     }
 
+                    if(end.getRow()<start.getRow()){
+                        //DO NOT MOVE
+                        return false;
+                    }
+
                     else{
                         System.out.println("No occupant RED");
                         //only move forward
+
                         if((end.getRow()-1)==start.getRow() && (start.getCell()==(end.getCell()+1) || start.getCell()==(end.getCell()-1))){
                             System.out.println("It should be able to move.");
                             return true;
@@ -163,8 +170,13 @@ public class Board {
 
                         return true;
                     }
+                    if(end.getRow()>start.getRow()){
+                        //DO NOT MOVE
+                        return false;
+                    }
                     else{
                         System.out.println("No occupant WHITE");
+
                         if((end.getRow()+1)==start.getRow() && (start.getCell()==(end.getCell()+1) || start.getCell()==(end.getCell()-1))){
                             System.out.println("It should be able to move.");
                             return true;
@@ -266,6 +278,8 @@ public class Board {
             System.out.println("Invalid Move");
         }
 
-        if(capturedTrue){setPieceByPosition(captured,null);capturedTrue=false;}
+        if(capturedTrue){
+            setPieceByPosition(captured,null);
+            capturedTrue=false;}
     }
 }
