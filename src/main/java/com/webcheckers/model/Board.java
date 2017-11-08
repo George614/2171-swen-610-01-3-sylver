@@ -152,7 +152,7 @@ public class Board {
                         System.out.println("There is an occupant");
 
                         if(start.getCell()>end.getCell()){
-                            //goung left
+                            //going left
                             captured=new Position(end.getRow()-1,end.getCell()+1);
                         }
 
@@ -264,7 +264,14 @@ public class Board {
             System.out.println("Valid Move");
             Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
             Piece movedPiece = startSpace.getPiece();               // get the piece about to be moved
+            move.getEnd().getRow();
+            //check if the piece is eligible for crowning
+            boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()==7 && movedPiece.getType() == Type.SINGLE;
+            boolean isWhiteKing = movedPiece.getColor()==Color.WHITE && move.getEnd().getRow()==0 && movedPiece.getType()== Type.SINGLE;
+            if (isRedKing || isWhiteKing ) {
 
+                movedPiece.setType(Type.KING);
+            }
             setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
             startSpace.setPiece(null);                              // remove the piece from the origin position
 
