@@ -64,7 +64,23 @@ public class GetGameRoute implements TemplateViewRoute {
             // retrieve the two player objects
             currentPlayer = playerLobby.getPlayer(httpSession);
             opponentPlayer = playerLobby.getPlayer(opponent);
-            // retrieve the game object
+
+            //check if the opponent is already playing a Game with someone else
+            boolean isOpponentPlaying = gameCenter.isUserPlaying(opponent);
+            if (isOpponentPlaying) {
+                Game ongoingGame = gameCenter.get(opponent);
+                boolean isNotPlayerRed = !currentPlayer.getUsername().equals(ongoingGame.getPlayerRedUsername());
+                boolean isNotPlayerWhite = !currentPlayer.getUsername().equals(ongoingGame.getPlayerWhiteUsername());
+                boolean isCurrentPlayerNotOnThatGame = isNotPlayerRed && isNotPlayerWhite;
+                if (isCurrentPlayerNotOnThatGame) {
+                    // redirect to the home page, that player is already with someone else
+                    response.redirect(WebServer.HOME_URL);
+                    halt();
+                    return null;
+                }
+            }
+
+            //if not, retrieve the game object
             game = gameCenter.get(httpSession, currentPlayer, opponentPlayer);
         } else {
             currentPlayer = playerLobby.getPlayer(httpSession);
@@ -72,18 +88,6 @@ public class GetGameRoute implements TemplateViewRoute {
             Color currentColor = game.getPlayerColor(currentPlayer.getUsername());
             opponent = currentColor == Color.RED ? game.getPlayerRedUsername() : game.getPlayerWhiteUsername();
             opponentPlayer = playerLobby.getPlayer(opponent);
-        }
-
-        //check if the opponent is already playing a Game with someone else
-        if (gameCenter.isUserPlaying(opponent)) {
-            Game ongoingGame = gameCenter.get(opponent);
-            boolean isCurrentPlayerNotOnThatGame = (ongoingGame.getPlayerRedUsername() != currentPlayer.getUsername()) && (ongoingGame.getPlayerWhiteUsername() != currentPlayer.getUsername());
-            if (isCurrentPlayerNotOnThatGame) {
-                // redirect to the home page, that player is already with someone else
-                response.redirect(WebServer.HOME_URL);
-                halt();
-                return null;
-            }
         }
 
         // check if the current player's turn

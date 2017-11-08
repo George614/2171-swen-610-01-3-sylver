@@ -89,8 +89,8 @@ public class GameCenter {
    *   A existing {@link Game}
    */
   public Game get(final String username) {
-    Predicate<Game> predicate = x -> x.getPlayerRedUsername() == username || x.getPlayerWhiteUsername() == username;
-    return ongoingGames.stream().filter(predicate).findFirst().get();
+    Predicate<Game> predicate = x -> x.getPlayerRedUsername().equals(username) || x.getPlayerWhiteUsername().equals(username);
+    return ongoingGames.stream().filter(predicate).findFirst().orElse(null);
   }
 
   /**
@@ -120,8 +120,11 @@ public class GameCenter {
   public boolean isUserPlaying(String username){
     for (Game item : ongoingGames) {
       // loop through every game of the list, and see if the players match
-      if (item.getPlayerRedUsername() == username) { return true; }
-      if (item.getPlayerWhiteUsername() == username) { return true; }
+      String playerRedUsername = item.getPlayerRedUsername();
+      String playerWhiteUsername = item.getPlayerWhiteUsername();
+
+      if (playerRedUsername.equals(username)) { return true; }
+      if (playerWhiteUsername.equals(username)) { return true; }
     }
     return false;
   }

@@ -6,6 +6,7 @@ import com.webcheckers.model.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import spark.HaltException;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -60,7 +61,7 @@ public class GetSignOutRouteTest {
   /**
    * Test that CuT shows the Home view when the user has signed-out.
    */
-  @Test
+  @Test(expected = HaltException.class)
   public void handle() throws Exception {
     CuT = new GetSignOutRoute(playerLobby, gameCenter);
 
@@ -72,20 +73,7 @@ public class GetSignOutRouteTest {
     final ModelAndView result = CuT.handle(request, response);
 
     // Analyze the results:
-    //   * result is non-null
-    assertNotNull(result);
-    //   * model is a non-null Map
-    final Object model = result.getModel();
-    assertNotNull(model);
-    assertTrue(model instanceof Map);
-    //   * model contains all necessary View-Model data
-    @SuppressWarnings("unchecked")
-    final Map<String, Object> vm = (Map<String, Object>) model;
-    assertEquals(GetHomeRoute.TITLE, vm.get(GetHomeRoute.TITLE_ATTR));
-    assertEquals(Boolean.FALSE, vm.get(GetHomeRoute.IS_LOGGED_IN_ATTR));
-    assertEquals("", vm.get(GetHomeRoute.PLAYER_NAME_ATTR));
-    assertEquals(new ArrayList<String>(), vm.get(GetHomeRoute.PLAYER_LIST_ATTR));
-    //   * test view name
-    assertEquals(GetHomeRoute.VIEW_NAME, result.getViewName());
+    //   * result is null
+    assertNull(result);
   }
 }
