@@ -91,7 +91,7 @@ public class GetGameRoute implements TemplateViewRoute {
         }
 
         // check if the current player's turn
-        boolean isMyTurn = game.getPlayerColor(currentPlayer.getUsername()) == game.currentTurn;
+        boolean isMyTurn = game.getPlayerColor(currentPlayer.getUsername()) == game.getCurrentTurn();
 
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
