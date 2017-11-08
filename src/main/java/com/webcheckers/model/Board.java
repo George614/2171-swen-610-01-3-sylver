@@ -92,6 +92,11 @@ public class Board {
                         //captured=new Position(end.getRow()-1,end.getCell()+1);
                         //setPieceByPosition(captured,null);
 
+                        if(java.lang.Math.abs(end.getRow()-start.getRow())>1){
+
+                            return false;
+
+                        }
                         if(start.getCell()>end.getCell()){
                             //going left
                             captured.add(new Position(end.getRow()+1,end.getCell()+1));
@@ -152,7 +157,11 @@ public class Board {
                     if (currentOccupant!=null && currentOccupant.getColor() == Color.WHITE) {
                         //capture move
                         System.out.println("There is an occupant");
+                        if(java.lang.Math.abs(end.getRow()-start.getRow())>1){
 
+                            return false;
+
+                        }
                         if(start.getCell()>end.getCell()){
                             //going left
                             captured.add(new Position(end.getRow()-1,end.getCell()+1));
