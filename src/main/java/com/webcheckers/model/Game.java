@@ -18,6 +18,7 @@ public class Game {
   //
   // Constants
   //
+  private static final Random RANDOM = new Random();
 
   //
   // Attributes
@@ -48,8 +49,8 @@ public class Game {
     this.board.currentTurn = Color.RED;
     this.players = new HashMap<>();
     this.validatedMoves = new ArrayList<>();
+    double playerOrder = RANDOM.nextInt();
 
-    double playerOrder = java.lang.Math.random()*10;
     if (playerOrder % 2 == 0) {
       this.players.put(Color.RED, playerOne);
       this.players.put(Color.WHITE, playerTwo);

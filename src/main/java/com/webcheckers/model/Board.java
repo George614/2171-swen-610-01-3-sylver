@@ -240,7 +240,7 @@ public class Board {
      *
      * @return the Space object
      */
-    private Space getSpaceByPosition(Position position) {
+    public Space getSpaceByPosition(Position position) {
         int rowIndex = position.getRow();
         int cellIndex = position.getCell();
 
@@ -258,7 +258,7 @@ public class Board {
      * @param piece
      *          The Piece
      */
-    private void setPieceByPosition(Position position, Piece piece) {
+    public void setPieceByPosition(Position position, Piece piece) {
         Space space = getSpaceByPosition(position);
         space.setPiece(piece);
     }

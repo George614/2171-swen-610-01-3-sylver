@@ -1,5 +1,7 @@
 package com.webcheckers.ui;
 
+import static spark.Spark.halt;
+
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
@@ -46,12 +48,9 @@ public class GetSignOutRoute implements TemplateViewRoute {
         playerLobby.signOut(username, httpSession);
         gameCenter.end(httpSession);
 
-        // start building the View-Model
-        final Map<String, Object> vm = new HashMap<>();
-        vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
-        vm.put(GetHomeRoute.IS_LOGGED_IN_ATTR, false);
-        vm.put(GetHomeRoute.PLAYER_NAME_ATTR, "");
-        vm.put(GetHomeRoute.PLAYER_LIST_ATTR, playerLobby.getUsersList());
-        return new ModelAndView(vm, GetHomeRoute.VIEW_NAME);
+        // redirect to the home page
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
     }
 }
