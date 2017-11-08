@@ -15,8 +15,8 @@ public class Position {
     //
     //  Attributes
     //
-    private final int row;
-    private final int cell;
+    private int row;
+    private int cell;
 
     //
     //  Constructors
@@ -33,5 +33,8 @@ public class Position {
 
     public int getRow() { return row; }
     public int getCell() { return cell; }
+
+    public void setRow(int row){this.row=row;}
+    public void setCell(int c){this.cell=c;}
 
 }

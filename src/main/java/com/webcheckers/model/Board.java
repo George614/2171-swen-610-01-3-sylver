@@ -21,7 +21,7 @@ public class Board {
     //
     private List<Row> rows;
 
-    private Position captured=new Position(0,0);
+    private List<Position> captured=new ArrayList<Position>();
 
     private boolean capturedTrue=false;
 
@@ -54,6 +54,8 @@ public class Board {
         System.out.println("isMoveValid being called.");
         Position start = move.getStart();
         Position end = move.getEnd();
+        Position intermediate=end;
+
 
         //start = in row, there's a cell that has this piece
         int diagonalStartSpace = start.getRow() + start.getCell();
@@ -92,12 +94,12 @@ public class Board {
 
                         if(start.getCell()>end.getCell()){
                             //going left
-                            captured=new Position(end.getRow()+1,end.getCell()+1);
+                            captured.add(new Position(end.getRow()+1,end.getCell()+1));
                         }
 
                         else if(start.getCell()<end.getCell()){
                             //goung right
-                            captured=new Position(end.getRow()+1,end.getCell()-1);
+                            captured.add(new Position(end.getRow()+1,end.getCell()-1));
                         }
 
                         capturedTrue=true;
@@ -128,11 +130,11 @@ public class Board {
 
                 System.out.println("RED PIECE");
                 //this is a red piece
-                Row checkPiece = rows.get(end.getRow()-1);
+                Row checkPiece = rows.get(intermediate.getRow()-1);
                 List<Space> rowSpaces = checkPiece.getSpaces();
                 Piece currentOccupant=null;
 
-                if ((end.getRow() + end.getCell() )% 2 == 1) {
+                if ((end .getRow() + end.getCell() )% 2 == 1) {
                     //if a white piece is in the way, capturing move, return true
                     System.out.println("Yes, it is a diagonal");
 
@@ -153,12 +155,12 @@ public class Board {
 
                         if(start.getCell()>end.getCell()){
                             //going left
-                            captured=new Position(end.getRow()-1,end.getCell()+1);
+                            captured.add(new Position(end.getRow()-1,end.getCell()+1));
                         }
 
                         else if(start.getCell()<end.getCell()){
                             //goung right
-                            captured=new Position(end.getRow()-1,end.getCell()-1);
+                            captured.add(new Position(end.getRow()-1,end.getCell()-1));
                         }
                         capturedTrue=true;
                         return true;
@@ -259,7 +261,7 @@ public class Board {
      *    The {@link Move} from the user.
      */
     public void makeMove(Move move) {
-
+        int index=0;
         if (isMoveValid(move)) {
             System.out.println("Valid Move");
             Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
@@ -285,7 +287,11 @@ public class Board {
         }
         turn=turn+1;
         if(capturedTrue){
-            setPieceByPosition(captured,null);
+            while(!captured.isEmpty()){
+                setPieceByPosition(captured.remove(index),null);
+
+            }
+
             capturedTrue=false;}
     }
 }
