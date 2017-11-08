@@ -50,7 +50,7 @@ public class Board {
      *
      * @return true if the Move is valid, otherwise, false
      */
-    private boolean isMoveValid(Move move) {
+    public boolean isMoveValid(Move move) {
         System.out.println("isMoveValid being called.");
         Position start = move.getStart();
         Position end = move.getEnd();

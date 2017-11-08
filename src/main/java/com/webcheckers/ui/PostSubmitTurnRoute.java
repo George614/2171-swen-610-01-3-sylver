@@ -49,9 +49,11 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
     final Game currentGame = gameCenter.get(httpSession);
     final Move validatedMove = currentGame.lastValidatedMove;
 
-    // Apply move and flips the color to change the turn
-    currentGame.board.makeMove(validatedMove);
-    currentGame.currentTurn = (currentGame.currentTurn == Color.RED ? Color.WHITE : Color.RED);
+    // If the move is valid, apply move and flips the color to change the turn
+    if (currentGame.board.isMoveValid(validatedMove)) {
+      currentGame.board.makeMove(validatedMove);
+      currentGame.currentTurn = (currentGame.currentTurn == Color.RED ? Color.WHITE : Color.RED);
+    }
 
     // Redirect the user to the Game view
     String opponentUsername = currentPlayer.getUsername() == currentGame.getPlayerRedUsername() ? currentGame.getPlayerWhiteUsername() : currentGame.getPlayerRedUsername();
