@@ -99,8 +99,10 @@ public class Board {
                         System.out.println("There is an occupant");
                         //captured=new Position(end.getRow()-1,end.getCell()+1);
                         //setPieceByPosition(captured,null);
-
-                        if(java.lang.Math.abs(end.getRow()-start.getRow())>1){
+                        int y=java.lang.Math.abs(end.getRow()-start.getRow());
+                        System.out.println("Y"+y);
+                        if(y<=1 || y>2){
+                            System.out.println("CASE 000000000000");
 
                             return false;
 
@@ -160,20 +162,22 @@ public class Board {
 
 
                     if(start.getCell()>end.getCell()){
-                        //goung left
+                        //going left
                         currentOccupant = rowSpaces.get(end.getCell()+1).getPiece();
                     }
 
                     else if(start.getCell()<end.getCell()){
-                        //goung right
+                        //going right
                         currentOccupant = rowSpaces.get(end.getCell()-1).getPiece();
                     }
 
                     if (currentOccupant!=null && currentOccupant.getColor() == Color.WHITE) {
                         //capture move
                         System.out.println("There is an occupant");
-                        if(java.lang.Math.abs(end.getRow()-start.getRow())>1){
-
+                        int y=java.lang.Math.abs(end.getRow()-start.getRow());
+                        System.out.println("Y"+y);
+                        if(y<=1 || y>2){
+                            System.out.println("CASE 11111");
                             return false;
 
                         }
@@ -183,7 +187,7 @@ public class Board {
                         }
 
                         else if(start.getCell()<end.getCell()){
-                            //goung right
+                            //going right
                             captured.add(new Position(end.getRow()-1,end.getCell()-1));
                         }
                         capturedTrue=true;
