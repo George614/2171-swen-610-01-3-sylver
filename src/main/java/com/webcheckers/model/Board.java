@@ -54,7 +54,7 @@ public class Board {
         System.out.println("isMoveValid being called.");
         Position start = move.getStart();
         Position end = move.getEnd();
-        Position intermediate=end;
+        //Position intermediate=end;
 
 
         //start = in row, there's a cell that has this piece
@@ -135,7 +135,7 @@ public class Board {
 
                 System.out.println("RED PIECE");
                 //this is a red piece
-                Row checkPiece = rows.get(intermediate.getRow()-1);
+                Row checkPiece = rows.get(end.getRow()-1);
                 List<Space> rowSpaces = checkPiece.getSpaces();
                 Piece currentOccupant=null;
 
