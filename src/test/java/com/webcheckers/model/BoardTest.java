@@ -20,6 +20,7 @@ public class BoardTest {
   @Test
   public void testCrowning() throws Exception {
     final Board CuT = new Board();
+    CuT.currentTurn = Color.RED;
 
     // setting up the board pieces
     Position whitePieceToDelete1 = new Position(6, 1);
