@@ -48,6 +48,7 @@ public class Game {
     this.board.currentTurn = Color.RED;
     this.players = new HashMap<>();
     this.validatedMoves = new ArrayList<>();
+
     double playerOrder = java.lang.Math.random()*10;
     if (playerOrder % 2 == 0) {
       this.players.put(Color.RED, playerOne);

@@ -21,8 +21,9 @@ public class Board {
     //
     private List<Row> rows;
     public Color currentTurn;
-    private List<Position> captured=new ArrayList<Position>();
+    //private List<Position> captured=new ArrayList<Position>();
 
+    private Position capturedNew=null;
     private boolean capturedTrue=false;
 
     //
@@ -62,7 +63,7 @@ public class Board {
         System.out.println(diagonalStartSpace);
         System.out.println("StartSpace"+startSpace%2);
 
-
+        //currentTurn=Game.getCurrentTurn();
         switch (currentTurn) {
             case WHITE:
 
@@ -107,12 +108,16 @@ public class Board {
                         }
                         if(start.getCell()>end.getCell()){
                             //going left
-                            captured.add(new Position(end.getRow()+1,end.getCell()+1));
+                            System.out.println("CAPTURED!");
+                            //captured.add(new Position(end.getRow()+1,end.getCell()+1));
+                            capturedNew=new Position(end.getRow()+1,end.getCell()+1);
                         }
 
                         else if(start.getCell()<end.getCell()){
                             //goung right
-                            captured.add(new Position(end.getRow()+1,end.getCell()-1));
+                            System.out.println("CAPTURED!");
+                            //captured.add(new Position(end.getRow()+1,end.getCell()-1));
+                            capturedNew=new Position(end.getRow()+1,end.getCell()-1);
                         }
 
                         capturedTrue=true;
@@ -125,7 +130,9 @@ public class Board {
                     }
                     else{
                         System.out.println("No occupant WHITE");
-
+                        System.out.println((end.getRow()+1)==start.getRow());
+                        System.out.println((start.getCell()==(end.getCell()+1)));
+                        System.out.println(start.getCell()==(end.getCell()-1));
                         if((end.getRow()+1)==start.getRow() && (start.getCell()==(end.getCell()+1) || start.getCell()==(end.getCell()-1))){
                             System.out.println("It should be able to move.");
                             return true;
@@ -181,12 +188,14 @@ public class Board {
                         }
                         if(start.getCell()>end.getCell()){
                             //going left
-                            captured.add(new Position(end.getRow()-1,end.getCell()+1));
+                            //captured.add(new Position(end.getRow()-1,end.getCell()+1));
+                            capturedNew=new Position(end.getRow()-1,end.getCell()+1);
                         }
 
                         else if(start.getCell()<end.getCell()){
                             //going right
-                            captured.add(new Position(end.getRow()-1,end.getCell()-1));
+                            //captured.add(new Position(end.getRow()-1,end.getCell()-1));
+                            capturedNew=(new Position(end.getRow()-1,end.getCell()-1));
                         }
                         capturedTrue=true;
                         return true;
@@ -288,6 +297,8 @@ public class Board {
      */
     public void makeMove(Move move) {
         int index=0;
+        boolean isAValidMove=false;
+        System.out.println("makeMove CALLING");
         if (isMoveValid(move)) {
             System.out.println("Valid Move");
             Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
@@ -302,14 +313,16 @@ public class Board {
             }
             setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
             startSpace.setPiece(null);                              // remove the piece from the origin position
+            isAValidMove=true;
         }
         else{
-            System.out.println("Invalid Move");
+            System.out.println("Invalid Move from Make Move");
         }
-        if(capturedTrue){
-            while(!captured.isEmpty()){
-                setPieceByPosition(captured.remove(index),null);
-            }
+        if(capturedTrue ){
+           // while(!captured.isEmpty()){
+                //setPieceByPosition(captured.remove(index),null);
+            setPieceByPosition(capturedNew,null);
+            //}
             capturedTrue=false;
         }
     }
