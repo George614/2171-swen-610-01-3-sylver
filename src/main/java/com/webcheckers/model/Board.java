@@ -70,7 +70,15 @@ public class Board {
 
                 //this is a white piece moving
                 System.out.println("WHITE PIECE");
-                Row checkPieceN = rows.get(end.getRow()+1);
+                Row checkPieceN=null;
+                if(end.getRow()+1>7){
+                    checkPieceN = rows.get(7);
+                }
+                else{
+                    checkPieceN = rows.get(end.getRow()+1);
+                }
+
+                //Row checkPieceN = rows.get(end.getRow()+1);
                 List<Space> rowSpacesN = checkPieceN.getSpaces();
                 Piece currentOccupantN = null;
                 if ((end.getRow() + end.getCell()) % 2 == 1) {
@@ -134,8 +142,15 @@ public class Board {
             case 1:
 
                 System.out.println("RED PIECE");
+                Row checkPiece=null;
                 //this is a red piece
-                Row checkPiece = rows.get(end.getRow()-1);
+                if(end.getRow()-1<0){
+                    checkPiece = rows.get(0);
+                }
+                else{
+                    checkPiece = rows.get(end.getRow()-1);
+                }
+
                 List<Space> rowSpaces = checkPiece.getSpaces();
                 Piece currentOccupant=null;
 
