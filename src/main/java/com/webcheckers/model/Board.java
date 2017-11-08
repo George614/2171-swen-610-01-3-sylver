@@ -21,6 +21,12 @@ public class Board {
     //
     private List<Row> rows;
 
+    private List<Position> captured=new ArrayList<Position>();
+
+    private boolean capturedTrue=false;
+
+    //this has to be 1, DO NOT CHANGE UNLESS FULL CODE IS WORKING WITHOUT ERRORS
+    private int turn=1;
     //
     //  Constructors
     //
@@ -44,54 +50,179 @@ public class Board {
      *
      * @return true if the Move is valid, otherwise, false
      */
-    private boolean isMoveValid(Move move) {
-        // TODO: Implement this
-        Position start=move.getStart();
-        Position end=move.getEnd();
+    public boolean isMoveValid(Move move) {
+        System.out.println("isMoveValid being called.");
+        Position start = move.getStart();
+        Position end = move.getEnd();
+        //Position intermediate=end;
+
 
         //start = in row, there's a cell that has this piece
-        int diagonalStartSpace=start.getRow()+start.getCell();
-        int diagonalEndSpace=end.getRow()+end.getCell();
-        int startSpace=diagonalStartSpace%2;
-        switch(startSpace){
-            case 0:
-                //this is a red piece
-                if(end.getRow()+end.getCell()%2==0){
-                    //if a white piece is in the way, capturing move, return true
-                    Row checkPiece=rows.get(end.getRow());
-                    List<Space> rowSpaces=checkPiece.getSpaces();
-                    Piece currentOccupant=rowSpaces.get(end.getCell()).getPiece();
-                    if(currentOccupant.getColor()==Color.WHITE) {
-                        return true;
+        int diagonalStartSpace = start.getRow() + start.getCell();
+        int diagonalEndSpace = end.getRow() + end.getCell();
+        int startSpace = diagonalStartSpace % 2;
+        System.out.println(diagonalStartSpace);
+        System.out.println("StartSpace"+startSpace%2);
 
-                    }
+
+        switch (turn%2) {
+            case 0:
+
+                //this is a white piece moving
+                System.out.println("WHITE PIECE");
+                Row checkPieceN=null;
+                if(end.getRow()+1>7){
+                    checkPieceN = rows.get(7);
                 }
                 else{
+                    checkPieceN = rows.get(end.getRow()+1);
+                }
+
+                //Row checkPieceN = rows.get(end.getRow()+1);
+                List<Space> rowSpacesN = checkPieceN.getSpaces();
+                Piece currentOccupantN = null;
+                if ((end.getRow() + end.getCell()) % 2 == 1) {
+                    //if a red piece is in the way, capturing move, return true
+
+                    if(start.getCell()>end.getCell()){
+                        //goung left
+                        currentOccupantN = rowSpacesN.get(end.getCell()+1).getPiece();
+                    }
+
+                    else if(start.getCell()<end.getCell()){
+                        //goung right
+                        currentOccupantN = rowSpacesN.get(end.getCell()-1).getPiece();
+                    }
+
+
+                    if (currentOccupantN!=null && currentOccupantN.getColor() == Color.RED) {
+                        System.out.println("There is an occupant");
+                        //captured=new Position(end.getRow()-1,end.getCell()+1);
+                        //setPieceByPosition(captured,null);
+                        int y=java.lang.Math.abs(end.getRow()-start.getRow());
+                        System.out.println("Y"+y);
+                        if(y<=1 || y>2){
+                            System.out.println("CASE 000000000000");
+
+                            return false;
+
+                        }
+                        if(start.getCell()>end.getCell()){
+                            //going left
+                            captured.add(new Position(end.getRow()+1,end.getCell()+1));
+                        }
+
+                        else if(start.getCell()<end.getCell()){
+                            //goung right
+                            captured.add(new Position(end.getRow()+1,end.getCell()-1));
+                        }
+
+                        capturedTrue=true;
+
+                        return true;
+                    }
+                    if(end.getRow()>start.getRow()){
+                        //DO NOT MOVE
+                        return false;
+                    }
+                    else{
+                        System.out.println("No occupant WHITE");
+
+                        if((end.getRow()+1)==start.getRow() && (start.getCell()==(end.getCell()+1) || start.getCell()==(end.getCell()-1))){
+                            System.out.println("It should be able to move.");
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+                }
+                else {
                     return false;
                 }
 
             case 1:
-                //this is a white piece
-                if(end.getRow()+end.getCell()%2==1){
-                    //if a white piece is in the way, capturing move, return true
-                    Row checkPiece=rows.get(end.getRow());
-                    List<Space> rowSpaces=checkPiece.getSpaces();
-                    Piece currentOccupant=rowSpaces.get(end.getCell()).getPiece();
-                    if(currentOccupant.getColor()==Color.RED) {
-                        return true;
 
-                    }
+                System.out.println("RED PIECE");
+                Row checkPiece=null;
+                //this is a red piece
+                if(end.getRow()-1<0){
+                    checkPiece = rows.get(0);
                 }
                 else{
+                    checkPiece = rows.get(end.getRow()-1);
+                }
+
+                List<Space> rowSpaces = checkPiece.getSpaces();
+                Piece currentOccupant=null;
+
+                if ((end .getRow() + end.getCell() )% 2 == 1) {
+                    //if a white piece is in the way, capturing move, return true
+                    System.out.println("Yes, it is a diagonal");
+
+
+                    if(start.getCell()>end.getCell()){
+                        //going left
+                        currentOccupant = rowSpaces.get(end.getCell()+1).getPiece();
+                    }
+
+                    else if(start.getCell()<end.getCell()){
+                        //going right
+                        currentOccupant = rowSpaces.get(end.getCell()-1).getPiece();
+                    }
+
+                    if (currentOccupant!=null && currentOccupant.getColor() == Color.WHITE) {
+                        //capture move
+                        System.out.println("There is an occupant");
+                        int y=java.lang.Math.abs(end.getRow()-start.getRow());
+                        System.out.println("Y"+y);
+                        if(y<=1 || y>2){
+                            System.out.println("CASE 11111");
+                            return false;
+
+                        }
+                        if(start.getCell()>end.getCell()){
+                            //going left
+                            captured.add(new Position(end.getRow()-1,end.getCell()+1));
+                        }
+
+                        else if(start.getCell()<end.getCell()){
+                            //going right
+                            captured.add(new Position(end.getRow()-1,end.getCell()-1));
+                        }
+                        capturedTrue=true;
+                        return true;
+                    }
+
+                    if(end.getRow()<start.getRow()){
+                        //DO NOT MOVE
+                        return false;
+                    }
+
+                    else{
+                        System.out.println("No occupant RED");
+                        //only move forward
+
+                        if((end.getRow()-1)==start.getRow() && (start.getCell()==(end.getCell()+1) || start.getCell()==(end.getCell()-1))){
+                            System.out.println("It should be able to move.");
+                            return true;
+
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+                }
+                else {
+                    System.out.println("Why is this executing");
                     return false;
                 }
 
             default:
                 //invalid
+                System.out.println("In default");
                 return false;
-
         }
-
     }
 
     /**
@@ -158,16 +289,37 @@ public class Board {
      *    The {@link Move} from the user.
      */
     public void makeMove(Move move) {
+        int index=0;
         if (isMoveValid(move)) {
             System.out.println("Valid Move");
             Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
             Piece movedPiece = startSpace.getPiece();               // get the piece about to be moved
+            move.getEnd().getRow();
+            //check if the piece is eligible for crowning
+            boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()==7 && movedPiece.getType() == Type.SINGLE;
+            boolean isWhiteKing = movedPiece.getColor()==Color.WHITE && move.getEnd().getRow()==0 && movedPiece.getType()== Type.SINGLE;
+            if (isRedKing || isWhiteKing ) {
 
+                movedPiece.setType(Type.KING);
+            }
             setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
             startSpace.setPiece(null);                              // remove the piece from the origin position
+
+
+
+
+
         }
         else{
             System.out.println("Invalid Move");
         }
+        turn=turn+1;
+        if(capturedTrue){
+            while(!captured.isEmpty()){
+                setPieceByPosition(captured.remove(index),null);
+
+            }
+
+            capturedTrue=false;}
     }
 }

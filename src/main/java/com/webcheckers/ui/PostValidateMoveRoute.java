@@ -5,7 +5,6 @@ import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.Move;
-import com.webcheckers.model.Player;
 import java.util.Objects;
 import spark.Request;
 import spark.Response;
@@ -34,6 +33,7 @@ public class PostValidateMoveRoute implements Route {
     // retrieve the game from the session
     final Game currentGame = gameCenter.get(httpSession);
     final Move move = JsonUtils.fromJson(request.body(), Move.class);
+    currentGame.lastValidatedMove = move;
     Message message = currentGame.board.validateMove(move);
     return message;
   }

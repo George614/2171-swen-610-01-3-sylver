@@ -4,6 +4,7 @@ import static spark.Spark.halt;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -52,11 +53,26 @@ public class GetGameRoute implements TemplateViewRoute {
     public ModelAndView handle(Request request, Response response) {
         // retrieve the HTTP session and query params
         final Session httpSession = request.session();
-        final String opponent = request.queryParams(OPPONENT_PARAM);
+        String opponent = request.queryParams(OPPONENT_PARAM);
 
-        // retrieve the two player objects
-        final Player currentPlayer = playerLobby.getPlayer(httpSession);
-        final Player opponentPlayer = playerLobby.getPlayer(opponent);
+        final Player currentPlayer;
+        final Player opponentPlayer;
+        final Game game;
+
+        // if no parameters are given, pull the data from the session
+        if (opponent != null) {
+            // retrieve the two player objects
+            currentPlayer = playerLobby.getPlayer(httpSession);
+            opponentPlayer = playerLobby.getPlayer(opponent);
+            // retrieve the game object
+            game = gameCenter.get(httpSession, currentPlayer, opponentPlayer);
+        } else {
+            currentPlayer = playerLobby.getPlayer(httpSession);
+            game = gameCenter.get(httpSession);
+            Color currentColor = game.getPlayerColor(currentPlayer.getUsername());
+            opponent = currentColor == Color.RED ? game.getPlayerRedUsername() : game.getPlayerWhiteUsername();
+            opponentPlayer = playerLobby.getPlayer(opponent);
+        }
 
         //check if the opponent is already playing a Game with someone else
         if (gameCenter.isUserPlaying(opponent)) {
@@ -70,8 +86,6 @@ public class GetGameRoute implements TemplateViewRoute {
             }
         }
 
-        // retrieve the game object
-        final Game game = gameCenter.get(httpSession, currentPlayer, opponentPlayer);
         // check if the current player's turn
         boolean isMyTurn = game.getPlayerColor(currentPlayer.getUsername()) == game.currentTurn;
 

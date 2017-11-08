@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import java.util.Arrays;
-
 public class Piece {
 
     //
@@ -34,7 +32,7 @@ public class Piece {
      * Get the Piece's type.
      *
      * @return
-     *   The Piece's type.
+     *   The Piece's types
      */
     public Type getType() {
         return type;
