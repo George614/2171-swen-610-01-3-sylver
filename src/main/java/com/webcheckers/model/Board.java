@@ -20,13 +20,11 @@ public class Board {
     //  Attributes
     //
     private List<Row> rows;
-
+    public Color currentTurn;
     private List<Position> captured=new ArrayList<Position>();
 
     private boolean capturedTrue=false;
 
-    //this has to be 1, DO NOT CHANGE UNLESS FULL CODE IS WORKING WITHOUT ERRORS
-    private int turn=1;
     //
     //  Constructors
     //
@@ -65,8 +63,8 @@ public class Board {
         System.out.println("StartSpace"+startSpace%2);
 
 
-        switch (turn%2) {
-            case 0:
+        switch (currentTurn) {
+            case WHITE:
 
                 //this is a white piece moving
                 System.out.println("WHITE PIECE");
@@ -141,7 +139,7 @@ public class Board {
                     return false;
                 }
 
-            case 1:
+            case RED:
 
                 System.out.println("RED PIECE");
                 Row checkPiece=null;
@@ -304,22 +302,15 @@ public class Board {
             }
             setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
             startSpace.setPiece(null);                              // remove the piece from the origin position
-
-
-
-
-
         }
         else{
             System.out.println("Invalid Move");
         }
-        turn=turn+1;
         if(capturedTrue){
             while(!captured.isEmpty()){
                 setPieceByPosition(captured.remove(index),null);
-
             }
-
-            capturedTrue=false;}
+            capturedTrue=false;
+        }
     }
 }

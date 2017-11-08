@@ -1,6 +1,8 @@
 package com.webcheckers.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -21,8 +23,7 @@ public class Game {
   // Attributes
   //
   public Board board;
-  public Color currentTurn;
-  public Move lastValidatedMove;
+  public List<Move> validatedMoves;
   private static Map<Color, Player> players;
 
   //
@@ -44,8 +45,9 @@ public class Game {
     Objects.requireNonNull(playerTwo, "white player must not be null");
 
     this.board = new Board();
-    this.currentTurn = Color.RED;
+    this.board.currentTurn = Color.RED;
     this.players = new HashMap<>();
+    this.validatedMoves = new ArrayList<>();
     double playerOrder = java.lang.Math.random()*10;
     if (playerOrder % 2 == 0) {
       this.players.put(Color.RED, playerOne);
@@ -98,7 +100,15 @@ public class Game {
    *   The player's object associated with the current turn.
    */
   public Player getPlayerCurrentTurn() {
-    return players.get(this.currentTurn);
+    return players.get(this.board.currentTurn);
+  }
+
+  public Color getCurrentTurn() {
+    return this.board.currentTurn;
+  }
+
+  public void setCurrentTurn(Color color) {
+    this.board.currentTurn = color;
   }
 
   /**
