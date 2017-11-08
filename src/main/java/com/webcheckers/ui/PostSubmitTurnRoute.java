@@ -57,7 +57,7 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
         totalValidMoves++;
       }
     }
-    
+
     // flips the color to change the turn,
     // and clear the list of moves
     if (totalValidMoves > 0) {
