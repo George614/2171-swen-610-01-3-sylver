@@ -14,6 +14,7 @@ Beyond this minimal set of features, we have grand vision for what we could do i
 * **Player Resignation:** Any of the players can resign from a game in progress.
 * **Player Sign-out:** Players can end their gaming session, freeing up their name for others to use.
 
+
 ### Definition of MVP
 
 1. The minimal viable product, according to the Web-Checkers vision document, must include the following features:
@@ -32,6 +33,9 @@ Either player of a game may choose to resign, which ends the game.
 ## Architecture
 
 The Web-Checkers application uses a Java based server. We have used the Spark web micro framework along with the FreeMarker template engine to handle HTTP requests and to generate HTML responses. We have used Java v8 for this project.
+![Class Diagram](https://github.com/niranjana7/2171-swen-610-01-3-sylver/blob/master/docs/Class%20Diagram.jpeg)
+![Class Diagram](https://github.com/niranjana7/2171-swen-610-01-3-sylver/blob/master/docs/Sequence%20Diagram%20for%20WebCheckers.png)
+
 
 ### Summary
 
@@ -44,18 +48,38 @@ The Web-Checkers application uses a Java based server. We have used the Spark we
 
 This tier contains our code for the sign-in, home display, sign out and web server files. These are the files that the user interacts with. Following are the files with the description:
 
-**Home Controller:** This file displays the opponent list and renders home.ftl
-**HomePostRoute :** This file contains the authentication logic, session setup and renders home.ftl
-**Sign Out Controller:** This file handles de-authentication and destroys session.
-**Web Server:** This file contains the routing information for the Web-Checkers application.
-**Game Controller:** This file contains the game controller to enable game play.
-**JsonUtils:** A Utility class for parsing and formatting JSON data.
+* **Home Controller:** This file displays the opponent list and renders home.ftl
+* **HomePostRoute :** This file contains the authentication logic, session setup and renders home.ftl
+* **Sign Out Controller:** This file handles de-authentication and destroys session.
+* **Web Server:** This file contains the routing information for the Web-Checkers application.
+* **Game Controller:** This file contains the game controller to enable game play.
+* **JsonUtils:** A Utility class for parsing and formatting JSON data.
+* **PostBackupMoveRoute:** Placeholder for implementation in the next sprint.
+* **PostCheckTurnRoute:** Checks if it the current player's turn.
+* **PostSignInRoute:** Re-displays the sign in page after sign in validation
+* **PostSubmitTurnRoute:** Submits the current user's turn.
+* **PostValidateMoveRoute:** Submits a single move for a player to be validated.
+
 
 ### Model Tier 
 
-This tier has the WebCheckers.java in order to instantiate the model for the Web-Checkers application.
+* **WebCheckers.java** orders to instantiate the model for the Web-Checkers application.
+* **Board.java** class holds a complex data type that represents the checkers board.
+* **Row.java** must hold an object data type with the following attributes.
+* **Space.java** holds an object data type with the following attributes.
+* **piece.java** must hold an object data type with the following attributes.
+* **game.java** class randomly assigns a player order and contains method to get player names, colors and turns.
+* **Message.java** contains the logic for displaying a message based on the moves made by the user. It contains a MessageType class enum.
+* **Player.java** contains logic to construct a player object which contains username.
+* **Position.java** contains the row and cell coordinates of th cell piece.
+* **Type** is an enum which contains the logic for the type of piece be it single or king.
+
+
 
 ### Application Tier
 
 This tier will contain the “business logic” for our WebCheckers application, that is, the logic to enable game play.
+
+* **GameCenter**: Creates a new Game object when a Game is about to start.
+* **PlayerLobby**: Holds a list with the state of the currently signed-in Players.
 
