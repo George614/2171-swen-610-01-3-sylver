@@ -6,5 +6,5 @@ package com.webcheckers.model;
  *   Date: 2017-10-25
  */
 public enum Color {
-    RED, WHITE
+    RED, BLACK, WHITE
 }

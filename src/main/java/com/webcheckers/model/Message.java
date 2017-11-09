@@ -32,5 +32,12 @@ public class Message {
     //  Methods
     //
 
+    public MessageType getType(){
+        return this.type;
+    }
+
+    public String getText(){
+        return this.text;
+    }
 
 }

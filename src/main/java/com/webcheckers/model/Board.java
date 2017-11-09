@@ -158,7 +158,6 @@ public class Board {
                 }
             default:
                 //invalid
-
                 return false;
         }
     }
