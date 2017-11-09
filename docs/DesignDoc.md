@@ -34,7 +34,7 @@ Either player of a game may choose to resign, which ends the game.
 
 The Web-Checkers application uses a Java based server. We have used the Spark web micro framework along with the FreeMarker template engine to handle HTTP requests and to generate HTML responses. We have used Java v8 for this project.
 ![Class Diagram](https://github.com/niranjana7/2171-swen-610-01-3-sylver/blob/master/docs/Class%20Diagram.jpeg)
-![Class Diagram](https://github.com/niranjana7/2171-swen-610-01-3-sylver/blob/master/docs/Sequence%20Diagram%20for%20WebCheckers.png)
+![Sequence Diagram](https://github.com/niranjana7/2171-swen-610-01-3-sylver/blob/master/docs/Sequence%20Diagram%20for%20WebCheckers.png)
 
 
 ### Summary
