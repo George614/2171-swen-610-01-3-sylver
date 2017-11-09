@@ -35,14 +35,12 @@ public class PostValidateMoveRouteTest {
     private PostValidateMoveRoute CuT;
 
     @Before
-
     public void setUp() throws Exception {
         request = mock(Request.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
         playerLobby = mock(PlayerLobby.class);
         gameCenter=mock(GameCenter.class);
-
     }
 
     @Test
@@ -56,8 +54,6 @@ public class PostValidateMoveRouteTest {
         when(session.attribute(GameCenter.GAME_ID) != null).thenReturn(true);
         when(session1.attribute(PLAYER_NAME)).thenReturn(PLAYER1NAME);
         when(session2.attribute(PLAYER_NAME)).thenReturn(PLAYER2NAME);
-
-
     }
 
 }
