@@ -88,7 +88,7 @@ public class Game {
    */
   public Color getPlayerColor(String username) {
     for (Entry<Color, Player> entry : players.entrySet()) {
-      if (entry.getValue().getUsername() == username) {
+      if (Objects.equals(entry.getValue().getUsername(), username)) {
         return entry.getKey();
       }
     }
