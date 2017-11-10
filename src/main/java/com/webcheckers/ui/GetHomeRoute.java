@@ -2,12 +2,14 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Player;
-import java.util.Objects;
-import spark.*;
 import com.webcheckers.model.Game;
+import com.webcheckers.model.Player;
+import spark.*;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import static spark.Spark.halt;
 
 public class GetHomeRoute implements TemplateViewRoute {
@@ -61,7 +63,7 @@ public class GetHomeRoute implements TemplateViewRoute {
         // so redirect the user to the Game view
         Game game = gameCenter.get(currentPlayer.getUsername());
         session.attribute(GameCenter.GAME_ID, game);
-        String opponentUsername = currentPlayer.getUsername() == game.getPlayerRedUsername() ? game.getPlayerWhiteUsername() : game.getPlayerRedUsername();
+        String opponentUsername = Objects.equals(currentPlayer.getUsername(), game.getPlayerRedUsername()) ? game.getPlayerWhiteUsername() : game.getPlayerRedUsername();
         response.redirect(WebServer.GAME_URL + "?" + GetGameRoute.OPPONENT_PARAM + "=" + opponentUsername);
         halt();
         return null;

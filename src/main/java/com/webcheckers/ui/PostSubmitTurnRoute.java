@@ -1,20 +1,17 @@
 package com.webcheckers.ui;
 
-import static spark.Spark.halt;
-
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Player;
+import spark.*;
+
 import java.util.List;
 import java.util.Objects;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Session;
-import spark.TemplateViewRoute;
+
+import static spark.Spark.halt;
 
 public class PostSubmitTurnRoute implements TemplateViewRoute {
 
@@ -66,7 +63,7 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
     }
 
     // Redirect the user to the Game view
-    String opponentUsername = currentPlayer.getUsername() == currentGame.getPlayerRedUsername() ? currentGame.getPlayerWhiteUsername() : currentGame.getPlayerRedUsername();
+    String opponentUsername = Objects.equals(currentPlayer.getUsername(), currentGame.getPlayerRedUsername()) ? currentGame.getPlayerWhiteUsername() : currentGame.getPlayerRedUsername();
     response.redirect(WebServer.GAME_URL + "?" + GetGameRoute.OPPONENT_PARAM + "=" + opponentUsername);
     halt();
     return null;
