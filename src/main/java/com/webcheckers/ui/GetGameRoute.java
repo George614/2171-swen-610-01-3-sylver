@@ -6,6 +6,8 @@ import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.MessageType;
 import com.webcheckers.model.Player;
 import spark.*;
 import java.util.HashMap;
@@ -58,6 +60,7 @@ public class GetGameRoute implements TemplateViewRoute {
         final Player currentPlayer;
         final Player opponentPlayer;
         final Game game;
+        Message message;
 
         // if no parameters are given, pull the data from the session
         if (opponent != null) {
@@ -95,6 +98,26 @@ public class GetGameRoute implements TemplateViewRoute {
 
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
+
+        // Check if any of the players has won the game, and update the winner property
+        if (game.winner == null) {
+            if (game.hasPlayerWon(currentPlayer.getUsername())) {
+                game.winner = currentPlayer;
+            } else if (game.hasPlayerWon(opponentPlayer.getUsername())) {
+                game.winner = opponentPlayer;
+            } else {
+                game.winner = null;
+            }
+        }
+
+        // If someone won, display the message
+        if (game.winner != null) {
+            message = new Message("Player " + game.winner.getUsername() + " has won the game!", MessageType.INFO);
+            vm.put(MESSAGE_ATTR, message);
+        } else {
+            vm.put(MESSAGE_ATTR, null);
+        }
+
         vm.put(TITLE_ATTR, TITLE);
         vm.put(CURRENT_PLAYER_ATTR, currentPlayer);
         vm.put(PLAYER_NAME_ATTR, currentPlayer.getUsername());
@@ -102,7 +125,6 @@ public class GetGameRoute implements TemplateViewRoute {
         vm.put(OPPONENT_NAME_ATTR, opponentPlayer.getUsername());
         vm.put(OPPONENT_COLOR_ATTR, game.getPlayerColor(opponentPlayer.getUsername()).name());
         vm.put(IS_MY_TURN_ATTR, isMyTurn);
-        vm.put(MESSAGE_ATTR, null);
         vm.put(BOARD_ATTR, game.board);
         return new ModelAndView(vm, VIEW_NAME);
     }

@@ -196,7 +196,7 @@ public class BoardTest {
   @Test
   public void imaginaryPiece() throws Exception {
     final Board CuT = new Board();
-    CuT.currentTurn = Color.BLACK;
+    CuT.currentTurn = Color.RED;
 
     // setting up the board pieces
     //Position whitePieceToDelete = new Position(6, 1);
@@ -205,7 +205,7 @@ public class BoardTest {
     Position whitePieceStart = new Position(3, 0);
     Position whitePieceEnd = new Position(3, 2);
     Move imaginaryMove = new Move(whitePieceStart, whitePieceEnd);
-    Piece pieceToBeTested = new Piece(Type.SINGLE, Color.BLACK);
+    Piece pieceToBeTested = new Piece(Type.SINGLE, Color.RED);
 
     //CuT.setPieceByPosition(whitePieceToDelete, null);
     //CuT.setPieceByPosition(redPieceToDelete2, null);

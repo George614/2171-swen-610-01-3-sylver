@@ -72,6 +72,8 @@ public class Space {
      */
     public boolean isValid() { return this.isValid; }
 
+    public boolean isBlackSquare() { return this.isBlackSquare; }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
