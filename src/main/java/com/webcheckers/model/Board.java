@@ -135,6 +135,8 @@ public class Board {
         int startSpace = diagonalStartSpace % 2;
 
 
+
+
         switch (currentTurn) {
             case WHITE:
 
@@ -289,14 +291,15 @@ public class Board {
      *    The Message object.
      */
     public Message validateMove(Move move) {
+        Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
+        Piece movedPiece = startSpace.getPiece();
         if (isMoveValid(move)) {
             System.out.println("validateMove");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
         }
-        else if(isMoveValidKing(move)){
+        else if(isMoveValidKing(move) && movedPiece.getType()==Type.KING){
             System.out.println("validateMove for King");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
-
         }
         else {
             return new Message(INVALID_MOVE_MESSAGE, MessageType.ERROR);
@@ -312,53 +315,48 @@ public class Board {
     public void makeMove(Move move) {
 
         boolean isAValidMove = false;
-        Piece movedPiece=null;
         Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-        Piece currentPiece = startSpace.getPiece();
-        System.out.println(currentPiece.getType());
-        System.out.println(currentPiece);
+        Piece movedPiece = startSpace.getPiece();
+        //rows.get(move.getStart().getRow()).getSpaces().
+        System.out.println("TYPE:"+rows.get(move.getStart().getRow()).getSpaces().get(move.getStart().getCell()).getPiece().getType());
+        //isAKing=(rows.get(move.getStart().getRow()).getSpaces().get(move.getStart().getCell()).getPiece().getType()==Type.KING);
+        System.out.println("isAKing: "+isAKing);
 
-        if (isMoveValid(move) ) {
-            System.out.println("from makeMove");
-            startSpace = getSpaceByPosition(move.getStart());  // get the origin position
-            movedPiece = startSpace.getPiece();               // get the piece about to be moved
-            move.getEnd().getRow();
+        if(movedPiece.getType()==Type.SINGLE){
+            if(isMoveValid(move)){
 
-            //check if the piece is eligible for crowning
-            boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()== 7 && movedPiece.getType() == Type.SINGLE;
-            boolean isWhiteKing = movedPiece.getColor() == Color.WHITE && move.getEnd().getRow()== 0 && movedPiece.getType()== Type.SINGLE;
-            if (isRedKing || isWhiteKing ) {
-                System.out.println("SETTING TYPE to KING");
-                movedPiece.setType(Type.KING);
-                System.out.println(movedPiece);
-            }
-            if((movedPiece.getType()==Type.SINGLE)){
+                boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()== 7 && movedPiece.getType() == Type.SINGLE;
+                boolean isWhiteKing = movedPiece.getColor() == Color.WHITE && move.getEnd().getRow()== 0 && movedPiece.getType()== Type.SINGLE;
+                if (isRedKing || isWhiteKing ) {
+                    System.out.println("SETTING TYPE to KING");
+                    movedPiece.setType(Type.KING);
+                    System.out.println(movedPiece);
+                    System.out.println(movedPiece.getType());
+                }
+
                 setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
                 startSpace.setPiece(null);                              // remove the piece from the origin position
                 isAValidMove = true;
             }
-            else if((movedPiece.getType()==Type.KING)){
 
+        }
+        else if(movedPiece.getType()==Type.KING){
+            if(isMoveValidKing(move)){
 
+                System.out.println("Make move for King");
+
+                startSpace = getSpaceByPosition(move.getStart()); // get the origin position
+                movedPiece = startSpace.getPiece();               // get the piece about to be moved
+                move.getEnd().getRow();
+
+                setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
+                System.out.println("Setting the piece to its end position");
+                startSpace.setPiece(null);                              // remove the piece from the origin position
+                isAValidMove = true;
 
             }
-            return;
 
         }
-        else if ( isMoveValidKing(move) && currentPiece.getType()==Type.KING) {
-
-            System.out.println("Make move for King");
-
-            startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-            movedPiece = startSpace.getPiece();               // get the piece about to be moved
-            move.getEnd().getRow();
-
-            setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
-            System.out.println("Setting the piece to its end position");
-            startSpace.setPiece(null);                              // remove the piece from the origin position
-            isAValidMove = true;
-        }
-
 
         if (capturedTrue && isAValidMove) {
             //removes captured pieces from the board.
