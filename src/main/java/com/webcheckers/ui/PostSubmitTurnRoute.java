@@ -50,6 +50,7 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
     for (Move moveItem : validatedMove) {
       // If the move is valid, apply move and up the counter
       if (currentGame.board.isMoveValid(moveItem)) {
+        System.out.println("Here lies the problem");
         currentGame.board.makeMove(moveItem);
         totalValidMoves++;
       }

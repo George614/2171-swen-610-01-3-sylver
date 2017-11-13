@@ -56,6 +56,8 @@ public class Piece {
      */
     public void setType(Type type) { this.type = type; }
 
+    public void setColor(Color color) { this.color = color; }
+
     @Override
     public boolean equals(Object obj) {
         return true;

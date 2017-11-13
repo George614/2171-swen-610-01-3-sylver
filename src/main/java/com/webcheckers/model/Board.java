@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  *  Class to represent the Board (made up of Rows)
- *  Author: <a href="mailto:mfabbu@rit.edu">Matt Arlauckas</a>
+ *  Author: <a href="mailto:nd7896@rit.edu">Matt Arlauckas</a>
  *  Date: 2017-10-25
  */
 public class Board {
@@ -25,6 +25,7 @@ public class Board {
     private Position capturedNew = null;
     private boolean capturedTrue = false;
 
+    private boolean isAKing=false;
     //
     //  Constructors
     //
@@ -40,6 +41,79 @@ public class Board {
     //  Methods
     //
 
+    public boolean isMoveValidKing(Move move){
+
+        System.out.println("isMoveValidKing");
+        Position start = move.getStart();
+        Position end = move.getEnd();
+
+        //start = in row, there's a cell that has this piece
+        int diagonalStartSpace = start.getRow() + start.getCell();
+        int diagonalEndSpace = end.getRow() + end.getCell();
+        int startSpace = diagonalStartSpace % 2;
+
+        //non-capturing move
+        switch(currentTurn){
+            case WHITE:
+                Row checkPieceN = null;
+                if (end.getRow() + 1 > 7){ checkPieceN = rows.get(7); }
+                else { checkPieceN = rows.get(end.getRow()+1); }
+
+                List<Space> rowSpacesN = checkPieceN.getSpaces();
+                Piece currentOccupantN = null;
+
+                if ((end.getRow() + end.getCell()) % 2 == 1) {
+
+                    boolean moveUp=((end.getRow() - 1) == start.getRow());
+                    boolean moveDown=((end.getRow() + 1) == start.getRow());
+
+                    boolean moveLeft=(start.getCell() == (end.getCell() - 1));
+                    boolean moveRight=(start.getCell() == (end.getCell() + 1));
+
+                    if ((moveUp||moveDown)&& (moveLeft||moveRight)) {
+                        // The piece should be able to move
+                        System.out.println("IT MUST MOVE");
+                        return true;
+                    }
+
+                }
+                else{
+                    return false;
+                }
+                break;
+            case RED:
+                Row checkPiece = null;
+                if (end.getRow() + 1 > 7){ checkPiece = rows.get(7); }
+                else { checkPiece = rows.get(end.getRow()+1); }
+
+                List<Space> rowSpaces = checkPiece.getSpaces();
+                Piece currentOccupant = null;
+
+                if ((end.getRow() + end.getCell()) % 2 == 1) {
+
+                    boolean moveUp=((end.getRow() - 1) == start.getRow());
+                    boolean moveDown=((end.getRow() + 1) == start.getRow());
+
+                    boolean moveLeft=(start.getCell() == (end.getCell() - 1));
+                    boolean moveRight=(start.getCell() == (end.getCell() + 1));
+
+                    if ((moveUp||moveDown)&& (moveLeft||moveRight)) {
+                        // The piece should be able to move
+                        System.out.println("IT MUST MOVE");
+                        return true;
+                    }
+
+                }
+                else{
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+
+        return false;
+    }
     /**
      * Queries whether the Move is valid.
      *
@@ -50,6 +124,8 @@ public class Board {
      */
     public boolean isMoveValid(Move move) {
 
+        System.out.println("Well, I'm inside the function");
+
         Position start = move.getStart();
         Position end = move.getEnd();
 
@@ -57,7 +133,6 @@ public class Board {
         int diagonalStartSpace = start.getRow() + start.getCell();
         int diagonalEndSpace = end.getRow() + end.getCell();
         int startSpace = diagonalStartSpace % 2;
-
 
 
         switch (currentTurn) {
@@ -106,7 +181,7 @@ public class Board {
                         }
                     }
                 }
-                else { return false; }
+                else { System.out.println("Invalid move RED");return false; }
             case RED:
                 Row checkPiece = null;
                 if (end.getRow() - 1 < 0) { checkPiece = rows.get(0); }
@@ -154,10 +229,12 @@ public class Board {
                 }
                 else {
                     //Invalid move
+                    System.out.println("Invalid move RED");
                     return false;
                 }
             default:
                 //invalid
+                System.out.println("In default");
                 return false;
         }
     }
@@ -213,8 +290,15 @@ public class Board {
      */
     public Message validateMove(Move move) {
         if (isMoveValid(move)) {
+            System.out.println("validateMove");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
-        } else {
+        }
+        else if(isMoveValidKing(move)){
+            System.out.println("validateMove for King");
+            return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
+
+        }
+        else {
             return new Message(INVALID_MOVE_MESSAGE, MessageType.ERROR);
         }
     }
@@ -228,23 +312,53 @@ public class Board {
     public void makeMove(Move move) {
 
         boolean isAValidMove = false;
+        Piece movedPiece=null;
+        Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
+        Piece currentPiece = startSpace.getPiece();
+        System.out.println(currentPiece.getType());
+        System.out.println(currentPiece);
 
-        if (isMoveValid(move)) {
-
-            Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-            Piece movedPiece = startSpace.getPiece();               // get the piece about to be moved
+        if (isMoveValid(move) ) {
+            System.out.println("from makeMove");
+            startSpace = getSpaceByPosition(move.getStart());  // get the origin position
+            movedPiece = startSpace.getPiece();               // get the piece about to be moved
             move.getEnd().getRow();
+
             //check if the piece is eligible for crowning
             boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()== 7 && movedPiece.getType() == Type.SINGLE;
             boolean isWhiteKing = movedPiece.getColor() == Color.WHITE && move.getEnd().getRow()== 0 && movedPiece.getType()== Type.SINGLE;
             if (isRedKing || isWhiteKing ) {
-
+                System.out.println("SETTING TYPE to KING");
                 movedPiece.setType(Type.KING);
+                System.out.println(movedPiece);
             }
+            if((movedPiece.getType()==Type.SINGLE)){
+                setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
+                startSpace.setPiece(null);                              // remove the piece from the origin position
+                isAValidMove = true;
+            }
+            else if((movedPiece.getType()==Type.KING)){
+
+
+
+            }
+            return;
+
+        }
+        else if ( isMoveValidKing(move) && currentPiece.getType()==Type.KING) {
+
+            System.out.println("Make move for King");
+
+            startSpace = getSpaceByPosition(move.getStart()); // get the origin position
+            movedPiece = startSpace.getPiece();               // get the piece about to be moved
+            move.getEnd().getRow();
+
             setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
+            System.out.println("Setting the piece to its end position");
             startSpace.setPiece(null);                              // remove the piece from the origin position
             isAValidMove = true;
         }
+
 
         if (capturedTrue && isAValidMove) {
             //removes captured pieces from the board.
