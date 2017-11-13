@@ -137,6 +137,6 @@ public class Game {
   public synchronized String toString() {
     Player playerOne = players.get(Color.RED);
     Player playerTwo = players.get(Color.WHITE);
-    return "{Game: " + playerOne + " vs " + playerTwo + "}";
+    return "{Game: " + playerOne.getUsername() + " vs " + playerTwo.getUsername() + "}";
   }
 }

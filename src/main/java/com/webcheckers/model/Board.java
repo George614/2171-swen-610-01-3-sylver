@@ -374,4 +374,15 @@ public class Board {
         // If we actually went through the entire loop and none of the Pieces could move, return true
         return true;
     }
+
+    public void clearBoard() {
+        // loop through the whole board, clear all the Pieces
+        for (int row = 0; row < 8; row++) {
+            for (int cell = 0; cell < 8; cell++) {
+                Position tempPosition = new Position(row, cell);
+                Space tempSpace = getSpaceByPosition(tempPosition);
+                tempSpace.setPiece(null);
+            }
+        }
+    }
 }

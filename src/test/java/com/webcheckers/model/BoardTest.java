@@ -12,6 +12,117 @@ import org.junit.Test;
 public class BoardTest {
 
   @Test
+  public void clearBoard() throws Exception {
+    final Board CuT = new Board();
+    CuT.clearBoard();
+
+    // Loop through the board and make sure that it's empty
+    for (int row = 0; row < 8; row++) {
+      for (int cell = 0; cell < 8; cell++) {
+        Position tempPosition = new Position(row, cell);
+        Space tempSpace = CuT.getSpaceByPosition(tempPosition);
+        assertNull(tempSpace.getPiece());
+      }
+    }
+  }
+
+  @Test
+  public void isMoveValid() throws Exception {
+  }
+
+  @Test
+  public void getSpaceByPosition() throws Exception {
+    final Board CuT = new Board();
+
+    // Loop through the board and make sure than every position corresponds with the resulting space
+     for (int row = 0; row < 8; row++) {
+       Row tempRow = CuT.getRows().get(row);
+       assertEquals(tempRow.getIndex(), row);
+
+       for (int cell = 0; cell < 8; cell++) {
+         Space tempSpace = CuT.getSpaceByPosition(new Position(row, cell));
+         assertEquals(tempSpace.getCellIdx(), cell);
+       }
+     }
+  }
+
+  @Test
+  public void setPieceByPosition() throws Exception {
+  }
+
+  @Test
+  public void validateMove() throws Exception {
+  }
+
+  @Test
+  public void makeMove() throws Exception {
+  }
+
+  @Test
+  public void canKingMove() throws Exception {
+    final Board CuT = new Board();
+    CuT.clearBoard();
+    // Get the scenario for a king to be blocked through all four directions
+
+    Space spaceRedKingPiece = CuT.getSpaceByPosition(new Position(3, 4));
+    Space spaceWhiteSinglePiece1 = CuT.getSpaceByPosition(new Position(1, 2));
+    Space spaceWhiteSinglePiece2 = CuT.getSpaceByPosition(new Position(2, 3));
+    Space spaceWhiteSinglePiece3 = CuT.getSpaceByPosition(new Position(2, 5));
+    Space spaceWhiteSinglePiece4 = CuT.getSpaceByPosition(new Position(1, 6));
+    Space spaceWhiteSinglePiece5 = CuT.getSpaceByPosition(new Position(4, 3));
+    Space spaceWhiteSinglePiece6 = CuT.getSpaceByPosition(new Position(4, 5));
+    Space spaceWhiteSinglePiece7 = CuT.getSpaceByPosition(new Position(5, 2));
+    Space spaceWhiteSinglePiece8 = CuT.getSpaceByPosition(new Position(5, 6));
+
+    spaceRedKingPiece.setPiece(new Piece(Type.KING, Color.RED));
+    spaceWhiteSinglePiece1.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    spaceWhiteSinglePiece2.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    spaceWhiteSinglePiece3.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    spaceWhiteSinglePiece4.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    spaceWhiteSinglePiece5.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    spaceWhiteSinglePiece6.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    spaceWhiteSinglePiece7.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    spaceWhiteSinglePiece8.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+
+    // The king shouldn't be able to move, it's blocked in all directions
+    assertFalse(CuT.canMove(new Position(3, 4)));
+  }
+
+  @Test
+  public void canCapture() throws Exception {
+  }
+
+  @Test
+  public void isColorBlocked() throws Exception {
+    final Board CuT = new Board();
+    // Create the following situation: a white piece that is surrounded by red pieces and can't move
+    CuT.clearBoard();
+
+    Space spaceWhitePiece = CuT.getSpaceByPosition(new Position(7, 0));
+    Space spaceFirstRedPiece = CuT.getSpaceByPosition(new Position(6, 1));
+    Space spaceSecondRedPiece = CuT.getSpaceByPosition(new Position(5, 2));
+
+    spaceWhitePiece.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    spaceFirstRedPiece.setPiece(new Piece(Type.SINGLE, Color.RED));
+    spaceSecondRedPiece.setPiece(new Piece(Type.SINGLE, Color.RED));
+
+    CuT.currentTurn = Color.WHITE;
+    boolean result = CuT.isColorBlocked(Color.WHITE);
+    assertTrue(result);
+  }
+
+  @Test
+  public void isColorNotBlocked() throws Exception {
+    final Board CuT = new Board();
+    // In the default board setup, no Color should be blocked
+    boolean whiteResult = CuT.isColorBlocked(Color.WHITE);
+    boolean redResult = CuT.isColorBlocked(Color.RED);
+
+    assertFalse(whiteResult);
+    assertFalse(redResult);
+  }
+
+  @Test
   public void getRows() throws Exception {
     final Board CuT = new Board();
     assertTrue(CuT.getRows().size() == 8);
