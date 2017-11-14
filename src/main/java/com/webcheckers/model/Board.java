@@ -338,16 +338,6 @@ public class Board {
     }
 
     /**
-     * Queries whether the {@link Piece}'s present on the given {@link Position} can make a capture or not
-     *
-     * @param position
-     *          The {@link Board}'s {@link Position}.
-     *
-     * @return true if the {@link Piece} present in the {@link Position} can make a capture, false if it can't or if there's no {@link Piece}
-     */
-    public boolean canCapture(Position position) { return true; }
-
-    /**
      * Queries whether the {@link Color}'s associated user is blocked from moving any pieces
      *
      * @param color
