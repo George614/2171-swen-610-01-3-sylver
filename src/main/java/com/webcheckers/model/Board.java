@@ -490,11 +490,13 @@ public class Board {
     public Message validateMove(Move move) {
         Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
         Piece movedPiece = startSpace.getPiece();
+
         if (isMoveValid(move)) {
             System.out.println("validateMove");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
         }
-        else if(isMoveValidKing(move) && movedPiece.getType()==Type.KING){
+        //&& movedPiece.getType()==Type.KING
+        if(isMoveValidKing(move) ){
             System.out.println("validateMove for King");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
         }
