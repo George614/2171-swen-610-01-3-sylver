@@ -73,25 +73,43 @@ public class Board {
         System.out.println("isMoveValidKing");
         Position start = move.getStart();
         Position end = move.getEnd();
+
         boolean resultR=false;
 
         //start = in row, there's a cell that has this piece
         int diagonalStartSpace = start.getRow() + start.getCell();
         int diagonalEndSpace = end.getRow() + end.getCell();
         int startSpace = diagonalStartSpace % 2;
-
+        Piece currentOccupantN = null;
         //non-capturing move
         switch(currentTurn){
 
             case WHITE:
+
                 System.out.println("Case WHITE");
                 Row checkPieceN = null;
                 boolean backward = (start.getRow() > end.getRow());
+                System.out.println("backward"+backward);
+
+                if (end.getRow() - 1 < 0) {
+                    checkPieceN = rows.get(0);
+                }
+                else if(backward) {
+                    if (end.getRow() + 1 > 7){
+                        checkPieceN = rows.get(7);
+                    }
+                    else{
+                        checkPieceN = rows.get(end.getRow()+1);}
+                }
+                else {
+                    checkPieceN = rows.get(end.getRow() - 1);
+                }
 
 
-
+                /*
                 if (end.getRow() + 1 > 7){
                     checkPieceN = rows.get(7);
+
                 }
                 else if(backward) {
 
@@ -105,41 +123,43 @@ public class Board {
                     checkPieceN = rows.get(end.getRow()+1);
                 };
 
+                */
                 //boolean result=moveKing(checkPieceN,end,start);
 
 
                 List<Space> rowSpacesN = checkPieceN.getSpaces();
-                Piece currentOccupantN = null;
+
 
                 if ((end.getRow() + end.getCell()) % 2 == 1) {
                     //if a red piece is in the way, capturing move, return true
                     boolean leftDirection = (start.getCell() > end.getCell());
                     boolean rightDirection = (start.getCell() < end.getCell());
 
-                    if(backward){
-                        if(leftDirection){
-                            currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+                    if (leftDirection && backward){ // Going left backward
 
-                        }
-                        else if(rightDirection){
-                            currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
-
-
-                        }
+                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
                     }
-                    else if(!backward){
-                        if(leftDirection){
-                            currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
+                    if(leftDirection && !backward){ //going left forward
 
-                        }
-                        else if(rightDirection){
-                            currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
+                    }
+                    if (rightDirection && backward) { // Going right backward
 
-
-                        }
-
+                        currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
                     }
 
+                    if(rightDirection && !backward){ //going right forward
+
+                        currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+                        System.out.println("currentOccupantN "+currentOccupantN);
+
+                    }
+                    else{
+                        return false;
+                    }
+
+                    System.out.println(currentOccupantN);
+                    System.out.println(currentOccupantN.getColor() == Color.RED);
                     if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED) {
 
                         int y = java.lang.Math.abs(end.getRow() - start.getRow());
@@ -149,35 +169,58 @@ public class Board {
                             return resultR;
                         }
                         //(start.getCell() < end.getCell())
-                        if ((leftDirection && backward) || (rightDirection && !backward)){ // Going left backward
+                        if (leftDirection && backward) { // Going left backward
 
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
+                            capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
 
                         }
-                        else if ((leftDirection && !backward)||(rightDirection && backward)) {
+                        else if (leftDirection && !backward) {
 
                             capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
 
                         }
+                        //(start.getCell() > end.getCell())
+                        else if (rightDirection && backward) { // Going right backward
+                            System.out.println("Going right forward");
 
+                            capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
+                        }
+                        else if (rightDirection && !backward) {
+                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
+                        }
 
                         capturedTrue = true;
                         return true;
                     }
-
                     else if(currentOccupantN==null){
                         System.out.println("In else!");
                         resultR=moveKing(checkPieceN,end,start);
-                        System.out.println(resultR);
                         return resultR;
                     }
                 }
 
-                return false;
+                //return resultR;
 
             case RED:
                 Row checkPiece = null;
-                boolean backwardRed = (start.getRow() < end.getRow());;
+                boolean backwardRed = (start.getRow() < end.getRow());
+
+                if (end.getRow() + 1 > 7){
+                    checkPiece = rows.get(7);
+
+                }
+                else if(backwardRed) {
+
+                    if (end.getRow() - 1 < 0){
+                        checkPiece = rows.get(0);
+                    }else{
+                        checkPiece= rows.get(end.getRow()-1);
+                    }
+                }
+                else {
+                    checkPiece = rows.get(end.getRow()+1);
+                };
+                /*
                 if (end.getRow() - 1 < 0) {
                     checkPiece = rows.get(0);
                 }
@@ -190,7 +233,7 @@ public class Board {
                 }
                 else {
                     checkPiece = rows.get(end.getRow() - 1);
-                }
+                }*/
 
                 //List<Space> rowSpaces = checkPiece.getSpaces();
 
