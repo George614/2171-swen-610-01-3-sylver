@@ -247,21 +247,21 @@ public class Board {
                     boolean leftDirection = (start.getCell() > end.getCell());
                     boolean rightDirection = (start.getCell() < end.getCell());
 
-                    if (leftDirection && backwardRed){ // Going left forward
-
-                        currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
-                    }
-                    else if (rightDirection && backwardRed) { // Going right forward
+                    if (leftDirection && backwardRed){ // Going left backward
 
                         currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
                     }
-                    else if(leftDirection){ //going left backward
+                    else if (rightDirection && backwardRed) {
 
                         currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
                     }
-                    else if(rightDirection){ //going right backward
+                    else if(leftDirection && !backwardRed){
 
                         currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
+                    }
+                    else if(rightDirection && !backwardRed){
+
+                        currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
 
                     }
 
@@ -273,24 +273,20 @@ public class Board {
                             resultR=false;
                             return resultR;
                         }
-                        if (leftDirection && backwardRed) { // Going left backward
-                            System.out.println("Going left forward");
-
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
-
-                        } else if (rightDirection && backwardRed) { // Going right backward
-                            System.out.println("Going right forward");
+                        if (leftDirection && backwardRed) {
 
                             capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
+
+                        } else if (rightDirection && backwardRed) {
+
+                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
                         }
-                        else if (leftDirection ) { // Going left backward
-                            System.out.println("Going left backward");
+                        else if (leftDirection && !backwardRed) {
 
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
+                            capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
 
-                        } else if (rightDirection ) { // Going right backward
-                            System.out.println("Going right backward");
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
+                        } else if (rightDirection && !backwardRed) {
+                            capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
                         }
 
                         capturedTrue = true;
