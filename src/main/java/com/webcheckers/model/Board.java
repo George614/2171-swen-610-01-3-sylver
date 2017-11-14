@@ -122,37 +122,21 @@ public class Board {
 
                         }
                         else if(rightDirection){
+                            currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
 
 
                         }
                     }
                     else if(!backward){
                         if(leftDirection){
+                            currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
 
                         }
                         else if(rightDirection){
+                            currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
 
 
                         }
-
-                    }
-
-                    if ((start.getCell() > end.getCell()) && backward){ // Going left backward
-
-
-                    }
-                    else if((start.getCell() > end.getCell()) && !backward){ //going left forward
-
-                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
-                    }
-                    else if ((start.getCell() < end.getCell()) && backward) { // Going right backward
-
-                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
-                    }
-
-                    else if((start.getCell() < end.getCell()) && !backward){ //going right backward
-
-                        currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
 
                     }
 
@@ -165,36 +149,31 @@ public class Board {
                             return resultR;
                         }
                         //(start.getCell() < end.getCell())
-                        if (leftDirection && backward) { // Going left backward
+                        if ((leftDirection && backward) || (rightDirection && !backward)){ // Going left backward
 
                             capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
 
                         }
-                        else if (leftDirection && !backward) {
+                        else if ((leftDirection && !backward)||(rightDirection && backward)) {
 
                             capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
 
                         }
-                        //(start.getCell() > end.getCell())
-                        else if (rightDirection && backward) {
 
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
-                        }
-                        else if (rightDirection && !backward) {
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
-                        }
 
                         capturedTrue = true;
                         return true;
                     }
-                    else{
+
+                    else if(currentOccupantN==null){
                         System.out.println("In else!");
                         resultR=moveKing(checkPieceN,end,start);
+                        System.out.println(resultR);
                         return resultR;
                     }
                 }
 
-                return resultR;
+                return false;
 
             case RED:
                 Row checkPiece = null;
