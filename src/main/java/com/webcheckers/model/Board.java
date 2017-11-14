@@ -352,7 +352,7 @@ public class Board {
                         currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
                     }
 
-                    if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED) {
+                    if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED && currentOccupantN.getType()!=Type.KING) {
 
                         int y = java.lang.Math.abs(end.getRow() - start.getRow());
 
@@ -399,7 +399,7 @@ public class Board {
                         currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
                     }
 
-                    if (currentOccupant != null && currentOccupant.getColor() == Color.WHITE) {
+                    if (currentOccupant != null && currentOccupant.getColor() == Color.WHITE && currentOccupant.getType()!=Type.KING) {
                         //capture move
 
                         int y = java.lang.Math.abs(end.getRow() - start.getRow());
