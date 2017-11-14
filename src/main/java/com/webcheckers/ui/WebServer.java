@@ -141,6 +141,6 @@ public class WebServer {
     post(SUBMIT_TURN_URL, new PostSubmitTurnRoute(gameCenter, playerLobby), templateEngine);
     post(CHECK_TURN_URL, new PostCheckTurnRoute(gameCenter, playerLobby),  JsonUtils.json());
     post(VALIDATE_MOVE_URL, new PostValidateMoveRoute(gameCenter, playerLobby),  JsonUtils.json());
-    post(BACKUP_MOVE_URL, new PostBackupMoveRoute(),  JsonUtils.json());
+    post(BACKUP_MOVE_URL, new PostBackupMoveRoute(gameCenter),  JsonUtils.json());
   }
 }

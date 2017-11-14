@@ -53,10 +53,6 @@ public class PostSignInRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
         Assert.assertEquals(GetSignInRoute.VIEW_NAME, result.getViewName());
-//        Assert.assertEquals(GetHomeRoute.IS_LOGGED_IN_ATTR, true);
-
-//        Assert.assertEquals(GetHomeRoute.TITLE, vm.get(GetHomeRoute.TITLE_ATTR));
-//        assertEquals(PostSignInRoute.SIGN_IN_SUCCESSFUL_MESSAGE, vm.get(GetGameRoute.TITLE_ATTR));
         when(session.attribute(PlayerLobby.PLAYER_ID) != null).thenReturn(true);
 
 
