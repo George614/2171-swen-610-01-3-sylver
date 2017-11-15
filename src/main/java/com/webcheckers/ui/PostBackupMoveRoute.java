@@ -25,6 +25,6 @@ public class PostBackupMoveRoute implements Route {
   @Override
   public Object handle(Request request, Response response) throws Exception {
     gameCenter.get(request.session()).backupMove();
-    return new Message("You have successfully backed up a move", MessageType.INFO);
+    return new Message("You have successfully backed up a move, Please Click on Submit Turn", MessageType.INFO);
   }
 }
