@@ -131,34 +131,66 @@ public class Board {
 
 
                 if ((end.getRow() + end.getCell()) % 2 == 1) {
+
                     //if a red piece is in the way, capturing move, return true
                     boolean leftDirection = (start.getCell() > end.getCell());
                     boolean rightDirection = (start.getCell() < end.getCell());
 
                     if (leftDirection && backward){ // Going left backward
 
-                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
+                        if(end.getCell()+1==start.getCell()){
+                            currentOccupantN=null;
+                        }
+                        else{
+                            currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
+                        }
+
+
                     }
                     if(leftDirection && !backward){ //going left forward
 
-                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
+                        if(end.getCell()+1==start.getCell()){
+                            currentOccupantN=null;
+                        }
+                        else{
+                            currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
+                        }
+
+                        System.out.println("currentOccupantN LEFT FORWARD "+currentOccupantN);
+
                     }
                     if (rightDirection && backward) { // Going right backward
+                        if(end.getCell()-1==start.getCell()){
+                            currentOccupantN=null;
+                        }
+                        else{
+                            currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+                        }
 
-                        currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
                     }
 
                     if(rightDirection && !backward){ //going right forward
 
-                        currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+                        if(end.getCell()-1==start.getCell()){
+                            currentOccupantN=null;
+
+                        }
+                        else{
+                            currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+                        }
+
+
                         System.out.println("currentOccupantN "+currentOccupantN);
 
                     }
-                    else{
-                        return false;
+
+
+                    if(currentOccupantN==null){
+                        System.out.println("In else!");
+                        resultR=moveKing(checkPieceN,end,start);
+                        return resultR;
                     }
 
-                    System.out.println(currentOccupantN);
                     System.out.println(currentOccupantN.getColor() == Color.RED);
                     if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED) {
 
@@ -192,11 +224,7 @@ public class Board {
                         capturedTrue = true;
                         return true;
                     }
-                    else if(currentOccupantN==null){
-                        System.out.println("In else!");
-                        resultR=moveKing(checkPieceN,end,start);
-                        return resultR;
-                    }
+
                 }
 
                 //return resultR;
@@ -292,7 +320,7 @@ public class Board {
                         capturedTrue = true;
                         return true;
                     }
-                    else{
+                    else if(currentOccupant == null){
                         System.out.println("In else!");
                         resultR=moveKing(checkPiece,end,start);
                         return resultR;
