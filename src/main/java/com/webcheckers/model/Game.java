@@ -94,15 +94,11 @@ public class Game {
     }
     throw new IllegalArgumentException("Invalid username, that Player is not part of the game.");
   }
-  public void backupMove(){
+  public void backupMove() {
 
-    if (validatedMoves == null || validatedMoves.isEmpty()) {
-
-
+    if (!(validatedMoves == null || validatedMoves.isEmpty())) {
+      validatedMoves.remove(validatedMoves.size() - 1);
     }
-
-    validatedMoves.remove(validatedMoves.size()-1);
-
   }
 
   /**
