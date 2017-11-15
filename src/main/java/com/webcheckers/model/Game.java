@@ -99,6 +99,12 @@ public class Game {
     }
     throw new IllegalArgumentException("Invalid username, that Player is not part of the game.");
   }
+  public void backupMove() {
+
+    if (!(validatedMoves == null || validatedMoves.isEmpty())) {
+      validatedMoves.remove(validatedMoves.size() - 1);
+    }
+  }
 
   /**
    * Gets the Player that corresponds to the current turn.
