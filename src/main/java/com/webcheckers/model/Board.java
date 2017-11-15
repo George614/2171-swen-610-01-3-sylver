@@ -136,8 +136,6 @@ public class Board {
                         return false;
                     }
 
-                    System.out.println(currentOccupantN);
-                    System.out.println(currentOccupantN.getColor() == Color.RED);
                     if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED) {
 
                         int y = java.lang.Math.abs(end.getRow() - start.getRow());
@@ -146,7 +144,6 @@ public class Board {
                             resultR=false;
                             return resultR;
                         }
-                        //(start.getCell() < end.getCell())
                         if (leftDirection && backward) { // Going left backward
 
                             capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
@@ -157,7 +154,6 @@ public class Board {
                             capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
 
                         }
-                        //(start.getCell() > end.getCell())
                         else if (rightDirection && backward) { // Going right backward
 
                             capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
@@ -170,7 +166,6 @@ public class Board {
                         return true;
                     }
                     else if(currentOccupantN==null){
-                        System.out.println("In else!");
                         resultR=moveKing(checkPieceN,end,start);
                         return resultR;
                     }
