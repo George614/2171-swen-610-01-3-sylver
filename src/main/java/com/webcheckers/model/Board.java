@@ -276,21 +276,49 @@ public class Board {
                     boolean rightDirection = (start.getCell() < end.getCell());
 
                     if (leftDirection && backwardRed){ // Going left backward
+                        if(end.getCell()+1==start.getCell()){
+                            currentOccupant=null;
 
-                        currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
+                        }
+                        else{
+                            currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
+                        }
+
                     }
                     else if (rightDirection && backwardRed) {
+                        if(end.getCell()-1==start.getCell()){
+                            currentOccupant=null;
+                        }
+                        else{
+                            currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
+                        }
 
-                        currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
+
                     }
                     else if(leftDirection && !backwardRed){
+                        if(end.getCell()+1==start.getCell()){
+                            currentOccupant=null;
+                        }
+                        else{
+                            currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
+                        }
 
-                        currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
+
                     }
                     else if(rightDirection && !backwardRed){
+                        if(end.getCell()-1==start.getCell()){
+                            currentOccupant=null;
+                        }
+                        else{
+                            currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
+                        }
+                        
+                    }
 
-                        currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
-
+                    if(currentOccupant == null){
+                        System.out.println("In else!");
+                        resultR=moveKing(checkPiece,end,start);
+                        return resultR;
                     }
 
                     if (currentOccupant != null && currentOccupant.getColor() == Color.WHITE) {
@@ -320,11 +348,7 @@ public class Board {
                         capturedTrue = true;
                         return true;
                     }
-                    else if(currentOccupant == null){
-                        System.out.println("In else!");
-                        resultR=moveKing(checkPiece,end,start);
-                        return resultR;
-                    }
+
                 }
 
 
