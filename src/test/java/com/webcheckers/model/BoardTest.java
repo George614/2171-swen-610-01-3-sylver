@@ -168,7 +168,6 @@ public class BoardTest {
 
     // setting up the board pieces
     Position redPieceToDelete = new Position(1, 2);
-    //Position redPieceToDelete2 = new Position(0, 7);
 
     Position whitePieceStart = new Position(3, 0);
     Position whitePieceEnd = new Position(1, 2);
@@ -176,17 +175,40 @@ public class BoardTest {
     Piece pieceToBeTested = new Piece(Type.SINGLE, Color.WHITE);
 
     CuT.setPieceByPosition(redPieceToDelete, null);
-    //CuT.setPieceByPosition(redPieceToDelete2, null);
     CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
     CuT.makeMove(capturingMove);
 
 
-    //Piece pieceAfterMove = CuT.getSpaceByPosition(whitePieceEnd).getPiece();
     assertTrue( (CuT.getRows().get(1).getSpaces().get(2).getPiece()!=null )&& (CuT.getRows().get(3).getSpaces().get(0).getPiece() ==null) && (CuT.getRows().get(2).getSpaces().get(1).getPiece()==null));
 
     //move left capture
 
   }
+
+  @Test
+  public void testSingleCapturingWhiteKing() throws Exception {
+    final Board CuT = new Board();
+    CuT.currentTurn = Color.WHITE;
+
+    // setting up the board pieces
+    Position redPieceToDelete = new Position(1, 2);
+
+    Position whitePieceStart = new Position(3, 0);
+    Position whitePieceEnd = new Position(1, 2);
+    Move capturingMove = new Move(whitePieceStart, whitePieceEnd);
+    Piece pieceToBeTested = new Piece(Type.KING, Color.WHITE);
+
+    CuT.setPieceByPosition(redPieceToDelete, null);
+    CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
+    CuT.makeMove(capturingMove);
+
+
+    assertTrue( (CuT.getRows().get(1).getSpaces().get(2).getPiece()!=null )&& (CuT.getRows().get(3).getSpaces().get(0).getPiece() ==null) && (CuT.getRows().get(2).getSpaces().get(1).getPiece()==null));
+
+    //move left capture
+
+  }
+
 
   @Test
   public void testSingleCapturingWhiteLeft() throws Exception {
@@ -210,13 +232,32 @@ public class BoardTest {
 
 
   @Test
+  public void testSingleCapturingWhiteLeftRed() throws Exception {
+    final Board CuT = new Board();
+    CuT.currentTurn = Color.WHITE;
+    Position redPieceToDelete=new Position(1,2);
+
+    Position whitePieceStart = new Position(3, 4);
+    Position whitePieceEnd = new Position(1, 2);
+    Piece pieceToBeTested = new Piece(Type.KING, Color.WHITE);
+    CuT.setPieceByPosition(redPieceToDelete, null);
+    //CuT.setPieceByPosition(redPieceToDelete2, null);
+    CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
+    Move capturingMove = new Move(whitePieceStart, whitePieceEnd);
+    CuT.makeMove(capturingMove);
+
+    assertTrue( (CuT.getRows().get(1).getSpaces().get(2).getPiece()!=null )&& (CuT.getRows().get(3).getSpaces().get(4).getPiece() ==null) && (CuT.getRows().get(2).getSpaces().get(3).getPiece()==null));
+
+
+  }
+
+  @Test
   public void testRedCapturingWhite() throws Exception {
     final Board CuT = new Board();
     CuT.currentTurn = Color.RED;
 
     // setting up the board pieces
     Position whitePieceToDelete = new Position(6, 1);
-    //Position redPieceToDelete2 = new Position(0, 7);
 
     Position redPieceStart = new Position(4, 3);
     Position redPieceEnd = new Position(6, 1);
@@ -224,12 +265,34 @@ public class BoardTest {
     Piece pieceToBeTested = new Piece(Type.SINGLE, Color.RED);
 
     CuT.setPieceByPosition(whitePieceToDelete, null);
-    //CuT.setPieceByPosition(redPieceToDelete2, null);
     CuT.setPieceByPosition(redPieceStart, pieceToBeTested);
     CuT.makeMove(capturingMove);
 
 
-    //Piece pieceAfterMove = CuT.getSpaceByPosition(whitePieceEnd).getPiece();
+    assertTrue( (CuT.getRows().get(6).getSpaces().get(1).getPiece()!=null )&& (CuT.getRows().get(5).getSpaces().get(2).getPiece() ==null) && (CuT.getRows().get(4).getSpaces().get(3).getPiece()==null));
+
+    //capturing move test
+  }
+
+
+  @Test
+  public void testRedCapturingWhiteKing() throws Exception {
+    final Board CuT = new Board();
+    CuT.currentTurn = Color.RED;
+
+    // setting up the board pieces
+    Position whitePieceToDelete = new Position(6, 1);
+
+    Position redPieceStart = new Position(4, 3);
+    Position redPieceEnd = new Position(6, 1);
+    Move capturingMove = new Move(redPieceStart, redPieceEnd);
+    Piece pieceToBeTested = new Piece(Type.KING, Color.RED);
+
+    CuT.setPieceByPosition(whitePieceToDelete, null);
+    CuT.setPieceByPosition(redPieceStart, pieceToBeTested);
+    CuT.makeMove(capturingMove);
+
+
     assertTrue( (CuT.getRows().get(6).getSpaces().get(1).getPiece()!=null )&& (CuT.getRows().get(5).getSpaces().get(2).getPiece() ==null) && (CuT.getRows().get(4).getSpaces().get(3).getPiece()==null));
 
     //capturing move test
@@ -238,27 +301,37 @@ public class BoardTest {
   @Test
   public void invalidMoveWhite() throws Exception {
     final Board CuT = new Board();
-    CuT.currentTurn = Color.RED;
+    CuT.currentTurn = Color.WHITE;
 
-    // setting up the board pieces
-    //Position whitePieceToDelete = new Position(6, 1);
-    //Position redPieceToDelete2 = new Position(0, 7);
 
     Position whitePieceStart = new Position(4, 1);
     Position whitePieceEnd = new Position(4, 3);
     Move invalidMove = new Move(whitePieceStart, whitePieceEnd);
-    Piece pieceToBeTested = new Piece(Type.SINGLE, Color.RED);
+    Piece pieceToBeTested = new Piece(Type.SINGLE, Color.WHITE);
 
-    //CuT.setPieceByPosition(whitePieceToDelete, null);
-    //CuT.setPieceByPosition(redPieceToDelete2, null);
     CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
     CuT.makeMove(invalidMove);
 
     assertTrue((CuT.getRows().get(4).getSpaces().get(3).getPiece()==null ));
-    //Piece pieceAfterMove = CuT.getSpaceByPosition(whitePieceEnd).getPiece();
-    //assertTrue( (CuT.getRows().get(6).getSpaces().get(1).getPiece()!=null )&& (CuT.getRows().get(5).getSpaces().get(2).getPiece() ==null) && (CuT.getRows().get(4).getSpaces().get(3).getPiece()==null));
 
-    //capturing move test
+  }
+
+  @Test
+  public void invalidMoveWhiteRed() throws Exception {
+    final Board CuT = new Board();
+    CuT.currentTurn = Color.WHITE;
+
+
+    Position whitePieceStart = new Position(4, 1);
+    Position whitePieceEnd = new Position(4, 3);
+    Move invalidMove = new Move(whitePieceStart, whitePieceEnd);
+    Piece pieceToBeTested = new Piece(Type.KING, Color.WHITE);
+
+    CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
+    CuT.makeMove(invalidMove);
+
+    assertTrue((CuT.getRows().get(4).getSpaces().get(3).getPiece()==null ));
+
   }
 
 
@@ -267,25 +340,37 @@ public class BoardTest {
     final Board CuT = new Board();
     CuT.currentTurn = Color.WHITE;
 
-    // setting up the board pieces
-    //Position whitePieceToDelete = new Position(6, 1);
-    //Position redPieceToDelete2 = new Position(0, 7);
 
     Position whitePieceStart = new Position(3, 0);
     Position whitePieceEnd = new Position(3, 2);
     Move invalidMove = new Move(whitePieceStart, whitePieceEnd);
     Piece pieceToBeTested = new Piece(Type.SINGLE, Color.WHITE);
 
-    //CuT.setPieceByPosition(whitePieceToDelete, null);
-    //CuT.setPieceByPosition(redPieceToDelete2, null);
+
     CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
     CuT.makeMove(invalidMove);
 
     assertTrue((CuT.getRows().get(3).getSpaces().get(2).getPiece()==null ));
-    //Piece pieceAfterMove = CuT.getSpaceByPosition(whitePieceEnd).getPiece();
-    //assertTrue( (CuT.getRows().get(6).getSpaces().get(1).getPiece()!=null )&& (CuT.getRows().get(5).getSpaces().get(2).getPiece() ==null) && (CuT.getRows().get(4).getSpaces().get(3).getPiece()==null));
 
-    //capturing move test
+  }
+
+  @Test
+  public void invalidMoveRedKing() throws Exception {
+    final Board CuT = new Board();
+    CuT.currentTurn = Color.WHITE;
+
+
+    Position whitePieceStart = new Position(3, 0);
+    Position whitePieceEnd = new Position(3, 2);
+    Move invalidMove = new Move(whitePieceStart, whitePieceEnd);
+    Piece pieceToBeTested = new Piece(Type.KING, Color.WHITE);
+
+
+    CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
+    CuT.makeMove(invalidMove);
+
+    assertTrue((CuT.getRows().get(3).getSpaces().get(2).getPiece()==null ));
+
   }
 
   @Test
@@ -293,25 +378,19 @@ public class BoardTest {
     final Board CuT = new Board();
     CuT.currentTurn = Color.RED;
 
-    // setting up the board pieces
-    //Position whitePieceToDelete = new Position(6, 1);
-    //Position redPieceToDelete2 = new Position(0, 7);
+
 
     Position whitePieceStart = new Position(3, 0);
     Position whitePieceEnd = new Position(3, 2);
     Move imaginaryMove = new Move(whitePieceStart, whitePieceEnd);
     Piece pieceToBeTested = new Piece(Type.SINGLE, Color.RED);
 
-    //CuT.setPieceByPosition(whitePieceToDelete, null);
-    //CuT.setPieceByPosition(redPieceToDelete2, null);
+
     CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
     CuT.makeMove(imaginaryMove);
 
     assertTrue((CuT.getRows().get(3).getSpaces().get(2).getPiece()==null ));
-    //Piece pieceAfterMove = CuT.getSpaceByPosition(whitePieceEnd).getPiece();
-    //assertTrue( (CuT.getRows().get(6).getSpaces().get(1).getPiece()!=null )&& (CuT.getRows().get(5).getSpaces().get(2).getPiece() ==null) && (CuT.getRows().get(4).getSpaces().get(3).getPiece()==null));
 
-    //capturing move test
   }
 
   @Test
@@ -334,25 +413,22 @@ public class BoardTest {
     CuT.makeMove(invalidMove);
 
     assertTrue((CuT.getRows().get(4).getSpaces().get(0).getPiece()==null ));
-    //Piece pieceAfterMove = CuT.getSpaceByPosition(whitePieceEnd).getPiece();
-    //assertTrue( (CuT.getRows().get(6).getSpaces().get(1).getPiece()!=null )&& (CuT.getRows().get(5).getSpaces().get(2).getPiece() ==null) && (CuT.getRows().get(4).getSpaces().get(3).getPiece()==null));
 
-    //capturing move test
   }
 
   @Test
-  public void notDiagonalMoveWhite() throws Exception {
+  public void notDiagonalMoveRedKing() throws Exception {
     final Board CuT = new Board();
-    CuT.currentTurn = Color.WHITE;
+    CuT.currentTurn = Color.RED;
 
     // setting up the board pieces
     //Position whitePieceToDelete = new Position(6, 1);
     //Position redPieceToDelete2 = new Position(0, 7);
 
-    Position whitePieceStart = new Position(5, 0);
+    Position whitePieceStart = new Position(3, 0);
     Position whitePieceEnd = new Position(4, 0);
     Move invalidMove = new Move(whitePieceStart, whitePieceEnd);
-    Piece pieceToBeTested = new Piece(Type.SINGLE, Color.WHITE);
+    Piece pieceToBeTested = new Piece(Type.KING, Color.RED);
 
     //CuT.setPieceByPosition(whitePieceToDelete, null);
     //CuT.setPieceByPosition(redPieceToDelete2, null);
@@ -360,10 +436,45 @@ public class BoardTest {
     CuT.makeMove(invalidMove);
 
     assertTrue((CuT.getRows().get(4).getSpaces().get(0).getPiece()==null ));
-    //Piece pieceAfterMove = CuT.getSpaceByPosition(whitePieceEnd).getPiece();
-    //assertTrue( (CuT.getRows().get(6).getSpaces().get(1).getPiece()!=null )&& (CuT.getRows().get(5).getSpaces().get(2).getPiece() ==null) && (CuT.getRows().get(4).getSpaces().get(3).getPiece()==null));
 
-    //capturing move test
+  }
+
+  @Test
+  public void notDiagonalMoveWhite() throws Exception {
+    final Board CuT = new Board();
+    CuT.currentTurn = Color.WHITE;
+
+
+    Position whitePieceStart = new Position(5, 0);
+    Position whitePieceEnd = new Position(4, 0);
+    Move invalidMove = new Move(whitePieceStart, whitePieceEnd);
+    Piece pieceToBeTested = new Piece(Type.SINGLE, Color.WHITE);
+
+    CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
+    CuT.makeMove(invalidMove);
+
+    assertTrue((CuT.getRows().get(4).getSpaces().get(0).getPiece()==null ));
+
+
+  }
+
+  @Test
+  public void notDiagonalMoveWhiteKing() throws Exception {
+    final Board CuT = new Board();
+    CuT.currentTurn = Color.WHITE;
+
+
+    Position whitePieceStart = new Position(5, 0);
+    Position whitePieceEnd = new Position(4, 0);
+    Move invalidMove = new Move(whitePieceStart, whitePieceEnd);
+    Piece pieceToBeTested = new Piece(Type.KING, Color.WHITE);
+
+    CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
+    CuT.makeMove(invalidMove);
+
+    assertTrue((CuT.getRows().get(4).getSpaces().get(0).getPiece()==null ));
+
+
   }
 
   @Test
@@ -393,6 +504,8 @@ public class BoardTest {
 
     assertTrue(receivedValid.getType()==MessageType.INFO);
 
+
+
   }
 
   @Test
@@ -402,7 +515,6 @@ public class BoardTest {
 
     // setting up the board pieces
     Position whitePieceToDelete = new Position(6, 7);
-    //Position redPieceToDelete2 = new Position(0, 7);
 
     Position redPieceStart = new Position(4, 5);
     Position redPieceEnd = new Position(6, 7);
@@ -410,15 +522,21 @@ public class BoardTest {
     Piece pieceToBeTested = new Piece(Type.SINGLE, Color.RED);
 
     CuT.setPieceByPosition(whitePieceToDelete, null);
-    //CuT.setPieceByPosition(redPieceToDelete2, null);
     CuT.setPieceByPosition(redPieceStart, pieceToBeTested);
     CuT.makeMove(invalidMove);
 
     assertTrue((CuT.getRows().get(4).getSpaces().get(5).getPiece()==null ) && ((CuT.getRows().get(5).getSpaces().get(6).getPiece()==null)) && ((CuT.getRows().get(6).getSpaces().get(7).getPiece()!=null)) );
-    //Piece pieceAfterMove = CuT.getSpaceByPosition(whitePieceEnd).getPiece();
-    //assertTrue( (CuT.getRows().get(6).getSpaces().get(1).getPiece()!=null )&& (CuT.getRows().get(5).getSpaces().get(2).getPiece() ==null) && (CuT.getRows().get(4).getSpaces().get(3).getPiece()==null));
 
-    //capturing move test
+    final Board CuTK = new Board();
+    CuTK.currentTurn = Color.RED;
+    Piece kingPieceToBeTested = new Piece(Type.KING, Color.RED);
+
+    CuTK.setPieceByPosition(whitePieceToDelete, null);
+    CuTK.setPieceByPosition(redPieceStart, kingPieceToBeTested);
+    CuTK.makeMove(invalidMove);
+
+    assertTrue((CuTK.getRows().get(4).getSpaces().get(5).getPiece()==null ) && ((CuTK.getRows().get(5).getSpaces().get(6).getPiece()==null)) && ((CuTK.getRows().get(6).getSpaces().get(7).getPiece()!=null)) );
+
   }
 
 }

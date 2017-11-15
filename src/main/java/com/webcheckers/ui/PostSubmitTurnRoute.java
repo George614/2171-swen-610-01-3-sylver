@@ -51,6 +51,7 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
       isKing=( currentGame.board.getRows().get(moveItem.getStart().getRow()).getSpaces().get(moveItem.getStart().getCell()).getPiece().getType()== Type.KING);
       isAValidKingMove= currentGame.board.isMoveValidKing(moveItem);
       if (currentGame.board.isMoveValidSingle(moveItem) || (isKing && isAValidKingMove)) {
+
         currentGame.board.makeMove(moveItem);
         totalValidMoves++;
       }
