@@ -10,7 +10,8 @@ public class Position {
     //
     //  Constants
     //
-
+    static final int LOWER_BOARD_BOUNDARY = 0;
+    static final int UPPER_BOARD_BOUNDARY = 7;
 
     //
     //  Attributes
@@ -36,5 +37,34 @@ public class Position {
 
     public void setRow(int row){this.row=row;}
     public void setCell(int c){this.cell=c;}
+
+    public boolean isValid() {
+        if (row < LOWER_BOARD_BOUNDARY || row > UPPER_BOARD_BOUNDARY) {
+            return false;
+        } else if (cell < LOWER_BOARD_BOUNDARY || cell > UPPER_BOARD_BOUNDARY) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Given the {@Link Position} of a piece about to be captured, return the position in which a Piece would land
+     *
+     * @param capturedPosition
+     *          The {@link Board}'s {@link Position}.
+     *
+     * @return a {@Link Position} object if the position is within the bounds of the board, null otherwise
+     */
+    public Position getJumpEndPosition(Position capturedPosition) {
+        int endRow = ((capturedPosition.getRow() - this.row) * 2) + this.row;
+        int endCell = ((capturedPosition.getCell() - this.cell) * 2) + this.cell;
+        Position endPosition = new Position(endRow, endCell);
+        if (endPosition.isValid()) {
+            return endPosition;
+        } else {
+            return null;
+        }
+    }
 
 }
