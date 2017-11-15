@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
+import sun.plugin.dom.exception.InvalidStateException;
 
 /**
  * A single checkers game.
@@ -26,6 +29,7 @@ public class Game {
   public Board board;
   public List<Move> validatedMoves;
   private static Map<Color, Player> players;
+  public Player winner;
 
   //
   // Constructors
@@ -45,6 +49,7 @@ public class Game {
     Objects.requireNonNull(playerOne, "red player must not be null");
     Objects.requireNonNull(playerTwo, "white player must not be null");
 
+    this.winner = null;
     this.board = new Board();
     this.board.currentTurn = Color.RED;
     this.players = new HashMap<>();
@@ -113,6 +118,17 @@ public class Game {
     this.board.currentTurn = color;
   }
 
+  public boolean hasPlayerWon(String username) {
+    Color color = getPlayerColor(username);
+    if (color == Color.RED) {
+      return this.board.isColorBlocked(Color.WHITE);
+    } else if (color == Color.WHITE) {
+      return this.board.isColorBlocked(Color.RED);
+    } else {
+      return false;
+    }
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -120,6 +136,6 @@ public class Game {
   public synchronized String toString() {
     Player playerOne = players.get(Color.RED);
     Player playerTwo = players.get(Color.WHITE);
-    return "{Game: " + playerOne + " vs " + playerTwo + "}";
+    return "{Game: " + playerOne.getUsername() + " vs " + playerTwo.getUsername() + "}";
   }
 }
