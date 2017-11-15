@@ -23,14 +23,6 @@ public class Board {
     private List<Row> rows;
     public Color currentTurn;
 
-    private Position capturedNew = null;
-    private boolean capturedTrue = false;
-
-    private boolean isAKing=false;
-    private boolean isAValidMove=false;
-
-    private Space startSpace;
-    private Piece movedPiece;
     //
     //  Constructors
     //
@@ -46,539 +38,110 @@ public class Board {
     //  Methods
     //
 
-    public boolean moveKing(Row checkPieceN,Position end,Position start){
-
-        List<Space> rowSpacesN = checkPieceN.getSpaces();
-        Piece currentOccupantN = null;
-
-        if ((end.getRow() + end.getCell()) % 2 == 1) {
-
-            boolean moveUp=((end.getRow() - 1) == start.getRow());
-            boolean moveDown=((end.getRow() + 1) == start.getRow());
-
-            boolean moveLeft=(start.getCell() == (end.getCell() - 1));
-            boolean moveRight=(start.getCell() == (end.getCell() + 1));
-
-            if ((moveUp||moveDown)&& (moveLeft||moveRight)) {
-                // The piece should be able to move
-                return true;
-            }
-
-        }
-
-        return false;
-
-    }
-
-    public boolean isMoveValidKing(Move move){
-
-        Position start = move.getStart();
-        Position end = move.getEnd();
-
-        boolean resultR=false;
-
-        //start = in row, there's a cell that has this piece
-        int diagonalStartSpace = start.getRow() + start.getCell();
-        int diagonalEndSpace = end.getRow() + end.getCell();
-        int startSpace = diagonalStartSpace % 2;
-
-        //non-capturing move
-        switch(currentTurn){
-
-            case WHITE:
-                Piece currentOccupantN = null;
-                Row checkPieceN = null;
-                boolean backward = (start.getRow() > end.getRow());
-                if ((end.getRow() - 1 < 0 )&& !backward) {
-
-                    checkPieceN = rows.get(0);
-                    System.out.println("0");
-                }
-                else if(backward) {
-                    if (end.getRow() + 1 > 7){
-                        checkPieceN = rows.get(7);
-                        System.out.println("7");
-                    }
-                    else{
-                        checkPieceN = rows.get(end.getRow()+1);
-                        System.out.println(end.getRow()+1);
-                    }
-                }
-                else {
-                    checkPieceN = rows.get(end.getRow() - 1);
-                    System.out.println(end.getRow()-1);
-                }
-
-
-                List<Space> rowSpacesN = checkPieceN.getSpaces();
-
-
-                if ((end.getRow() + end.getCell()) % 2 == 1) {
-
-                    //if a red piece is in the way, capturing move, return true
-                    boolean leftDirection = (start.getCell() > end.getCell());
-                    boolean rightDirection = (start.getCell() < end.getCell());
-
-                    if (leftDirection && backward){ // Going left backward
-
-                        if(end.getCell()+1==start.getCell()){
-                            currentOccupantN=null;
-                        }
-                        else{
-                            currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
-                        }
-
-
-                    }
-                    if(leftDirection && !backward){ //going left forward
-
-                        if(end.getCell()+1==start.getCell()){
-                            currentOccupantN=null;
-                        }
-                        else{
-                            currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
-                        }
-
-
-                    }
-                    if (rightDirection && backward) { // Going right backward
-                        if(end.getCell()-1==start.getCell()){
-                            currentOccupantN=null;
-                        }
-                        else{
-                            System.out.println(rowSpacesN);
-
-                            System.out.println(end.getCell()-1);
-                            currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
-                        }
-
-                    }
-
-                    if(rightDirection && !backward){ //going right forward
-                        if(end.getCell()-1==start.getCell()){
-                            currentOccupantN=null;
-                        }
-                        else{
-                            currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
-                        }
-                    }
-                  
-                    if(currentOccupantN==null){
-                        resultR=moveKing(checkPieceN,end,start);
-                        return resultR;
-                    }
-
-                    if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED) {
-
-                        int y = java.lang.Math.abs(end.getRow() - start.getRow());
-
-                        if (y <= 1 || y > 2) {
-                            resultR=false;
-                            return resultR;
-                        }
-                        if (leftDirection && backward) { // Going left backward
-
-                            capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
-
-                        }
-                        else if (leftDirection && !backward) {
-
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
-
-                        }
-                        else if (rightDirection && backward) { // Going right backward
-
-                            capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
-                        }
-                        else if (rightDirection && !backward) {
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
-                        }
-
-                        capturedTrue = true;
-                        return true;
-                    }
-                }
-            case RED:
-                Row checkPiece = null;
-                boolean backwardRed = (start.getRow() < end.getRow());
-
-                if ((end.getRow() + 1 > 7) && !backwardRed){
-                    checkPiece = rows.get(7);
-
-                }
-                else if(backwardRed) {
-
-                    if (end.getRow() - 1 < 0){
-                        checkPiece = rows.get(0);
-                    }else{
-                        checkPiece= rows.get(end.getRow()-1);
-                    }
-                }
-                else {
-                    checkPiece = rows.get(end.getRow()+1);
-                };
-
-
-                List<Space> rowSpaces = checkPiece.getSpaces();
-                Piece currentOccupant = null;
-
-
-                if ((end.getRow() + end.getCell()) % 2 == 1) {
-                    //if a red piece is in the way, capturing move, return true
-
-                    boolean leftDirection = (start.getCell() > end.getCell());
-                    boolean rightDirection = (start.getCell() < end.getCell());
-
-                    if (leftDirection && backwardRed){ // Going left backward
-
-                        if(end.getCell()+1==start.getCell()){
-                            currentOccupant=null;
-
-                        }
-                        else{
-                            currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
-                        }
-
-                    }
-                    else if (rightDirection && backwardRed) {
-
-                        if(end.getCell()-1==start.getCell()){
-                            currentOccupant=null;
-                        }
-                        else{
-                            currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
-                        }
-
-
-                    }
-                    else if(leftDirection && !backwardRed){
-                        if(end.getCell()+1==start.getCell()){
-                            currentOccupant=null;
-
-                        }
-                        else{
-                            currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
-
-                        }
-
-
-                    }
-                    else if(rightDirection && !backwardRed){
-                        if(end.getCell()-1==start.getCell()){
-                            currentOccupant=null;
-                        }
-                        else{
-                            currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
-                        }
-
-                    }
-
-                    if(currentOccupant == null){
-                        resultR=moveKing(checkPiece,end,start);
-                        return resultR;
-                    }
-
-                    if (currentOccupant != null && currentOccupant.getColor() == Color.WHITE) {
-
-                        int y = java.lang.Math.abs(end.getRow() - start.getRow());
-
-                        if (y <= 1 || y > 2) {
-                            resultR=false;
-                            return resultR;
-                        }
-                        if (leftDirection && backwardRed) {
-
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
-
-                        } else if (rightDirection && backwardRed) {
-
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
-                        }
-                        else if (leftDirection && !backwardRed) {
-
-                            capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
-
-                        } else if (rightDirection && !backwardRed) {
-                            capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
-                        }
-
-                        capturedTrue = true;
-                        return true;
-                    }
-                }
-
-                return resultR;
-
-            default:
-                break;
-        }
-
-        return false;
-    }
     /**
-     * Queries whether the Move is valid.
+     * Queries whether the Move is a capture move.
      *
      * @param move
      *          The Player's Move.
      *
-     * @return true if the Move is valid, otherwise, false
+     * @return true if the Move is a capture, otherwise, false
      */
-    public boolean isMoveValidSingle(Move move) {
-
-
-        Position start = move.getStart();
-        Position end = move.getEnd();
-
-        //start = in row, there's a cell that has this piece
-        int diagonalStartSpace = start.getRow() + start.getCell();
-        int diagonalEndSpace = end.getRow() + end.getCell();
-        int startSpace = diagonalStartSpace % 2;
-
-        switch (currentTurn) {
-            case WHITE:
-
-                Row checkPieceN = null;
-                if (end.getRow() + 1 > 7){ checkPieceN = rows.get(7); }
-                else { checkPieceN = rows.get(end.getRow()+1); }
-
-                List<Space> rowSpacesN = checkPieceN.getSpaces();
-                Piece currentOccupantN = null;
-                if ((end.getRow() + end.getCell()) % 2 == 1) {
-                    //if a red piece is in the way, capturing move, return true
-
-                    if (start.getCell() > end.getCell()){ // Going left
-                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
-                    } else if (start.getCell() < end.getCell()) { // Going right
-                        currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
-                    }
-
-                    if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED && currentOccupantN.getType()!=Type.KING) {
-
-                        int y = java.lang.Math.abs(end.getRow() - start.getRow());
-
-                        if (y <= 1 || y > 2) {
-
-                            return false;
-                        }
-                        if (start.getCell() > end.getCell()) { // Going left
-
-                            capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
-                        } else if (start.getCell() < end.getCell()) { // Going right
-
-                            capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
-                        }
-                        capturedTrue = true;
-                        return true;
-                    }
-                    if (end.getRow() > start.getRow()) { return false; }
-                    else {
-                        if ((end.getRow() + 1) == start.getRow() && (start.getCell() == (end.getCell() + 1) || start.getCell() == (end.getCell() - 1))) {
-                            // The piece should be able to move
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-                else { return false; }
-            case RED:
-                Row checkPiece = null;
-                if (end.getRow() - 1 < 0) { checkPiece = rows.get(0); }
-                else { checkPiece = rows.get(end.getRow() - 1); }
-
-                List<Space> rowSpaces = checkPiece.getSpaces();
-                Piece currentOccupant = null;
-
-                if ((end .getRow() + end.getCell() )% 2 == 1) {
-                    //if a white piece is in the way, capturing move, return true
-                    //Checks if it is a diagonal
-
-                    if (start.getCell() > end.getCell()) { // Going left
-                        currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
-                    } else if (start.getCell() < end.getCell()) { // Going right
-                        currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
-                    }
-
-                    if (currentOccupant != null && currentOccupant.getColor() == Color.WHITE && currentOccupant.getType()!=Type.KING) {
-                        //capture move
-
-                        int y = java.lang.Math.abs(end.getRow() - start.getRow());
-
-                        if (y <= 1 || y > 2) {
-
-                            return false;
-                        }
-                        if (start.getCell() > end.getCell()) { // Going left
-                            capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
-                        } else if (start.getCell() < end.getCell()) { // Going right
-                            capturedNew = (new Position(end.getRow() - 1,end.getCell() - 1));
-                        }
-                        capturedTrue = true;
-                        return true;
-                    }
-                    if (end.getRow() < start.getRow()) { return false; }
-                    else {
-
-                        //only move forward, there is no occupant
-                        if ((end.getRow() - 1) == start.getRow() && (start.getCell() == (end.getCell() + 1) || start.getCell() == (end.getCell() - 1))) {
-                            //The piece should be able to move;
-                            return true;
-                        } else { return false; }
-                    }
-                }
-                else {
-                    //Invalid move
-                    return false;
-                }
-            default:
-                //invalid
-                return false;
-        }
-    }
-
-    /**
-     * Returns the Space occupied by the given Position
-     *
-     * @param position
-     *          The Move's Position.
-     *
-     * @return the Space object
-     */
-    public Space getSpaceByPosition(Position position) {
-        int rowIndex = position.getRow();
-        int cellIndex = position.getCell();
-
-        //Look for the row object
-        Row rowObjStart = rows.stream().filter(x -> x.getIndex() == rowIndex).findFirst().get();
-        //Look for the space object
-        return rowObjStart.getSpaces().stream().filter(x -> x.getCellIdx() == cellIndex).findFirst().get();
-    }
-
-    /**
-     * Sets the Piece occupied by the given Position
-     *
-     * @param position
-     *          The Move's Position
-     * @param piece
-     *          The Piece
-     */
-    public void setPieceByPosition(Position position, Piece piece) {
-        Space space = getSpaceByPosition(position);
-        space.setPiece(piece);
-    }
-
-    /**
-     * Get the list of Rows inside the Board.
-     *
-     * @return
-     *   The list of rows.
-     */
-    public List<Row> getRows() {
-        return rows;
-    }
-
-    /**
-     * Validates a Move inside the Board.
-     *
-     * @param move
-     *    The {@link Move} from the user.
-     * @return
-     *    The Message object.
-     */
-    public Message validateMove(Move move) {
+    private boolean isMoveACapture(Move move) {
         if (isMoveValid(move)) {
+            // Get the Piece about to be moved
+            Space startSpace = getSpaceByPosition(move.getStart());
+            Piece jumpingPiece = startSpace.getPiece();
+            if (jumpingPiece == null) { return false; }
 
-            return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
+            // Check if the end position is actually two squares away from the starting position
+            int rowDifference = Math.abs(move.getStart().getRow() - move.getEnd().getRow());
+            int cellDifference = Math.abs(move.getStart().getCell() - move.getEnd().getCell());
+            if (rowDifference != 2 || cellDifference != 2) { return false; }
+
+            // Check if there's a Piece in the middle
+            int capturingRow = (move.getStart().getRow() + move.getEnd().getRow()) / 2;
+            int capturingCell = (move.getStart().getCell() + move.getEnd().getCell()) / 2;
+            Space capturedSpace = getSpaceByPosition(new Position(capturingRow, capturingCell));
+            Piece capturedPiece = capturedSpace.getPiece();
+            if (capturedPiece == null) { return false; }
+
+            // Check if the captured piece is of the opposite color as the jumping piece
+            if (capturedPiece.getColor() == jumpingPiece.getColor()) { return false; }
+
+            // If it reached this point, it must be a capture move
+            return true;
+        } else {
+            return false;
         }
-        if(isMoveValidKing(move) ){
-            return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
-        }
-        else {
-            return new Message(INVALID_MOVE_MESSAGE, MessageType.ERROR);
-        }
-    }
-    public boolean isMoveValid(Move move){
-
-        boolean isAValidMove = false;
-        Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-        Piece movedPiece = startSpace.getPiece();
-
-        if(movedPiece.getType()==Type.SINGLE){
-            if(isMoveValidSingle(move)){
-
-                boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()== 7 && movedPiece.getType() == Type.SINGLE;
-                boolean isWhiteKing = movedPiece.getColor() == Color.WHITE && move.getEnd().getRow()== 0 && movedPiece.getType()== Type.SINGLE;
-                if (isRedKing || isWhiteKing ) {
-                    movedPiece.setType(Type.KING);
-
-                }
-
-                isAValidMove = true;
-                return isAValidMove;
-
-            }
-
-        }
-        else if(movedPiece.getType()==Type.KING){
-            if(isMoveValidKing(move)){
-
-                startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-                movedPiece = startSpace.getPiece();               // get the piece about to be move
-
-                setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
-                startSpace.setPiece(null);                              // remove the piece from the origin position
-
-                isAValidMove = true;
-                return isAValidMove;
-
-            }
-
-        }
-
-        return isAValidMove;
     }
 
     /**
-     * Makes a Move inside the Board.
+     * Queries whether the Move is a crowning move.
      *
      * @param move
-     *    The {@link Move} from the user.
+     *          The Player's Move.
+     *
+     * @return true if the Move is a crowning move, otherwise, false
      */
-    public void makeMove(Move move) {
+    private boolean isACrowningMove(Move move) {
+        if (isMoveValid(move)) {
+            // Get the Piece about to be moved
+            Space startSpace = getSpaceByPosition(move.getStart());
+            Piece crowningPieceToBe = startSpace.getPiece();
 
+            // First, check that's it's not already a King
+            if (crowningPieceToBe.getType() == Type.KING) { return false; }
 
-        boolean isAValidMove = isMoveValid(move);
-        if(isAValidMove){
-            setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
-            System.out.println("Setting the piece to its end position");
-            startSpace.setPiece(null);                              // remove the piece from the origin position
+            // Second, check the color and use it to determine the crowning row
+            Color pieceColor = crowningPieceToBe.getColor();
 
-        }
+            boolean isRedKing = (pieceColor == Color.RED) && (move.getEnd().getRow() == 7);
+            boolean isWhiteKing = (pieceColor == Color.WHITE) && (move.getEnd().getRow() == 0);
 
-
-        if (capturedTrue && isAValidMove) {
-            //removes captured pieces from the board.
-            setPieceByPosition(capturedNew,null);
-            capturedTrue = false;
+            // If it fits any of the two situations, it's a crowning move
+            if (isRedKing || isWhiteKing) { return true; }
+            else { return false; }
+        } else {
+            return false;
         }
     }
 
     /**
-     * Queries whether the {@link Piece}'s present on the given {@link Position} can move or not
+     * Gets the {@Link Space} between a jump on the given capturing {@link Move}
+     *
+     * @param move
+     *    The Player's Move.
+     *
+     * @return an {@link Space} if the move is a valid capture, null otherwise.
+     */
+    private Space getCapturedSpace(Move move) {
+        if (isMoveACapture(move)) {
+            // Retrieve the space in the middle, at this point it must be valid
+            int capturingRow = (move.getStart().getRow() + move.getEnd().getRow()) / 2;
+            int capturingCell = (move.getStart().getCell() + move.getEnd().getCell()) / 2;
+            Space capturedSpace = getSpaceByPosition(new Position(capturingRow, capturingCell));
+            return capturedSpace;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the list of possible movements by the {@link Piece} on the given {@link Position}
      *
      * @param position
      *    The {@link Board}'s {@link Position}.
      *
-     * @return true if the {@link Piece} present in the {@link Position} can move, false if it can't or if there's no {@link Piece}
+     * @return an ArrayList of the valid {@link Position}s to which the {@link Piece} can move to. If there's no {@link Piece}, it returns an empty list.
      */
-    public boolean canMove(Position position) {
-        // First thing, check if there's actually a Piece on the given Position
-        Piece observedPiece = this.getSpaceByPosition(position).getPiece();
-        if (observedPiece == null) { return false; }
-
+    private List<Position> getAllowedMovements(Position position) {
         // Create a list to hold the allowed Positions that the piece
         List<Position> allowedPositions = new ArrayList<>();
         List<Position> tempPositions = new ArrayList<>();
+
+        // First thing, check if there's actually a Piece on the given Position
+        Piece observedPiece = this.getSpaceByPosition(position).getPiece();
+        if (observedPiece == null) { return allowedPositions; }
 
         // Check if the Piece is SINGLE or KING, in order to calculate the valid moves around it
         switch (observedPiece.getType()) {
@@ -639,6 +202,171 @@ public class Board {
                 }
             }
         }
+        return allowedPositions;
+    }
+
+    /**
+     * Queries whether the Move is valid.
+     *
+     * @param move
+     *          The Player's Move.
+     *
+     * @return true if the Move is valid, otherwise, false
+     */
+    public boolean isMoveValid(Move move) {
+        // Gets the starting and ending Position
+        Position startPosition = move.getStart();
+        Position endPosition = move.getEnd();
+
+        // If the end position is within the allowed moves, the move is valid
+        List<Position> validMoves = getAllowedMovements(startPosition);
+        return validMoves.contains(endPosition);
+    }
+
+    /**
+     * Returns the Space occupied by the given Position
+     *
+     * @param position
+     *          The Move's Position.
+     *
+     * @return the Space object
+     */
+    public Space getSpaceByPosition(Position position) {
+        int rowIndex = position.getRow();
+        int cellIndex = position.getCell();
+
+        //Look for the row object
+        Row rowObjStart = rows.stream().filter(x -> x.getIndex() == rowIndex).findFirst().get();
+        //Look for the space object
+        return rowObjStart.getSpaces().stream().filter(x -> x.getCellIdx() == cellIndex).findFirst().get();
+    }
+
+    /**
+     * Sets the Piece occupied by the given Position
+     *
+     * @param position
+     *          The Move's Position
+     * @param piece
+     *          The Piece
+     */
+    public void setPieceByPosition(Position position, Piece piece) {
+        Space space = getSpaceByPosition(position);
+        space.setPiece(piece);
+    }
+
+    /**
+     * Get the list of Rows inside the Board.
+     *
+     * @return
+     *   The list of rows.
+     */
+    public List<Row> getRows() {
+        return rows;
+    }
+
+    /**
+     * Validates a Move inside the Board.
+     *
+     * @param moves
+     *    The {@link Move} from the user.
+     * @return
+     *    The Message object.
+     */
+    public Message validateMove(List<Move> moves) {
+        boolean areMovesValid = true;
+        boolean isNonCaptureAllowed = true;
+        // Save starting/ending Position and Piece
+        Space startSpace = getSpaceByPosition(moves.get(0).getStart());
+        Piece movedPiece = startSpace.getPiece();
+        Space endSpace = getSpaceByPosition(moves.get(moves.size() - 1).getEnd());
+
+        // There has to be a Piece at the starting point and an empty space at the ending point to stay valid
+        if (movedPiece == null || endSpace.getPiece() != null) { areMovesValid = false; }
+
+        if (areMovesValid) {
+            // Validate each move in order
+            for (Move moveItem : moves) {
+                boolean isValid = isMoveValid(moveItem);
+
+                // Check if the previous move was a non-capture
+                if (isMoveACapture(moveItem)) {
+                    isNonCaptureAllowed = false;
+                } else if (isNonCaptureAllowed && !isMoveACapture(moveItem)) {
+                    isNonCaptureAllowed = false;
+                } else {
+                    areMovesValid = false;
+                    break;
+                }
+
+                if (isValid) {
+                    // If it's valid, put the piece in the ending position and remove it from the starting position
+                    Space tempStartSpace = getSpaceByPosition(moveItem.getStart());
+                    Space tempEndSpace = getSpaceByPosition(moveItem.getEnd());
+                    tempEndSpace.setPiece(tempStartSpace.getPiece());
+                    tempStartSpace.setPiece(null);
+                } else {
+                    areMovesValid = false;
+                    break;
+                }
+            }
+
+            if (areMovesValid) {
+                // Put the piece again in the starting position
+                startSpace.setPiece(movedPiece);
+                // Remove the piece from the end position
+                endSpace.setPiece(null);
+            }
+        }
+
+        if (areMovesValid) {
+            return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
+        } else {
+            return new Message(INVALID_MOVE_MESSAGE, MessageType.ERROR);
+        }
+    }
+
+    /**
+     * Makes a Move inside the Board.
+     *
+     * @param move
+     *    The {@link Move} from the user.
+     */
+    public void makeMove(Move move) {
+        if (isMoveValid(move)) {
+            Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
+            Piece movedPiece = startSpace.getPiece();               // get the piece about to be moved
+
+            // Remove captured pieces from the board, if any
+            if (isMoveACapture(move)) {
+                Space capturedSpace = getCapturedSpace(move);
+                capturedSpace.setPiece(null);
+            }
+
+            // Check if the Piece is eligible for crowning
+            boolean shouldBeSetAsKing = isACrowningMove(move) || (movedPiece.getType() == Type.KING);
+            movedPiece.setType(shouldBeSetAsKing ? Type.KING : Type.SINGLE);
+
+            setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
+            startSpace.setPiece(null);                              // remove the piece from the origin position
+        }
+    }
+
+    /**
+     * Queries whether the {@link Piece}'s present on the given {@link Position} can move or not
+     *
+     * @param position
+     *    The {@link Board}'s {@link Position}.
+     *
+     * @return true if the {@link Piece} present in the {@link Position} can move, false if it can't or if there's no {@link Piece}
+     */
+    public boolean canMove(Position position) {
+        // First thing, check if there's actually a Piece on the given Position
+        Piece observedPiece = this.getSpaceByPosition(position).getPiece();
+        if (observedPiece == null) { return false; }
+
+        // Gets the list of allowed positions
+        List<Position> allowedPositions = getAllowedMovements(position);
+
         // If the total is more than 0, return true. Otherwise return
         if (allowedPositions.size() > 0) { return true; }
         else { return false; }
@@ -672,6 +400,9 @@ public class Board {
         return true;
     }
 
+    /**
+     * Removes all the Pieces from the Board.
+     */
     public void clearBoard() {
         // loop through the whole board, clear all the Pieces
         for (int row = 0; row < 8; row++) {

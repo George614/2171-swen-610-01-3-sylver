@@ -36,6 +36,10 @@
     <div class="body">
         <form id="gameForm" action="/submitTurn" method="POST">
 
+            <#if isGameEnded>
+              <a href="/">[ Return to the Home Screen ]</a>
+            </#if>
+
             <p>
                 You are playing a game of checkers with ${opponentName}.
             <#if isMyTurn>
@@ -92,7 +96,7 @@
                                title="Commit your current turn to the server.">
                                 Submit turn
                             </a>
-                            <a href="#" id="resignLink" disabled=disabled
+                            <a href="/game?resign=${playerName}" id="resignLink2" disabled=disabled
                                title="End the game by resigning.">
                                 Resign from game
                             </a>

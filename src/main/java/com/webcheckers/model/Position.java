@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import java.util.Objects;
+
 /**
  *  Class to represent piece Position
  *  Author: <a href="mailto:mfabbu@rit.edu">Matt Arlauckas</a>
@@ -67,4 +69,22 @@ public class Position {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Position)) return false;
+        final Position that = (Position) obj;
+        return (this.row == that.getRow()) && (this.cell == that.getCell());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.row, this.cell);
+    }
 }

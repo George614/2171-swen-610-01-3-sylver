@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import java.util.Objects;
+
 public class Piece {
 
     //
@@ -54,17 +56,20 @@ public class Piece {
      * @param type
      *          The new Type enum.
      */
-    public void setType(Type type) { type = type; }
+    public void setType(Type type) { this.type = type; }
 
-    public void setColor(Color color) { color = color; }
+    public void setColor(Color color) { this.color = color; }
 
     @Override
     public boolean equals(Object obj) {
-        return true;
+        if (obj == this) return true;
+        if (!(obj instanceof Piece)) return false;
+        final Piece that = (Piece) obj;
+        return (this.type == that.type) && (this.color == that.color);
     }
 
     @Override
     public int hashCode() {
-        return 1;
+        return Objects.hash(this.type, this.color);
     }
 }

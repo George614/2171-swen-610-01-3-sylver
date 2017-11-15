@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameCenter;
+import com.webcheckers.model.Game;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.MessageType;
 import spark.Request;
@@ -8,6 +9,7 @@ import spark.Response;
 import spark.Route;
 
 import java.util.Objects;
+import spark.Session;
 
 public class PostBackupMoveRoute implements Route {
 
@@ -17,14 +19,21 @@ public class PostBackupMoveRoute implements Route {
   private final GameCenter gameCenter;
 
   public PostBackupMoveRoute(final GameCenter gameCenter) {
+    // validation
     Objects.requireNonNull(gameCenter, "gameCenter must not be null");
+    //
     this.gameCenter = gameCenter;
-
   }
 
   @Override
   public Object handle(Request request, Response response) throws Exception {
-    gameCenter.get(request.session()).backupMove();
-    return new Message("You have successfully backed up a move, Please Click on Submit Turn", MessageType.INFO);
+    // retrieve the HTTP session
+    final Session httpSession = request.session();
+    // retrieve the game from the session
+    final Game currentGame = gameCenter.get(httpSession);
+    currentGame.backupMove();
+    Message message = currentGame.board.validateMove(currentGame.validatedMoves);
+    message.setType(MessageType.INFO);
+    return message;
   }
 }

@@ -39,27 +39,15 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
 
     // checks if the user is signed-in
     final Player currentPlayer = playerLobby.getPlayer(httpSession);
-    boolean isKing=false;
-    boolean isAValidKingMove=false;
+
     // retrieve the game from the session
     final Game currentGame = gameCenter.get(httpSession);
     final List<Move> validatedMove = currentGame.validatedMoves;
-    int totalValidMoves = 0;
 
-    for (Move moveItem : validatedMove) {
-      // If the move is valid, apply move and up the counter
-      isKing=( currentGame.board.getRows().get(moveItem.getStart().getRow()).getSpaces().get(moveItem.getStart().getCell()).getPiece().getType()== Type.KING);
-      isAValidKingMove= currentGame.board.isMoveValidKing(moveItem);
-      if (currentGame.board.isMoveValidSingle(moveItem) || (isKing && isAValidKingMove)) {
-
-        currentGame.board.makeMove(moveItem);
-        totalValidMoves++;
-      }
-    }
-
+    final boolean madeValidMoves = currentGame.makeMoves(validatedMove);
     // flips the color to change the turn,
     // and clear the list of moves
-    if (totalValidMoves > 0) {
+    if (madeValidMoves) {
       currentGame.setCurrentTurn((currentGame.getCurrentTurn() == Color.RED ? Color.WHITE : Color.RED));
       currentGame.validatedMoves.clear();
     }

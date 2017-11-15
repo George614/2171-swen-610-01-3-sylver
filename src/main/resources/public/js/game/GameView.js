@@ -249,8 +249,9 @@ define(function(require){
      * updated Game view from the server.
      */
     this.resignGame = function resignGame() {
-      // TODO
-delegateStateMessage('res')    }
+      window.location.href = '/game?resign=' + window.gameState.player.name;
+      delegateStateMessage('res')
+    }
 
     // Private (internal) functions
 

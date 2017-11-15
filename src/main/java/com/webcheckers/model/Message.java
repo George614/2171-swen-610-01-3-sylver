@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import com.sun.org.apache.xml.internal.security.algorithms.MessageDigestAlgorithm;
+
 /**
  *  Class to represent game messages
  *  Author: <a href="mailto:mfabbu@rit.edu">Matt Arlauckas</a>
@@ -39,5 +41,7 @@ public class Message {
     public String getText(){
         return this.text;
     }
+
+    public void setType(MessageType type) { this.type = type; }
 
 }

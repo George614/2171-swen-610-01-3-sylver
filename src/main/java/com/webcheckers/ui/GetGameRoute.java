@@ -25,10 +25,12 @@ public class GetGameRoute implements TemplateViewRoute {
     static final String IS_MY_TURN_ATTR = "isMyTurn";
     static final String MESSAGE_ATTR = "message";
     static final String BOARD_ATTR = "board";
+    static final String IS_GAME_ENDED_ATTR = "isGameEnded";
 
     // Constants
     static final String TITLE = "Game Play!";
     static final String OPPONENT_PARAM = "opponentRadio";
+    static final String RESIGN_PARAM = "resign";
     static final String VIEW_NAME = "game.ftl";
 
     private final GameCenter gameCenter;
@@ -89,7 +91,7 @@ public class GetGameRoute implements TemplateViewRoute {
             currentPlayer = playerLobby.getPlayer(httpSession);
             game = gameCenter.get(httpSession);
             Color currentColor = game.getPlayerColor(currentPlayer.getUsername());
-            opponent = currentColor == Color.RED ? game.getPlayerRedUsername() : game.getPlayerWhiteUsername();
+            opponent = (currentColor == Color.RED) ? game.getPlayerRedUsername() : game.getPlayerWhiteUsername();
             opponentPlayer = playerLobby.getPlayer(opponent);
         }
 
@@ -98,6 +100,12 @@ public class GetGameRoute implements TemplateViewRoute {
 
         // start building the View-Model
         final Map<String, Object> vm = new HashMap<>();
+
+        // Resignation logic
+        String user = request.queryParams(RESIGN_PARAM);
+        if (user != null) {
+            game.winner = opponentPlayer;
+        }
 
         // Check if any of the players has won the game, and update the winner property
         if (game.winner == null) {
@@ -118,6 +126,8 @@ public class GetGameRoute implements TemplateViewRoute {
             vm.put(MESSAGE_ATTR, null);
         }
 
+        boolean isGameEnded = (game.winner != null) ? true : false;
+        vm.put(IS_GAME_ENDED_ATTR, isGameEnded);
         vm.put(TITLE_ATTR, TITLE);
         vm.put(CURRENT_PLAYER_ATTR, currentPlayer);
         vm.put(PLAYER_NAME_ATTR, currentPlayer.getUsername());

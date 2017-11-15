@@ -2,6 +2,8 @@ package com.webcheckers.model;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 
 /**
@@ -490,7 +492,9 @@ public class BoardTest {
     //CuT.setPieceByPosition(whitePieceToDelete, null);
     //CuT.setPieceByPosition(redPieceToDelete2, null);
     CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
-    Message receivedInvalid=CuT.validateMove(invalidMove);
+    List<Move> invalidMoves = new ArrayList<>();
+    invalidMoves.add(invalidMove);
+    Message receivedInvalid=CuT.validateMove(invalidMoves);
 
     assertTrue(receivedInvalid.getType()==MessageType.ERROR);
 
@@ -498,9 +502,11 @@ public class BoardTest {
     whitePieceEnd=new Position(4,1);
 
     Move validMove = new Move(whitePieceStart, whitePieceEnd);
+    List<Move> validMoves = new ArrayList<>();
+    validMoves.add(validMove);
 
     CuT.setPieceByPosition(whitePieceStart, pieceToBeTested);
-    Message receivedValid=CuT.validateMove(validMove);
+    Message receivedValid=CuT.validateMove(validMoves);
 
     assertTrue(receivedValid.getType()==MessageType.INFO);
 

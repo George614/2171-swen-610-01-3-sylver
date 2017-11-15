@@ -99,12 +99,6 @@ public class Game {
     }
     throw new IllegalArgumentException("Invalid username, that Player is not part of the game.");
   }
-  public void backupMove() {
-
-    if (!(validatedMoves == null || validatedMoves.isEmpty())) {
-      validatedMoves.remove(validatedMoves.size() - 1);
-    }
-  }
 
   /**
    * Gets the Player that corresponds to the current turn.
@@ -133,6 +127,29 @@ public class Game {
     } else {
       return false;
     }
+  }
+
+  public void backupMove() {
+    if (!(validatedMoves == null || validatedMoves.isEmpty())) {
+      validatedMoves.remove(validatedMoves.size() - 1);
+    }
+  }
+
+  /**
+   * Makes a list of Moves inside the Board.
+   *
+   * @param moves
+   *    The list of {@link Move}s from the user.
+   * @return true if at least one move was made, false otherwise.
+   */
+  public boolean makeMoves(List<Move> moves) {
+    int totalValidMoves = 0;
+    for (Move moveItem : moves) {
+      this.board.makeMove(moveItem);
+      totalValidMoves++;
+    }
+    if (totalValidMoves > 0) { return true; }
+    else { return false; }
   }
 
   /**
