@@ -17,22 +17,6 @@ import static org.junit.Assert.assertTrue;
 public class GameTest {
 
   @Test
-  public void getPlayerColor() throws Exception {
-  }
-
-  @Test
-  public void getPlayerCurrentTurn() throws Exception {
-  }
-
-  @Test
-  public void getCurrentTurn() throws Exception {
-  }
-
-  @Test
-  public void setCurrentTurn() throws Exception {
-  }
-
-  @Test
   public void hasPlayerWon() throws Exception {
     final Game CuT = new Game(PLAYER_RED, PLAYER_WHITE);
 

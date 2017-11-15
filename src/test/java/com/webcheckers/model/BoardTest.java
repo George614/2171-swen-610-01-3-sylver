@@ -47,18 +47,6 @@ public class BoardTest {
   }
 
   @Test
-  public void setPieceByPosition() throws Exception {
-  }
-
-  @Test
-  public void validateMove() throws Exception {
-  }
-
-  @Test
-  public void makeMove() throws Exception {
-  }
-
-  @Test
   public void canKingMove() throws Exception {
     final Board CuT = new Board();
     CuT.clearBoard();
@@ -86,10 +74,6 @@ public class BoardTest {
 
     // The king shouldn't be able to move, it's blocked in all directions
     assertFalse(CuT.canMove(new Position(3, 4)));
-  }
-
-  @Test
-  public void canCapture() throws Exception {
   }
 
   @Test

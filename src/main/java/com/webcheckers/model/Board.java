@@ -306,11 +306,9 @@ public class Board {
                         if (upperRightWhitePosition.isValid()) { tempPositions.add(upperRightWhitePosition); }
                         break;
                     default:
-                        //throw new InvalidStateException("The Piece should have a Color defined.");
                 }
                 break;
             default:
-                //throw new InvalidStateException("The Piece should have a Type defined.");
         }
 
         // Check the available capturing and non-capturing moves (no need to check multiple capture moves) and move them to the allowedPositions list

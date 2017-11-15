@@ -126,7 +126,6 @@ public class Game {
       return this.board.isColorBlocked(Color.RED);
     } else {
       return false;
-      //throw new InvalidStateException("The argument should have a valid Color defined.");
     }
   }
 
