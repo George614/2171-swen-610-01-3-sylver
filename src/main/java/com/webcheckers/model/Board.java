@@ -6,7 +6,7 @@ import sun.plugin.dom.exception.InvalidStateException;
 
 /**
  *  Class to represent the Board (made up of Rows)
- *  Author: <a href="mailto:mfabbu@rit.edu">Matt Arlauckas</a>
+ *  Author: <a href="mailto:nd7896@rit.edu">Matt Arlauckas</a>
  *  Date: 2017-10-25
  */
 public class Board {
@@ -26,6 +26,11 @@ public class Board {
     private Position capturedNew = null;
     private boolean capturedTrue = false;
 
+    private boolean isAKing=false;
+    private boolean isAValidMove=false;
+
+    private Space startSpace;
+    private Piece movedPiece;
     //
     //  Constructors
     //
@@ -41,6 +46,224 @@ public class Board {
     //  Methods
     //
 
+    public boolean moveKing(Row checkPieceN,Position end,Position start){
+
+        List<Space> rowSpacesN = checkPieceN.getSpaces();
+        Piece currentOccupantN = null;
+
+        if ((end.getRow() + end.getCell()) % 2 == 1) {
+
+            boolean moveUp=((end.getRow() - 1) == start.getRow());
+            boolean moveDown=((end.getRow() + 1) == start.getRow());
+
+            boolean moveLeft=(start.getCell() == (end.getCell() - 1));
+            boolean moveRight=(start.getCell() == (end.getCell() + 1));
+
+            if ((moveUp||moveDown)&& (moveLeft||moveRight)) {
+                // The piece should be able to move
+                return true;
+            }
+
+        }
+        else{
+            return false;
+        }
+        return false;
+
+    }
+
+    public boolean isMoveValidKing(Move move){
+
+        Position start = move.getStart();
+        Position end = move.getEnd();
+
+        boolean resultR=false;
+
+        //start = in row, there's a cell that has this piece
+        int diagonalStartSpace = start.getRow() + start.getCell();
+        int diagonalEndSpace = end.getRow() + end.getCell();
+        int startSpace = diagonalStartSpace % 2;
+        Piece currentOccupantN = null;
+        //non-capturing move
+        switch(currentTurn){
+
+            case WHITE:
+
+                Row checkPieceN = null;
+                boolean backward = (start.getRow() > end.getRow());
+
+                if (end.getRow() - 1 < 0) {
+                    checkPieceN = rows.get(0);
+                }
+                else if(backward) {
+                    if (end.getRow() + 1 > 7){
+                        checkPieceN = rows.get(7);
+                    }
+                    else{
+                        checkPieceN = rows.get(end.getRow()+1);}
+                }
+                else {
+                    checkPieceN = rows.get(end.getRow() - 1);
+                }
+
+
+                List<Space> rowSpacesN = checkPieceN.getSpaces();
+
+
+                if ((end.getRow() + end.getCell()) % 2 == 1) {
+                    //if a red piece is in the way, capturing move, return true
+                    boolean leftDirection = (start.getCell() > end.getCell());
+                    boolean rightDirection = (start.getCell() < end.getCell());
+
+                    if (leftDirection && backward){ // Going left backward
+
+                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
+                    }
+                    if(leftDirection && !backward){ //going left forward
+
+                        currentOccupantN = rowSpacesN.get(end.getCell() + 1).getPiece();
+                    }
+                    if (rightDirection && backward) { // Going right backward
+
+                        currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+                    }
+
+                    if(rightDirection && !backward){ //going right forward
+
+                        currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+
+                    }
+                    else{
+                        return false;
+                    }
+
+                    if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED) {
+
+                        int y = java.lang.Math.abs(end.getRow() - start.getRow());
+
+                        if (y <= 1 || y > 2) {
+                            resultR=false;
+                            return resultR;
+                        }
+                        if (leftDirection && backward) { // Going left backward
+
+                            capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
+
+                        }
+                        else if (leftDirection && !backward) {
+
+                            capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
+
+                        }
+                        else if (rightDirection && backward) { // Going right backward
+
+                            capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
+                        }
+                        else if (rightDirection && !backward) {
+                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
+                        }
+
+                        capturedTrue = true;
+                        return true;
+                    }
+                    else if(currentOccupantN==null){
+                        resultR=moveKing(checkPieceN,end,start);
+                        return resultR;
+                    }
+                }
+
+
+
+            case RED:
+                Row checkPiece = null;
+                boolean backwardRed = (start.getRow() < end.getRow());
+
+                if (end.getRow() + 1 > 7){
+                    checkPiece = rows.get(7);
+
+                }
+                else if(backwardRed) {
+
+                    if (end.getRow() - 1 < 0){
+                        checkPiece = rows.get(0);
+                    }else{
+                        checkPiece= rows.get(end.getRow()-1);
+                    }
+                }
+                else {
+                    checkPiece = rows.get(end.getRow()+1);
+                };
+
+
+                List<Space> rowSpaces = checkPiece.getSpaces();
+                Piece currentOccupant = null;
+
+
+                if ((end.getRow() + end.getCell()) % 2 == 1) {
+                    //if a red piece is in the way, capturing move, return true
+
+                    boolean leftDirection = (start.getCell() > end.getCell());
+                    boolean rightDirection = (start.getCell() < end.getCell());
+
+                    if (leftDirection && backwardRed){ // Going left backward
+
+                        currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
+                    }
+                    else if (rightDirection && backwardRed) {
+
+                        currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
+                    }
+                    else if(leftDirection && !backwardRed){
+
+                        currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
+                    }
+                    else if(rightDirection && !backwardRed){
+
+                        currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
+
+                    }
+
+                    if (currentOccupant != null && currentOccupant.getColor() == Color.WHITE) {
+
+                        int y = java.lang.Math.abs(end.getRow() - start.getRow());
+
+                        if (y <= 1 || y > 2) {
+                            resultR=false;
+                            return resultR;
+                        }
+                        if (leftDirection && backwardRed) {
+
+                            capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
+
+                        } else if (rightDirection && backwardRed) {
+
+                            capturedNew = new Position(end.getRow() - 1,end.getCell() - 1);
+                        }
+                        else if (leftDirection && !backwardRed) {
+
+                            capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
+
+                        } else if (rightDirection && !backwardRed) {
+                            capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
+                        }
+
+                        capturedTrue = true;
+                        return true;
+                    }
+                    else{
+                        resultR=moveKing(checkPiece,end,start);
+                        return resultR;
+                    }
+                }
+
+                return resultR;
+
+            default:
+                break;
+        }
+
+        return false;
+    }
     /**
      * Queries whether the Move is valid.
      *
@@ -49,7 +272,8 @@ public class Board {
      *
      * @return true if the Move is valid, otherwise, false
      */
-    public boolean isMoveValid(Move move) {
+    public boolean isMoveValidSingle(Move move) {
+
 
         Position start = move.getStart();
         Position end = move.getEnd();
@@ -58,8 +282,6 @@ public class Board {
         int diagonalStartSpace = start.getRow() + start.getCell();
         int diagonalEndSpace = end.getRow() + end.getCell();
         int startSpace = diagonalStartSpace % 2;
-
-
 
         switch (currentTurn) {
             case WHITE:
@@ -79,7 +301,7 @@ public class Board {
                         currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
                     }
 
-                    if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED) {
+                    if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED && currentOccupantN.getType()!=Type.KING) {
 
                         int y = java.lang.Math.abs(end.getRow() - start.getRow());
 
@@ -126,7 +348,7 @@ public class Board {
                         currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
                     }
 
-                    if (currentOccupant != null && currentOccupant.getColor() == Color.WHITE) {
+                    if (currentOccupant != null && currentOccupant.getColor() == Color.WHITE && currentOccupant.getType()!=Type.KING) {
                         //capture move
 
                         int y = java.lang.Math.abs(end.getRow() - start.getRow());
@@ -213,11 +435,57 @@ public class Board {
      *    The Message object.
      */
     public Message validateMove(Move move) {
-        if (isMoveValid(move)) {
+
+        if (isMoveValidSingle(move)) {
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
-        } else {
+        }
+        if(isMoveValidKing(move) ){
+            return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
+        }
+        else {
             return new Message(INVALID_MOVE_MESSAGE, MessageType.ERROR);
         }
+    }
+
+
+    public boolean isMoveValid(Move move){
+
+        isAValidMove = false;
+        startSpace = getSpaceByPosition(move.getStart()); // get the origin position
+        movedPiece = startSpace.getPiece();
+
+        if(movedPiece.getType()==Type.SINGLE){
+            if(isMoveValidSingle(move)){
+
+                boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()== 7 && movedPiece.getType() == Type.SINGLE;
+                boolean isWhiteKing = movedPiece.getColor() == Color.WHITE && move.getEnd().getRow()== 0 && movedPiece.getType()== Type.SINGLE;
+                if (isRedKing || isWhiteKing ) {
+                    movedPiece.setType(Type.KING);
+                    System.out.println(movedPiece);
+                    System.out.println(movedPiece.getType());
+                }
+
+                isAValidMove = true;
+                return isAValidMove;
+
+            }
+
+        }
+        else if(movedPiece.getType()==Type.KING){
+            if(isMoveValidKing(move)){
+
+
+                startSpace = getSpaceByPosition(move.getStart()); // get the origin position
+                movedPiece = startSpace.getPiece();               // get the piece about to be moved
+
+                isAValidMove = true;
+                return isAValidMove;
+
+            }
+
+        }
+
+        return isAValidMove;
     }
 
     /**
@@ -228,24 +496,15 @@ public class Board {
      */
     public void makeMove(Move move) {
 
-        boolean isAValidMove = false;
 
-        if (isMoveValid(move)) {
-
-            Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-            Piece movedPiece = startSpace.getPiece();               // get the piece about to be moved
-            move.getEnd().getRow();
-            //check if the piece is eligible for crowning
-            boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()== 7 && movedPiece.getType() == Type.SINGLE;
-            boolean isWhiteKing = movedPiece.getColor() == Color.WHITE && move.getEnd().getRow()== 0 && movedPiece.getType()== Type.SINGLE;
-            if (isRedKing || isWhiteKing ) {
-
-                movedPiece.setType(Type.KING);
-            }
+        boolean isAValidMove = isMoveValid(move);
+        if(isAValidMove){
             setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
+            System.out.println("Setting the piece to its end position");
             startSpace.setPiece(null);                              // remove the piece from the origin position
-            isAValidMove = true;
+
         }
+
 
         if (capturedTrue && isAValidMove) {
             //removes captured pieces from the board.

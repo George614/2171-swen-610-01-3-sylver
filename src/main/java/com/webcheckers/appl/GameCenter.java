@@ -92,7 +92,6 @@ public class GameCenter {
     Predicate<Game> predicate = x -> x.getPlayerRedUsername().equals(username) || x.getPlayerWhiteUsername().equals(username);
     return ongoingGames.stream().filter(predicate).findFirst().orElse(null);
   }
-
   /**
    * End the user's current {@linkplain Game game}
    * and remove it from the session and the ongoingGames list

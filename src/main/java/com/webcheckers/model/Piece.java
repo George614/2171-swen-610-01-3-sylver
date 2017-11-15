@@ -54,7 +54,9 @@ public class Piece {
      * @param type
      *          The new Type enum.
      */
-    public void setType(Type type) { this.type = type; }
+    public void setType(Type type) { type = type; }
+
+    public void setColor(Color color) { color = color; }
 
     @Override
     public boolean equals(Object obj) {

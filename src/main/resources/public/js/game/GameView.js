@@ -24,6 +24,7 @@ define(function(require){
   var BACKUP_LINK = 'backupLink';
   var RESET_LINK = 'resetLink';
   var SUBMIT_LINK = 'submitLink';
+  var RESIGN_LINK = 'resignLink';
   
   var HOVER_CLASS = 'hover';
   var PENDING_CLASS = 'pending';
@@ -249,8 +250,7 @@ define(function(require){
      */
     this.resignGame = function resignGame() {
       // TODO
-      alert('NYI: Resign action');
-    }
+delegateStateMessage('res')    }
 
     // Private (internal) functions
 
@@ -468,7 +468,7 @@ define(function(require){
     jQuery('#' + SUBMIT_LINK).on('click',
             makeViewEventHandler(view,
                     function(view, event) { view.submitTurn(); }));
-    jQuery('#resignLink').on('click',
+    jQuery('#' + RESIGN_LINK).on('click',
             makeViewEventHandler(view,
                     function(view, event) { view.resignGame(); }));
 

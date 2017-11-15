@@ -1,20 +1,14 @@
 package com.webcheckers.ui;
 
-import static spark.Spark.halt;
-
 import com.webcheckers.appl.GameCenter;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Color;
-import com.webcheckers.model.Game;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Player;
+import com.webcheckers.model.*;
+import spark.*;
+
 import java.util.List;
 import java.util.Objects;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Session;
-import spark.TemplateViewRoute;
+
+import static spark.Spark.halt;
 
 public class PostSubmitTurnRoute implements TemplateViewRoute {
 
@@ -45,14 +39,18 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
 
     // checks if the user is signed-in
     final Player currentPlayer = playerLobby.getPlayer(httpSession);
-
+    boolean isKing=false;
+    boolean isAValidKingMove=false;
     // retrieve the game from the session
     final Game currentGame = gameCenter.get(httpSession);
     final List<Move> validatedMove = currentGame.validatedMoves;
     int totalValidMoves = 0;
+
     for (Move moveItem : validatedMove) {
       // If the move is valid, apply move and up the counter
-      if (currentGame.board.isMoveValid(moveItem)) {
+      isKing=( currentGame.board.getRows().get(moveItem.getStart().getRow()).getSpaces().get(moveItem.getStart().getCell()).getPiece().getType()== Type.KING);
+      isAValidKingMove= currentGame.board.isMoveValidKing(moveItem);
+      if (currentGame.board.isMoveValidSingle(moveItem) || (isKing && isAValidKingMove)) {
         currentGame.board.makeMove(moveItem);
         totalValidMoves++;
       }
@@ -66,7 +64,7 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
     }
 
     // Redirect the user to the Game view
-    String opponentUsername = currentPlayer.getUsername() == currentGame.getPlayerRedUsername() ? currentGame.getPlayerWhiteUsername() : currentGame.getPlayerRedUsername();
+    String opponentUsername = Objects.equals(currentPlayer.getUsername(), currentGame.getPlayerRedUsername()) ? currentGame.getPlayerWhiteUsername() : currentGame.getPlayerRedUsername();
     response.redirect(WebServer.GAME_URL + "?" + GetGameRoute.OPPONENT_PARAM + "=" + opponentUsername);
     halt();
     return null;
