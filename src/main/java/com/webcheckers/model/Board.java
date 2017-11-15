@@ -26,6 +26,10 @@ public class Board {
     private boolean capturedTrue = false;
 
     private boolean isAKing=false;
+    private boolean isAValidMove=false;
+
+    private Space startSpace;
+    private Piece movedPiece;
     //
     //  Constructors
     //
@@ -106,27 +110,6 @@ public class Board {
                 }
 
 
-                /*
-                if (end.getRow() + 1 > 7){
-                    checkPieceN = rows.get(7);
-
-                }
-                else if(backward) {
-
-                    if (end.getRow() - 1 < 0){
-                        checkPieceN = rows.get(0);
-                    }else{
-                        checkPieceN = rows.get(end.getRow()-1);
-                    }
-                }
-                else {
-                    checkPieceN = rows.get(end.getRow()+1);
-                };
-
-                */
-                //boolean result=moveKing(checkPieceN,end,start);
-
-
                 List<Space> rowSpacesN = checkPieceN.getSpaces();
 
 
@@ -199,7 +182,7 @@ public class Board {
                     }
                 }
 
-                //return resultR;
+
 
             case RED:
                 Row checkPiece = null;
@@ -220,22 +203,7 @@ public class Board {
                 else {
                     checkPiece = rows.get(end.getRow()+1);
                 };
-                /*
-                if (end.getRow() - 1 < 0) {
-                    checkPiece = rows.get(0);
-                }
-                else if(backwardRed) {
-                    if (end.getRow() + 1 > 7){
-                        checkPieceN = rows.get(7);
-                    }
-                    else{
-                        checkPiece = rows.get(end.getRow()+1);}
-                }
-                else {
-                    checkPiece = rows.get(end.getRow() - 1);
-                }*/
 
-                //List<Space> rowSpaces = checkPiece.getSpaces();
 
                 List<Space> rowSpaces = checkPiece.getSpaces();
                 Piece currentOccupant = null;
@@ -299,10 +267,6 @@ public class Board {
                     }
                 }
 
-
-
-
-                //resultR=moveKing(checkPiece,end,start);
                 return resultR;
 
             default:
@@ -319,7 +283,7 @@ public class Board {
      *
      * @return true if the Move is valid, otherwise, false
      */
-    public boolean isMoveValid(Move move) {
+    public boolean isMoveValidSingle(Move move) {
 
         System.out.println("Well, I'm inside the function");
 
@@ -330,9 +294,6 @@ public class Board {
         int diagonalStartSpace = start.getRow() + start.getCell();
         int diagonalEndSpace = end.getRow() + end.getCell();
         int startSpace = diagonalStartSpace % 2;
-
-
-
 
         switch (currentTurn) {
             case WHITE:
@@ -488,14 +449,11 @@ public class Board {
      *    The Message object.
      */
     public Message validateMove(Move move) {
-        Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-        Piece movedPiece = startSpace.getPiece();
 
-        if (isMoveValid(move)) {
+        if (isMoveValidSingle(move)) {
             System.out.println("validateMove");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
         }
-        //&& movedPiece.getType()==Type.KING
         if(isMoveValidKing(move) ){
             System.out.println("validateMove for King");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
@@ -505,24 +463,15 @@ public class Board {
         }
     }
 
-    /**
-     * Makes a Move inside the Board.
-     *
-     * @param move
-     *    The {@link Move} from the user.
-     */
-    public void makeMove(Move move) {
 
-        boolean isAValidMove = false;
-        Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-        Piece movedPiece = startSpace.getPiece();
-        //rows.get(move.getStart().getRow()).getSpaces().
-        System.out.println("TYPE:"+rows.get(move.getStart().getRow()).getSpaces().get(move.getStart().getCell()).getPiece().getType());
-        //isAKing=(rows.get(move.getStart().getRow()).getSpaces().get(move.getStart().getCell()).getPiece().getType()==Type.KING);
-        System.out.println("isAKing: "+isAKing);
+    public boolean isMoveValid(Move move){
+
+        isAValidMove = false;
+        startSpace = getSpaceByPosition(move.getStart()); // get the origin position
+        movedPiece = startSpace.getPiece();
 
         if(movedPiece.getType()==Type.SINGLE){
-            if(isMoveValid(move)){
+            if(isMoveValidSingle(move)){
 
                 boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()== 7 && movedPiece.getType() == Type.SINGLE;
                 boolean isWhiteKing = movedPiece.getColor() == Color.WHITE && move.getEnd().getRow()== 0 && movedPiece.getType()== Type.SINGLE;
@@ -533,9 +482,9 @@ public class Board {
                     System.out.println(movedPiece.getType());
                 }
 
-                setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
-                startSpace.setPiece(null);                              // remove the piece from the origin position
                 isAValidMove = true;
+                return isAValidMove;
+
             }
 
         }
@@ -546,16 +495,34 @@ public class Board {
 
                 startSpace = getSpaceByPosition(move.getStart()); // get the origin position
                 movedPiece = startSpace.getPiece();               // get the piece about to be moved
-                move.getEnd().getRow();
 
-                setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
-                System.out.println("Setting the piece to its end position");
-                startSpace.setPiece(null);                              // remove the piece from the origin position
                 isAValidMove = true;
+                return isAValidMove;
 
             }
 
         }
+
+        return isAValidMove;
+    }
+
+    /**
+     * Makes a Move inside the Board.
+     *
+     * @param move
+     *    The {@link Move} from the user.
+     */
+    public void makeMove(Move move) {
+
+
+        boolean isAValidMove = isMoveValid(move);
+        if(isAValidMove){
+            setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
+            System.out.println("Setting the piece to its end position");
+            startSpace.setPiece(null);                              // remove the piece from the origin position
+
+        }
+
 
         if (capturedTrue && isAValidMove) {
             //removes captured pieces from the board.

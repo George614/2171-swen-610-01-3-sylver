@@ -46,7 +46,7 @@ public class PostSubmitTurnRoute implements TemplateViewRoute {
     int totalValidMoves = 0;
     for (Move moveItem : validatedMove) {
       // If the move is valid, apply move and up the counter
-      if (currentGame.board.isMoveValid(moveItem) ||( currentGame.board.getRows().get(moveItem.getStart().getRow()).getSpaces().get(moveItem.getStart().getCell()).getPiece().getType()== Type.KING &&  currentGame.board.isMoveValidKing(moveItem))) {
+      if (currentGame.board.isMoveValidSingle(moveItem) ||( currentGame.board.getRows().get(moveItem.getStart().getRow()).getSpaces().get(moveItem.getStart().getCell()).getPiece().getType()== Type.KING &&  currentGame.board.isMoveValidKing(moveItem))) {
         System.out.println("Here lies the problem");
         currentGame.board.makeMove(moveItem);
         totalValidMoves++;
