@@ -51,10 +51,10 @@ public class Piece {
     /**
      * Set the Type for the Piece object.
      *
-     * @param typenew
+     * @param type
      *          The new Type enum.
      */
-    public void setType(Type typenew) { type = typenew; }
+    public void setType(Type type) { type = type; }
 
     public void setColor(Color color) { color = color; }
 
