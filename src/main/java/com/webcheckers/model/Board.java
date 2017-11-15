@@ -206,6 +206,41 @@ public class Board {
     }
 
     /**
+     * Queries whether the {@link Color}'s associated user can capture any pieces on the board
+     *
+     * @param color
+     *          The {@link Player}'s {@link Color}.
+     *
+     * @return true if the user associated with the {@link Color} can capture any pieces, otherwise false
+     */
+    private boolean canColorCapture(Color color) {
+        // Loop through every black Space
+        for (int row = 0; row < 8; row++) {
+            for (int cell = 0; cell < 8; cell++) {
+                Position tempPosition = new Position(row, cell);
+                Space tempSpace = getSpaceByPosition(tempPosition);
+                // Skip white pieces
+                if (!tempSpace.isBlackSquare()) { continue; }
+                // Skip empty Spaces
+                if (tempSpace.getPiece() == null) { continue; }
+                // Skip pieces from the opposite color
+                if (tempSpace.getPiece().getColor() != color) { continue; }
+                // Get the allowed movements from that position
+                List<Position> movements = getAllowedMovements(tempPosition);
+                // Loop through every one of those, and check if any of them is a capturing move
+                for (Position endPosition : movements) {
+                    Move tempMove = new Move(tempPosition, endPosition);
+                    boolean isCapturing = isMoveACapture(tempMove);
+                    // If we found a capturing Move, no need to check the rest: return true
+                    if (isCapturing) { return true; }
+                }
+            }
+        }
+        // If we actually went through the entire loop and none of the Pieces could make a capturing move, return false
+        return false;
+    }
+
+    /**
      * Queries whether the Move is valid.
      *
      * @param move
@@ -276,12 +311,21 @@ public class Board {
         boolean areMovesValid = true;
         boolean isNonCaptureAllowed = true;
         // Save starting/ending Position and Piece
-        Space startSpace = getSpaceByPosition(moves.get(0).getStart());
-        Piece movedPiece = startSpace.getPiece();
-        Space endSpace = getSpaceByPosition(moves.get(moves.size() - 1).getEnd());
+        Space startSpace = null;
+        Piece movedPiece = null;
+        Space endSpace = null;
+
+        if (moves.size() > 0) {
+            startSpace = getSpaceByPosition(moves.get(0).getStart());
+            movedPiece = startSpace.getPiece();
+            endSpace = getSpaceByPosition(moves.get(moves.size() - 1).getEnd());
+        }
 
         // There has to be a Piece at the starting point and an empty space at the ending point to stay valid
         if (movedPiece == null || endSpace.getPiece() != null) { areMovesValid = false; }
+
+        // Enforce the Capture Move Rule: Disallow non-capturing moves from the start if the color can make a capture
+        if (areMovesValid && canColorCapture(movedPiece.getColor())) { isNonCaptureAllowed = false; }
 
         if (areMovesValid) {
             // Validate each move in order
@@ -336,15 +380,17 @@ public class Board {
             Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
             Piece movedPiece = startSpace.getPiece();               // get the piece about to be moved
 
+            // Check if the Piece is eligible for crowning
+            boolean shouldBeSetAsKing = isACrowningMove(move) || (movedPiece.getType() == Type.KING);
+            movedPiece.setType(shouldBeSetAsKing ? Type.KING : Type.SINGLE);
+
             // Remove captured pieces from the board, if any
+            // Note: This has to be done *after* validating for the King condition, because otherwise removing the piece
+            // would interfere with the result of the inner isMoveValid() method
             if (isMoveACapture(move)) {
                 Space capturedSpace = getCapturedSpace(move);
                 capturedSpace.setPiece(null);
             }
-
-            // Check if the Piece is eligible for crowning
-            boolean shouldBeSetAsKing = isACrowningMove(move) || (movedPiece.getType() == Type.KING);
-            movedPiece.setType(shouldBeSetAsKing ? Type.KING : Type.SINGLE);
 
             setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
             startSpace.setPiece(null);                              // remove the piece from the origin position

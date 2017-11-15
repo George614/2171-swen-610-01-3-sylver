@@ -44,4 +44,6 @@ public class Message {
 
     public void setType(MessageType type) { this.type = type; }
 
+    public void setText(String text) { this.text = text; }
+
 }

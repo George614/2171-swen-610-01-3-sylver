@@ -34,6 +34,7 @@ public class PostBackupMoveRoute implements Route {
     currentGame.backupMove();
     Message message = currentGame.board.validateMove(currentGame.validatedMoves);
     message.setType(MessageType.INFO);
+    message.setText("The last move has been removed. Please refresh the page to see the changes.");
     return message;
   }
 }

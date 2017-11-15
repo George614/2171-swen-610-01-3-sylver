@@ -81,7 +81,7 @@ define(function(require){
     var view = this.getView();
     jQuery.post('/backupMove', '',
             function(message, textStatus, jqXHR) {
-      handleUnmoveResponse(view, message);
+      handleUnmoveResponse(view, message);;
     },
     'json');
   }
@@ -108,6 +108,7 @@ define(function(require){
     if (message.type === 'info') {
       view.popMove();
       view.setState(getNextState(view));
+      window.location.replace('/game');
     }
     // handle error message
     else {

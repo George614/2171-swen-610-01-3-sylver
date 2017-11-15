@@ -57,6 +57,7 @@ public class WebServer {
   public static final String CHECK_TURN_URL = "/checkTurn";
   public static final String VALIDATE_MOVE_URL = "/validateMove";
   public static final String BACKUP_MOVE_URL = "/backupMove";
+  public static final String EXIT_GAME_URL = "/exitGame";
 
   //
   // Attributes
@@ -142,5 +143,6 @@ public class WebServer {
     post(CHECK_TURN_URL, new PostCheckTurnRoute(gameCenter, playerLobby),  JsonUtils.json());
     post(VALIDATE_MOVE_URL, new PostValidateMoveRoute(gameCenter, playerLobby),  JsonUtils.json());
     post(BACKUP_MOVE_URL, new PostBackupMoveRoute(gameCenter),  JsonUtils.json());
+    get(EXIT_GAME_URL, new GetExitGameRoute(gameCenter), templateEngine);
   }
 }

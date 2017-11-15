@@ -37,9 +37,8 @@
         <form id="gameForm" action="/submitTurn" method="POST">
 
             <#if isGameEnded>
-              <a href="/">[ Return to the Home Screen ]</a>
+              <a href="/exitGame">[ Return to the Home Screen ]</a>
             </#if>
-
             <p>
                 You are playing a game of checkers with ${opponentName}.
             <#if isMyTurn>
@@ -58,7 +57,7 @@
                         <legend>Info</legend>
 
                     <#if message??>
-                        <div id="message" class="${message.type}">${message.text}</div>
+                        <div id="message" class="${message.type?lower_case}">${message.text}</div>
                     <#else>
                         <div id="message" class="info" style="display:none">
                             <!-- keep here for Client-side messages -->
