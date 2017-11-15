@@ -56,14 +56,11 @@ public class Board {
 
             if ((moveUp||moveDown)&& (moveLeft||moveRight)) {
                 // The piece should be able to move
-                System.out.println("IT MUST MOVE");
                 return true;
             }
 
         }
-        else{
-            return false;
-        }
+
         return false;
 
     }
@@ -80,51 +77,33 @@ public class Board {
         int diagonalStartSpace = start.getRow() + start.getCell();
         int diagonalEndSpace = end.getRow() + end.getCell();
         int startSpace = diagonalStartSpace % 2;
-        Piece currentOccupantN = null;
+
         //non-capturing move
         switch(currentTurn){
 
             case WHITE:
-
-                System.out.println("Case WHITE");
+                Piece currentOccupantN = null;
                 Row checkPieceN = null;
                 boolean backward = (start.getRow() > end.getRow());
                 System.out.println("backward"+backward);
-
-                if (end.getRow() - 1 < 0) {
+                if ((end.getRow() - 1 < 0 )&& !backward) {
                     checkPieceN = rows.get(0);
+                    System.out.println("0");
                 }
                 else if(backward) {
                     if (end.getRow() + 1 > 7){
                         checkPieceN = rows.get(7);
+                        System.out.println("7");
                     }
                     else{
-                        checkPieceN = rows.get(end.getRow()+1);}
+                        checkPieceN = rows.get(end.getRow()+1);
+                        System.out.println(end.getRow()+1);
+                    }
                 }
                 else {
                     checkPieceN = rows.get(end.getRow() - 1);
+                    System.out.println(end.getRow()-1);
                 }
-
-
-                /*
-                if (end.getRow() + 1 > 7){
-                    checkPieceN = rows.get(7);
-
-                }
-                else if(backward) {
-
-                    if (end.getRow() - 1 < 0){
-                        checkPieceN = rows.get(0);
-                    }else{
-                        checkPieceN = rows.get(end.getRow()-1);
-                    }
-                }
-                else {
-                    checkPieceN = rows.get(end.getRow()+1);
-                };
-
-                */
-                //boolean result=moveKing(checkPieceN,end,start);
 
 
                 List<Space> rowSpacesN = checkPieceN.getSpaces();
@@ -138,6 +117,7 @@ public class Board {
 
                     if (leftDirection && backward){ // Going left backward
 
+                        System.out.println("where are you now 1");
                         if(end.getCell()+1==start.getCell()){
                             currentOccupantN=null;
                         }
@@ -149,6 +129,7 @@ public class Board {
                     }
                     if(leftDirection && !backward){ //going left forward
 
+                        System.out.println("where are you now 2");
                         if(end.getCell()+1==start.getCell()){
                             currentOccupantN=null;
                         }
@@ -160,17 +141,24 @@ public class Board {
 
                     }
                     if (rightDirection && backward) { // Going right backward
+                        System.out.println("where are you now 3");
                         if(end.getCell()-1==start.getCell()){
                             currentOccupantN=null;
+                            System.out.println("NULL3");
                         }
                         else{
+                            System.out.println(rowSpacesN);
+
+                            System.out.println(end.getCell()-1);
                             currentOccupantN = rowSpacesN.get(end.getCell() - 1).getPiece();
+                            System.out.println("CurrentOcuupant3: "+currentOccupantN);
                         }
 
                     }
 
                     if(rightDirection && !backward){ //going right forward
 
+                        System.out.println("where are you now 4");
                         if(end.getCell()-1==start.getCell()){
                             currentOccupantN=null;
 
@@ -188,10 +176,10 @@ public class Board {
                     if(currentOccupantN==null){
                         System.out.println("In else!");
                         resultR=moveKing(checkPieceN,end,start);
+                        System.out.println("resultR: "+resultR);
                         return resultR;
                     }
 
-                    System.out.println(currentOccupantN.getColor() == Color.RED);
                     if (currentOccupantN != null && currentOccupantN.getColor() == Color.RED) {
 
                         int y = java.lang.Math.abs(end.getRow() - start.getRow());
@@ -200,7 +188,6 @@ public class Board {
                             resultR=false;
                             return resultR;
                         }
-                        //(start.getCell() < end.getCell())
                         if (leftDirection && backward) { // Going left backward
 
                             capturedNew = new Position(end.getRow() + 1,end.getCell() + 1);
@@ -211,9 +198,7 @@ public class Board {
                             capturedNew = new Position(end.getRow() - 1,end.getCell() + 1);
 
                         }
-                        //(start.getCell() > end.getCell())
                         else if (rightDirection && backward) { // Going right backward
-                            System.out.println("Going right forward");
 
                             capturedNew = new Position(end.getRow() + 1,end.getCell() - 1);
                         }
@@ -227,13 +212,12 @@ public class Board {
 
                 }
 
-                //return resultR;
 
             case RED:
                 Row checkPiece = null;
                 boolean backwardRed = (start.getRow() < end.getRow());
 
-                if (end.getRow() + 1 > 7){
+                if ((end.getRow() + 1 > 7) && !backwardRed){
                     checkPiece = rows.get(7);
 
                 }
@@ -248,22 +232,7 @@ public class Board {
                 else {
                     checkPiece = rows.get(end.getRow()+1);
                 };
-                /*
-                if (end.getRow() - 1 < 0) {
-                    checkPiece = rows.get(0);
-                }
-                else if(backwardRed) {
-                    if (end.getRow() + 1 > 7){
-                        checkPieceN = rows.get(7);
-                    }
-                    else{
-                        checkPiece = rows.get(end.getRow()+1);}
-                }
-                else {
-                    checkPiece = rows.get(end.getRow() - 1);
-                }*/
 
-                //List<Space> rowSpaces = checkPiece.getSpaces();
 
                 List<Space> rowSpaces = checkPiece.getSpaces();
                 Piece currentOccupant = null;
@@ -276,6 +245,7 @@ public class Board {
                     boolean rightDirection = (start.getCell() < end.getCell());
 
                     if (leftDirection && backwardRed){ // Going left backward
+
                         if(end.getCell()+1==start.getCell()){
                             currentOccupant=null;
 
@@ -286,33 +256,40 @@ public class Board {
 
                     }
                     else if (rightDirection && backwardRed) {
+
                         if(end.getCell()-1==start.getCell()){
                             currentOccupant=null;
+                            System.out.println("NULLLLL");
                         }
                         else{
                             currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
+                            System.out.println("currentOccupant UPDATED, NOT NULL");
                         }
 
 
                     }
                     else if(leftDirection && !backwardRed){
+                        System.out.println("where are you now 3");
                         if(end.getCell()+1==start.getCell()){
                             currentOccupant=null;
+
                         }
                         else{
                             currentOccupant = rowSpaces.get(end.getCell() + 1).getPiece();
+
                         }
 
 
                     }
                     else if(rightDirection && !backwardRed){
+                        System.out.println("where are you now 4");
                         if(end.getCell()-1==start.getCell()){
                             currentOccupant=null;
                         }
                         else{
                             currentOccupant = rowSpaces.get(end.getCell() - 1).getPiece();
                         }
-                        
+
                     }
 
                     if(currentOccupant == null){
@@ -354,7 +331,6 @@ public class Board {
 
 
 
-                //resultR=moveKing(checkPiece,end,start);
                 return resultR;
 
             default:
@@ -432,7 +408,7 @@ public class Board {
                         }
                     }
                 }
-                else { System.out.println("Invalid move RED");return false; }
+                else { return false; }
             case RED:
                 Row checkPiece = null;
                 if (end.getRow() - 1 < 0) { checkPiece = rows.get(0); }
@@ -544,12 +520,10 @@ public class Board {
         Piece movedPiece = startSpace.getPiece();
 
         if (isMoveValid(move)) {
-            System.out.println("validateMove");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
         }
         //&& movedPiece.getType()==Type.KING
         if(isMoveValidKing(move) ){
-            System.out.println("validateMove for King");
             return new Message(VALID_MOVE_MESSAGE, MessageType.INFO);
         }
         else {
@@ -568,18 +542,14 @@ public class Board {
         boolean isAValidMove = false;
         Space startSpace = getSpaceByPosition(move.getStart()); // get the origin position
         Piece movedPiece = startSpace.getPiece();
-        //rows.get(move.getStart().getRow()).getSpaces().
-        System.out.println("TYPE:"+rows.get(move.getStart().getRow()).getSpaces().get(move.getStart().getCell()).getPiece().getType());
-        //isAKing=(rows.get(move.getStart().getRow()).getSpaces().get(move.getStart().getCell()).getPiece().getType()==Type.KING);
-        System.out.println("isAKing: "+isAKing);
 
+        System.out.println("TYPE OF PIECE: "+movedPiece.getType());
         if(movedPiece.getType()==Type.SINGLE){
             if(isMoveValid(move)){
 
                 boolean isRedKing = movedPiece.getColor() == Color.RED && move.getEnd().getRow()== 7 && movedPiece.getType() == Type.SINGLE;
                 boolean isWhiteKing = movedPiece.getColor() == Color.WHITE && move.getEnd().getRow()== 0 && movedPiece.getType()== Type.SINGLE;
                 if (isRedKing || isWhiteKing ) {
-                    System.out.println("SETTING TYPE to KING");
                     movedPiece.setType(Type.KING);
                     System.out.println(movedPiece);
                     System.out.println(movedPiece.getType());
@@ -594,15 +564,13 @@ public class Board {
         else if(movedPiece.getType()==Type.KING){
             if(isMoveValidKing(move)){
 
-                System.out.println("Make move for King");
-
+                System.out.println("As a king...I decree!");
                 startSpace = getSpaceByPosition(move.getStart()); // get the origin position
-                movedPiece = startSpace.getPiece();               // get the piece about to be moved
-                move.getEnd().getRow();
+                movedPiece = startSpace.getPiece();               // get the piece about to be move
 
                 setPieceByPosition(move.getEnd(), movedPiece);          // put the piece in its new position
-                System.out.println("Setting the piece to its end position");
                 startSpace.setPiece(null);                              // remove the piece from the origin position
+                System.out.println("Set piece to null");
                 isAValidMove = true;
 
             }
@@ -611,6 +579,7 @@ public class Board {
 
         if (capturedTrue && isAValidMove) {
             //removes captured pieces from the board.
+            System.out.println("Erasing the captured piece");
             setPieceByPosition(capturedNew,null);
             capturedTrue = false;
         }
