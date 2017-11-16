@@ -95,7 +95,7 @@
                                title="Commit your current turn to the server.">
                                 Submit turn
                             </a>
-                            <a href="/game?resign=${playerName}" id="resignLink2" disabled=disabled
+                            <a href="/game?opponentRadio=${opponentName}&resign=${playerName}" id="resignLink2" disabled=disabled
                                title="End the game by resigning.">
                                 Resign from game
                             </a>

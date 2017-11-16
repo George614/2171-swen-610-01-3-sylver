@@ -48,15 +48,16 @@ The Web-Checkers application uses a Java based server. We have used the Spark we
 
 This tier contains our code for the sign-in, home display, sign out and web server files. These are the files that the user interacts with. Following are the files with the description:
 
-* **Home Controller:** This file displays the opponent list and renders home.ftl
-* **HomePostRoute :** This file contains the authentication logic, session setup and renders home.ftl
-* **Sign Out Controller:** This file handles de-authentication and destroys session.
-* **Web Server:** This file contains the routing information for the Web-Checkers application.
-* **Game Controller:** This file contains the game controller to enable game play.
+* **GetHomeRoute:** This file displays the opponent list and renders home.ftl
+* **GetExitGameRoute:** This route exits from a game after the winner is decided.
+* **GetSignOutRoute:** This file handles de-authentication and destroys session.
+* **WebServer:** This file contains the routing information for the Web-Checkers application.
+* **GetGameRoute:** This file contains the game controller to enable game play.
 * **JsonUtils:** A Utility class for parsing and formatting JSON data.
 * **PostBackupMoveRoute:** Placeholder for implementation in the next sprint.
 * **PostCheckTurnRoute:** Checks if it the current player's turn.
-* **PostSignInRoute:** Re-displays the sign in page after sign in validation
+* **PostSignInRoute:** The POST sign in page in charge of log-in user validation
+* **GetSignInRoute** The sign-in page
 * **PostSubmitTurnRoute:** Submits the current user's turn.
 * **PostValidateMoveRoute:** Submits a single move for a player to be validated.
 

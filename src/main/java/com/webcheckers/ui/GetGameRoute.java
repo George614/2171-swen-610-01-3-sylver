@@ -91,7 +91,7 @@ public class GetGameRoute implements TemplateViewRoute {
             currentPlayer = playerLobby.getPlayer(httpSession);
             game = gameCenter.get(httpSession);
             Color currentColor = game.getPlayerColor(currentPlayer.getUsername());
-            opponent = (currentColor == Color.RED) ? game.getPlayerRedUsername() : game.getPlayerWhiteUsername();
+            opponent = (currentColor == Color.WHITE) ? game.getPlayerRedUsername() : game.getPlayerWhiteUsername();
             opponentPlayer = playerLobby.getPlayer(opponent);
         }
 

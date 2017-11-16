@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.text.DefaultEditorKit.CutAction;
 import org.junit.Test;
 
 /**
@@ -12,6 +13,36 @@ import org.junit.Test;
  *  @author <a href="mailto:dl8006@g.rit.edu">Diosdavi Lara</a>
  */
 public class BoardTest {
+
+  @Test
+  public void canMove() throws Exception {
+    final Board CuT = new Board();
+    CuT.clearBoard();
+
+    final boolean result = CuT.canMove(new Position(5, 2));
+    // It should return false on empty spaces
+    assertFalse(result);
+  }
+
+  @Test
+  public void isColorBlocked1() throws Exception {
+    final Board CuT = new Board();
+    CuT.clearBoard();
+
+    // If the board is empty, both should be blocked
+    assertTrue(CuT.isColorBlocked(Color.RED));
+    assertTrue(CuT.isColorBlocked(Color.WHITE));
+
+    Space spaceWhitePiece = CuT.getSpaceByPosition(new Position(7, 0));
+    spaceWhitePiece.setPiece(new Piece(Type.SINGLE, Color.WHITE));
+    // White shouldn't be blocked now
+    assertFalse(CuT.isColorBlocked(Color.WHITE));
+
+    Space spaceSecondRedPiece = CuT.getSpaceByPosition(new Position(5, 2));
+    spaceSecondRedPiece.setPiece(new Piece(Type.SINGLE, Color.RED));
+    // Red shouldn't be blocked either
+    assertFalse(CuT.isColorBlocked(Color.RED));
+  }
 
   @Test
   public void clearBoard() throws Exception {
@@ -30,6 +61,12 @@ public class BoardTest {
 
   @Test
   public void isMoveValid() throws Exception {
+    final Board CuT = new Board();
+    Position start = new Position(0,0);
+    Position end = new Position(7, 7);
+
+    assertFalse(CuT.isMoveValid(new Move(start, end)));
+    // Test with a move that's obviously not valid
   }
 
   @Test
