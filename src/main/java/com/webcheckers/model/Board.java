@@ -2,7 +2,6 @@ package com.webcheckers.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import sun.plugin.dom.exception.InvalidStateException;
 
 /**
  *  Class to represent the Board (made up of Rows)

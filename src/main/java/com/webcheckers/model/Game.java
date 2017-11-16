@@ -1,7 +1,7 @@
 package com.webcheckers.model;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import java.security.InvalidParameterException;
+//import com.sun.javaws.exceptions.InvalidArgumentException;
+//import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
-import sun.plugin.dom.exception.InvalidStateException;
+//import sun.plugin.dom.exception.InvalidStateException;
 
 /**
  * A single checkers game.
