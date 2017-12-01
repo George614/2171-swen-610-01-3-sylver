@@ -1,6 +1,5 @@
 package com.webcheckers.model;
 
-import com.sun.org.apache.xml.internal.security.algorithms.MessageDigestAlgorithm;
 
 /**
  *  Class to represent game messages
